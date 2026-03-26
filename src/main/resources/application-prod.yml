@@ -1,0 +1,22 @@
+spring:
+    # DATABASE
+    datasource:
+        url: ${DB_URL:jdbc:postgresql://localhost:5432/db_spring_api}
+        driverClassName: org.postgresql.Driver
+        username: ${DB_USERNAME:postgres}
+        password: ${DB_PASSWORD:postgres}
+
+    # JPA
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: false
+        hibernate:
+            ddl-auto: validate
+        open-in-view: false
+        properties:
+            hibernate:
+                format_sql: true
+
+# APPLICATION
+app:
+    path-upload-images-products: uploads/products/

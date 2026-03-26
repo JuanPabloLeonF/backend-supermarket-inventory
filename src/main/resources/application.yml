@@ -1,0 +1,48 @@
+# API
+spring:
+  application:
+    name: ${APP_NAME:supermarket-inventory}
+
+# PROFILE
+  profiles:
+    active: dev
+
+# API
+server:
+  port: ${APP_PORT_DEV:2000}
+
+# SWAGGER OPEN API
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
+# LOGGING
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate:
+      SQL: DEBUG
+      orm:
+        jdbc:
+          bind: DEBUG
+          util:
+            JdbcUtil: DEBUG
+            StatementInspector: DEBUG
+
+# ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
