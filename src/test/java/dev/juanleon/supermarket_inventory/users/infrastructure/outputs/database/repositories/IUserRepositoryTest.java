@@ -40,7 +40,7 @@ class IUserRepositoryTest {
 
         UserEntity userSave2  = UserEntity.builder()
                 .name(this.name)
-                .lastName("garcia " + this.lastName)
+                .lastName(this.lastName)
                 .password("1234567")
                 .rol("ADMIN")
                 .isActive(true)
@@ -60,7 +60,7 @@ class IUserRepositoryTest {
     }
 
     @Test
-    void shouldReturnListOfUserEntityWhenIsCalledMethodGetByName() {
+    void shouldReturnListOfUserEntityWhenIsCalledMethodGetByNameWithParamName() {
 
         List<UserEntity> result = this.iUserRepository.findByName(this.name);
 
@@ -71,24 +71,36 @@ class IUserRepositoryTest {
     }
 
     @Test
-    void shouldReturnListEmptyWhenIsCalledMethodGetByName() {
+    void shouldReturnListEmptyWhenIsCalledMethodGetByNameWithParamNoExistis() {
         List<UserEntity> result = this.iUserRepository.findByName("noExists");
         assertEquals(0, result.size());
     }
 
     @Test
-    void shouldReturnListOfUserEntityWhenIsCalledMethodGetByLastName() {
+    void shouldReturnListEmptyWhenIsCalledMethodGetByNameWithParamNull() {
+        List<UserEntity> result = this.iUserRepository.findByName(null);
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldReturnListOfUserEntityWhenIsCalledMethodGetByLastNameWithParamLastName() {
         List<UserEntity> result = this.iUserRepository.findByLastName(this.lastName);
 
-        assertEquals(1, result.size());
+        assertEquals(2, result.size());
         result.forEach((user) -> {
-            assertTrue(user.getLastName().contains(this.lastName));
+            assertEquals(this.lastName, user.getLastName());
         });
     }
 
     @Test
-    void shouldReturnListOfEmptyWhenIsCalledMethodGetByLastName() {
+    void shouldReturnListOfEmptyWhenIsCalledMethodGetByLastNameWithParamNoExistis() {
         List<UserEntity> result = this.iUserRepository.findByLastName("noExists");
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldReturnListOfEmptyWhenIsCalledMethodGetByLastNameWithParamNull() {
+        List<UserEntity> result = this.iUserRepository.findByLastName(null);
         assertEquals(0, result.size());
     }
 }
