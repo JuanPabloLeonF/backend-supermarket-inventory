@@ -4,17 +4,21 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
+import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByLastNameUserQuery;
+import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.GlobalUserExceptionHandler;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,7 +69,7 @@ class UserRestControllerUnitTest {
                     assertEquals(this.responseUserDtoList, response);
                 });
 
-        verify(this.mediator).dispatch(new GetAllUserQuery());
+        verify(this.mediator).dispatch(any(GetAllUserQuery.class));
     }
 
     @Test
@@ -85,7 +89,7 @@ class UserRestControllerUnitTest {
                     assertTrue(response.isEmpty());
                 });
 
-        verify(this.mediator).dispatch(new GetAllUserQuery());
+        verify(this.mediator).dispatch(any(GetAllUserQuery.class));
     }
 
     @Test
@@ -105,11 +109,12 @@ class UserRestControllerUnitTest {
                     assertEquals(this.responseUserDto, response);
                 });
 
-        verify(this.mediator).dispatch(new GetByIdUserQuery(this.id1));
+        verify(this.mediator).dispatch(any(GetByIdUserQuery.class));
     }
 
     @Test
-    void shouldReturnProblemDetailWhenUserNotFound() {
+    void shouldReturnProblemDetailWhenIsCalledMethodGetByIdWithParamNoExistisOrNull() {
+
         UUID idNoExistis = UUID.randomUUID();
         String message = "User not found with id: " + idNoExistis;
 
@@ -120,14 +125,114 @@ class UserRestControllerUnitTest {
                 .get()
                 .uri(BASE_URL + "/{id}", idNoExistis)
                 .exchange()
-                .expectStatus().isBadRequest()
+                .expectStatus().isNotFound()
                 .expectBody(ProblemDetail.class)
                 .value((response) -> {
                     assertNotNull(response);
-                    assertEquals("Bad Request", response.getTitle());
+                    assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getTitle());
                     assertEquals(message, response.getDetail());
                 });
 
         verify(this.mediator).dispatch(any(GetByIdUserQuery.class));
+    }
+
+    @Test
+    void shouldResponseUserDtoWhenIsCalledMethodGetByNameWithParamName() {
+
+        String name = "pipe";
+
+        List<ResponseUserDto> userDtoList = this.responseUserDtoList.stream()
+                .filter(user -> Objects.equals(user.getName(), name))
+                .toList();
+
+        when(this.mediator.dispatch(any(GetByNameUserQuery.class)))
+                .thenReturn(userDtoList);
+
+        this.restTestClient
+                .get()
+                .uri(BASE_URL + "/name/{name}", name)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(new ParameterizedTypeReference<List<ResponseUserDto>>() {
+                })
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(userDtoList, response);
+                });
+
+        verify(this.mediator).dispatch(any(GetByNameUserQuery.class));
+    }
+
+    @Test
+    void shouldReturnProblemDetailWhenIsCalledMethodGetByNameWithParamNoExistisOrNull() {
+
+        String name = "no existe";
+
+        when(this.mediator.dispatch(any(GetByNameUserQuery.class)))
+                .thenReturn(Collections.emptyList());
+
+        this.restTestClient
+                .get()
+                .uri(BASE_URL + "/name/{name}", name)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(new ParameterizedTypeReference<List<ResponseUserDto>>() {
+                })
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertTrue(response.isEmpty());
+                });
+
+        verify(this.mediator).dispatch(any(GetByNameUserQuery.class));
+    }
+
+    @Test
+    void shouldResponseUserDtoWhenIsCalledMethodGetByLastNameWithParamLastName() {
+
+        String lastName = "leon";
+
+        List<ResponseUserDto> userDtoList = this.responseUserDtoList.stream()
+                .filter(user -> Objects.equals(user.getLastName(), lastName))
+                .toList();
+
+        when(this.mediator.dispatch(any(GetByLastNameUserQuery.class)))
+                .thenReturn(userDtoList);
+
+        this.restTestClient
+                .get()
+                .uri(BASE_URL + "/lastname/{lastName}", lastName)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(new ParameterizedTypeReference<List<ResponseUserDto>>() {
+                })
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(userDtoList, response);
+                });
+
+        verify(this.mediator).dispatch(any(GetByLastNameUserQuery.class));
+    }
+
+    @Test
+    void shouldReturnListEmptyWhenIsCalledMethodGetByLastNameWithParamNoExistisOrNull() {
+
+        String lastName = "no existe";
+
+        when(this.mediator.dispatch(any(GetByLastNameUserQuery.class)))
+                .thenReturn(Collections.emptyList());
+
+        this.restTestClient
+                .get()
+                .uri(BASE_URL + "/lastname/{lastName}", lastName)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(new ParameterizedTypeReference<List<ResponseUserDto>>() {
+                })
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertTrue(response.isEmpty());
+                });
+
+        verify(this.mediator).dispatch(any(GetByLastNameUserQuery.class));
     }
 }

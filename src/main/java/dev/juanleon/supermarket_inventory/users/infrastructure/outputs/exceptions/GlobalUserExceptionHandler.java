@@ -13,14 +13,14 @@ public class GlobalUserExceptionHandler {
 
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundUserException(NotFoundUserException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        response.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
         response.setDetail(exception.getMessage());
         response.setProperty("date", LocalDateTime.now());
         response.setProperty("typeError", exception.getClass().getName());
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
 }
