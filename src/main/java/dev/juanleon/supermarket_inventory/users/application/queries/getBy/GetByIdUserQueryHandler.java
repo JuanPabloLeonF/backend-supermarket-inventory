@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class GetByUserQueryHandler implements IRequestHandler<GetByIdUserQuery, ResponseUserDto> {
+public class GetByIdUserQueryHandler implements IRequestHandler<GetByIdUserQuery, ResponseUserDto> {
 
     private final IGetUserHandler iGetUserHandler;
 
