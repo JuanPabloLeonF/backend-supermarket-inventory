@@ -1,16 +1,22 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controllers;
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByLastNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByNameUserQuery;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,5 +60,13 @@ public class UserRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(mediator.dispatch(query));
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody RequestUserDto requestUserDto) {
+        CreateUserCommand command = new CreateUserCommand(requestUserDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(mediator.dispatch(command));
     }
 }

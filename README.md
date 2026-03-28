@@ -1,6 +1,6 @@
 # Supermarket Inventory — API Backend
 
-Backend en **Java** para un sistema de inventario de supermercado. En el estado actual implementa el **módulo de usuarios** con operaciones de consulta (lectura), siguiendo una arquitectura en capas alineada con **Clean Architecture** y un patrón de **mediador** inspirado en **CQRS** para el desacoplamiento entre la capa web y la lógica de aplicación.
+Backend en **Java** para un sistema de inventario de supermercado. En el estado actual implementa el **módulo de usuarios** con operaciones de **consulta (lectura)** y **alta de usuario (creación)**, siguiendo una arquitectura en capas alineada con **Clean Architecture** y un patrón de **mediador** inspirado en **CQRS** para el desacoplamiento entre la capa web y la lógica de aplicación.
 
 ---
 
@@ -45,23 +45,24 @@ Backend en **Java** para un sistema de inventario de supermercado. En el estado 
 El código se organiza en **cuatro capas conceptuales** por bounded context (actualmente `users`), con dependencias que apuntan hacia el dominio:
 
 1. **Infrastructure — inputs**  
-   Controladores REST (`UserRestController`). Solo reciben peticiones HTTP, construyen **queries** (objetos de petición) y delegan en el **Mediator**.
+   Controladores REST (`UserRestController`). Reciben peticiones HTTP, construyen **queries** u **comandos** (`IRequest`) y delegan en el **Mediator**.
 
 2. **Application**  
-   - **Queries** y **Query handlers**: implementan `IRequestHandler` y orquestan llamadas al **application handler** (`GetUserHandler`).  
-   - **DTOs** de entrada/salida (`RequestUserDto`, `ResponseUserDto`).  
-   - **Mappers** de aplicación (`IMapperUserApplication`): traducen entre `UserModel` (dominio) y DTOs.
+   - **Queries** y **Query handlers**: implementan `IRequestHandler` y orquestan llamadas al handler de lectura (`GetUserHandler`).  
+   - **Commands** y **Command handlers** (por ejemplo `CreateUserCommand` / `CreateUserCommandHandler`): mismo patrón mediator, delegando en el handler de escritura (`PostUserHandler`).  
+   - **DTOs** de entrada/salida (`RequestUserDto`, `ResponseUserDto`, y respuesta genérica de operación `ResponseRequestDto` en `common.utils.dto`).  
+   - **Mappers** de aplicación (`IMapperUserApplication`, `IMapperResponseApp`): traducen entre dominio y DTOs.
 
 3. **Domain**  
-   - **Modelos** puros (`UserModel` como `record`).  
-   - **Contratos** (`IGetUserService`, `IGetUserPersistence`) que definen el caso de uso y el acceso a datos sin conocer Spring ni JPA.  
-   - **Casos de uso** (`GetUserUseCase`): implementan la regla de negocio delegando en persistencia.
+   - **Modelos** puros (`UserModel`, `ResponseModel` para mensajes de operación).  
+   - **Contratos** de lectura (`IGetUserService`, `IGetUserPersistence`) y de escritura (`IPostUserService`, `IPostUserPersistence`) sin conocer Spring ni JPA.  
+   - **Casos de uso** (`GetUserUseCase`, `PostUserUseCase`): implementan los servicios de dominio delegando en la persistencia abstracta.
 
 4. **Infrastructure — outputs**  
-   - **Adaptadores** (`GetUserAdapter`): implementan `IGetUserPersistence` usando `IUserRepository` y mappers de infraestructura.  
-   - **Entidades JPA** (`UserEntity`), **repositorios** Spring Data, **excepciones** de infraestructura (`NotFoundUserException`).
+   - **Adaptadores** de lectura (`GetUserAdapter`) y de escritura (`PostUserAdapter`) sobre `IUserRepository` y mappers de infraestructura.  
+   - **Entidades JPA** (`UserEntity`), **repositorios** Spring Data, **excepciones** (`NotFoundUserException`, `NoCreateUserOnDatabaseException`).
 
-El **Mediator** (`common.mediator.Mediator`) recibe en tiempo de arranque la lista de todos los `IRequestHandler` registrados como beans Spring y resuelve el handler por tipo de la clase de la query (`dispatch`). Esto mantiene los controladores finos y evita inyectar muchos servicios distintos.
+El **Mediator** (`common.mediator.Mediator`) recibe en tiempo de arranque la lista de todos los `IRequestHandler` registrados como beans Spring y resuelve el handler por tipo de la clase de la petición (`dispatch`), tanto para queries como para comandos. Esto mantiene los controladores finos y evita inyectar muchos servicios distintos.
 
 ---
 
@@ -70,12 +71,12 @@ El **Mediator** (`common.mediator.Mediator`) recibe en tiempo de arranque la lis
 | Patrón | Dónde se aplica |
 |--------|------------------|
 | **Mediator** | `Mediator` + `IRequest` / `IRequestHandler`: enrutamiento de comandos/consultas a un único manejador por tipo. |
-| **CQRS (enfoque ligero)** | Separación de **queries** (`GetAllUserQuery`, `GetByIdUserQuery`, etc.) y sus **handlers** dedicados; no hay comandos de escritura expuestos aún en la API. |
-| **Hexagonal / Puertos y adaptadores** | Puertos: `IGetUserService`, `IGetUserPersistence`. Adaptador de salida: `GetUserAdapter` + `IUserRepository`. |
-| **Repository** | `IUserRepository` extiende `JpaRepository<UserEntity, UUID>`. |
-| **DTO** | `RequestUserDto` / `ResponseUserDto` para la frontera HTTP; el dominio usa `UserModel`. |
+| **CQRS (enfoque ligero)** | **Queries** (`GetAllUserQuery`, `GetByIdUserQuery`, …) y **comandos** (`CreateUserCommand`) con handlers dedicados; lectura y escritura desacopladas. |
+| **Hexagonal / Puertos y adaptadores** | Lectura: `IGetUserService`, `IGetUserPersistence`, `GetUserAdapter`. Escritura: `IPostUserService`, `IPostUserPersistence`, `PostUserAdapter`. Repositorio: `IUserRepository`. |
+| **Repository** | `IUserRepository` extiende `JpaRepository<UserEntity, UUID>` (`save`, `findAll`, `findById`, consultas derivadas). |
+| **DTO** | `RequestUserDto` / `ResponseUserDto` en consultas; `ResponseRequestDto` para respuestas de operación (p. ej. alta); dominio: `UserModel`, `ResponseModel`. |
 | **Mapper (MapStruct)** | Interfaces `@Mapper` en aplicación e infraestructura para conversiones tipadas y generadas en compilación. |
-| **Dependency Injection** | Spring (`@Component`, `@Service`, `@Repository`, `@Configuration` + `@Bean` en `BeanUserConfiguration` para cablear `GetUserUseCase`). |
+| **Dependency Injection** | Spring (`@Component`, `@Service`, `@Repository`, `@Configuration` + `@Bean` en `BeanUserConfiguration` para cablear `GetUserUseCase` y `PostUserUseCase`). |
 | **Problem Details (RFC 7807)** | `GlobalExceptionsHandler` y `GlobalUserExceptionHandler` devuelven `ProblemDetail` en errores. |
 
 ---
@@ -88,13 +89,13 @@ dev.juanleon.supermarket_inventory
 ├── common
 │   ├── exception          # Manejo global (mediador, validación, integridad, JSON)
 │   ├── mediator           # IRequest, IRequestHandler, Mediator
-│   └── utils              # DTOs genéricos, enums (Roles), mappers comunes, ResponseModel
+│   └── utils              # DTOs genéricos (`ResponseRequestDto`), enums (`Roles`), mappers comunes (`IMapperResponseApp`)
 └── users
-    ├── application        # queries, handlers, dto, mappers de aplicación
-    ├── domain             # models, services, persistence (interfaces), useCases
+    ├── application        # queries, commands (p. ej. post/), handlers, dto, mappers de aplicación
+    ├── domain             # models, services, persistence (interfaces), useCases (get/, post/)
     └── infrastructure
         ├── inputs         # controllers
-        └── outputs        # configuration, database (entities, repos, adapters, mappers), exceptions
+        └── outputs        # configuration, database (entities, repos, adapters get/ y post/, mappers), exceptions
 ```
 
 ---
@@ -104,6 +105,10 @@ dev.juanleon.supermarket_inventory
 ### Dominio — `UserModel` (record)
 
 Campos: `id`, `name`, `lastName`, `email`, `password`, `rol`, `isActive`, `createdAt`, `updatedAt`.
+
+### Dominio — `ResponseModel` (record)
+
+Usado en el flujo de creación: `message` y `dateTime` (se proyecta a `ResponseRequestDto` vía mapper común).
 
 ### Persistencia — `UserEntity`
 
@@ -115,10 +120,10 @@ Valores: `USER`, `ADMIN` (definidos en `common.utils.enums.Roles`).
 
 ### Repositorio
 
-`IUserRepository` expone:
+`IUserRepository` expone, entre otros:
 
-- `findAll()` (heredado)
-- `findById(UUID)` (heredado)
+- `save(UserEntity)` (heredado) — usado por el flujo de creación
+- `findAll()`, `findById(UUID)` (heredados)
 - `findByName(String)`
 - `findByLastName(String)`
 
@@ -136,10 +141,36 @@ Las búsquedas por nombre/apellido devuelven listas (coincidencia exacta según 
 | `GET` | `/api/v1/users/{id}` | Usuario por UUID. |
 | `GET` | `/api/v1/users/name/{name}` | Usuarios cuyo `name` coincide con el parámetro. |
 | `GET` | `/api/v1/users/lastname/{lastName}` | Usuarios cuyo `lastName` coincide con el parámetro. |
+| `POST` | `/api/v1/users` | Crea un usuario. Cuerpo JSON validado con `RequestUserDto`. |
 
-**Respuesta exitosa:** cuerpo JSON con `ResponseUserDto` (uno o lista). Fechas `createdAt` / `updatedAt` con formato `yyyy-MM-dd HH:mm:ss`.
+**Respuestas exitosas**
 
-**Nota:** `RequestUserDto` incluye validaciones (Bean Validation) pensadas para futuras operaciones de creación/actualización; los endpoints actuales son solo **GET**.
+- **GET:** cuerpo JSON con `ResponseUserDto` (uno o lista). Fechas `createdAt` / `updatedAt` con formato `yyyy-MM-dd HH:mm:ss`.
+- **POST:** **201 Created** con `ResponseRequestDto`: `message` (p. ej. confirmación de creación) y `date` (marca temporal de la operación, mismo formato de fecha).
+
+**Cuerpo de creación (`RequestUserDto`):** `name`, `lastName`, `email`, `password` (reglas de complejidad definidas en el DTO), `rol` (`Roles`: `USER` | `ADMIN`), `isActive`. Validación con Bean Validation (`@Valid` en el controlador).
+
+**Ejemplo (POST)** — petición:
+
+```json
+{
+  "name": "Ana",
+  "lastName": "Pérez",
+  "email": "ana@ejemplo.com",
+  "password": "Abcd1234@",
+  "rol": "USER",
+  "isActive": true
+}
+```
+
+**Ejemplo (POST)** — respuesta típica (`201 Created`):
+
+```json
+{
+  "message": "User created successfully",
+  "date": "2026-03-28 15:30:00"
+}
+```
 
 ---
 
@@ -148,7 +179,8 @@ Las búsquedas por nombre/apellido devuelven listas (coincidencia exacta según 
 | Excepción | Handler | HTTP típico |
 |-----------|---------|-------------|
 | `NotFoundUserException` | `GlobalUserExceptionHandler` | **404** Not Found |
-| `NotFoundTypeRequestHandlerMediator` | `GlobalExceptionsHandler` | **500** (sin handler para el tipo de query) |
+| `NoCreateUserOnDatabaseException` | `GlobalUserExceptionHandler` | **500** Internal Server Error (fallo al persistir o id no generado) |
+| `NotFoundTypeRequestHandlerMediator` | `GlobalExceptionsHandler` | **500** (sin handler para el tipo de petición al mediator) |
 | `MethodArgumentNotValidException` | `GlobalExceptionsHandler` | **400** |
 | `DataIntegrityViolationException` | `GlobalExceptionsHandler` | **400** |
 | `HttpMessageNotReadableException` | `GlobalExceptionsHandler` | **400** |
@@ -207,19 +239,21 @@ La API queda disponible en el puerto configurado (por defecto **2000**). La cons
 
 ### Pruebas automatizadas
 
-- **Pruebas de integración** (`UserItTest`): `@SpringBootTest` con puerto aleatorio, `RestTestClient`, datos sembrados en `@BeforeEach` vía `IUserRepository`; cubren los cuatro endpoints GET y el caso 404 por id inexistente.
-- **Pruebas unitarias y de capa** adicionales bajo `src/test/java` (handlers, use cases, adaptadores, controladores con MockMvc, etc.).
+- **Pruebas de integración** (`UserItTest`): `@SpringBootTest` con puerto aleatorio, `RestTestClient`, datos sembrados en `@BeforeEach` vía `IUserRepository`; cubren los cuatro endpoints **GET**, el **POST** de creación, y el **404** por id inexistente.
+- **Pruebas unitarias y de capa** bajo `src/test/java`: query/command handlers, `GetUserHandler` / `PostUserHandler`, casos de uso get/post, adaptadores `GetUserAdapter` / `PostUserAdapter`, controladores (MockMvc y `RestTestClient` aislado), y repositorio JPA (`IUserRepositoryTest`).
 
 ---
 
 ## Estado del proyecto y próximos pasos lógicos
 
-Lo implementado hasta ahora es un **vertical slice** sólido de **consulta de usuarios** con arquitectura clara y tests. Elementos ya preparados en código pero no expuestos aún en REST incluyen:
+El módulo de usuarios expone hoy **consulta completa** (listado, por id, por nombre, por apellido) y **alta de usuario** mediante **POST**, con el mismo estilo arquitectónico (Mediator, handlers, casos de uso, adaptadores) y **cobertura de pruebas** en capas.
 
-- `RequestUserDto` con validaciones estrictas (contraseña, email, roles) — coherente con futuros **POST/PUT**.
-- Mappers y modelo de dominio listos para **comandos** (crear/editar usuario) siguiendo el mismo patrón Mediator + handlers.
+Posibles evoluciones:
+
+- **Actualización y borrado** (PUT/PATCH/DELETE) con `IRequest` / handlers dedicados y reglas de negocio en dominio.
+- **Codificación de contraseñas** (p. ej. BCrypt) y políticas de seguridad cuando se active Spring Security.
 - **Seguridad** desactivada a propósito en dependencias; integrar Spring Security cuando se definan flujos de autenticación.
-- **Respuesta de usuario:** `ResponseUserDto` incluye `password` en la serialización JSON; en un entorno real conviene excluir u ofuscar ese campo en las respuestas.
+- **Respuesta de usuario:** `ResponseUserDto` incluye `password` en la serialización JSON en los GET; en un entorno real conviene excluir u ofuscar ese campo en las respuestas.
 
 El módulo **inventario / productos** (nombre de la app y propiedad `path-upload-images-products`) está anticipado en configuración pero no descrito aquí como código de dominio adicional en el repositorio actual.
 

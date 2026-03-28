@@ -1,5 +1,8 @@
 package dev.juanleon.supermarket_inventory.users;
 
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.entities.UserEntity;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.repositories.IUserRepository;
@@ -11,6 +14,7 @@ import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTe
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
@@ -102,6 +106,36 @@ public class UserItTest {
     @AfterEach
     void tearDown() {
         this.iUserRepository.deleteAll();
+    }
+
+    @Test
+    void shouldReturnResponseUserDtoWhenIsCalledMethodCreate() {
+
+        RequestUserDto requestUserDto = RequestUserDto.builder()
+                .name("nuevo")
+                .lastName("usuario")
+                .email("nuevo.usuario@correo.com")
+                .password("Abcd1234@")
+                .rol(Roles.USER)
+                .isActive(true)
+                .build();
+
+        this.restTestClient
+                .post()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUserDto)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals("User created successfully", response.getMessage());
+                    assertNotNull(response.getDate());
+                });
+
+        assertTrue(this.iUserRepository.findAll().stream()
+                .anyMatch((u) -> "nuevo.usuario@correo.com".equals(u.getEmail())));
     }
 
     @Test

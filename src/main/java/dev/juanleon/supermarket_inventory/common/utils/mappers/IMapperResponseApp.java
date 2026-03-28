@@ -1,7 +1,8 @@
 package dev.juanleon.supermarket_inventory.common.utils.mappers;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
-import dev.juanleon.supermarket_inventory.common.utils.models.ResponseModel;
+import dev.juanleon.supermarket_inventory.users.domain.models.ResponseModel;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;

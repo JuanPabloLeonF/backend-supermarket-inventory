@@ -84,7 +84,7 @@ class GetUserUseCaseTest {
                 .thenThrow(new NotFoundUserException(message));
 
         NotFoundUserException exception = assertThrows(NotFoundUserException.class, () -> {
-            this.iGetUserPersistence.getById(randomId);
+            this.getUserUseCase.getById(randomId);
         });
 
         assertEquals(message, exception.getMessage());

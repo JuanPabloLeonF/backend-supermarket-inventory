@@ -1,6 +1,10 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controllers;
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
@@ -12,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
@@ -43,6 +48,8 @@ class UserRestControllerUnitTest {
 
     protected ResponseUserDto responseUserDto = this.responseUserDtoList.getFirst();
 
+    protected ResponseRequestDto responseRequestDto = new ResponseRequestDto("User created successfully", LocalDateTime.now().withNano(0));
+
     @BeforeEach
     void setUp() {
         this.mediator = mock(Mediator.class);
@@ -50,6 +57,37 @@ class UserRestControllerUnitTest {
         this.restTestClient = RestTestClient
                 .bindToController(controller, new GlobalUserExceptionHandler())
                 .build();
+    }
+
+    @Test
+    void shouldReturnResponseUserDtoWhenIsCalledMethodCreate() {
+
+        RequestUserDto requestUserDto = RequestUserDto.builder()
+                .name("ana")
+                .lastName("perez")
+                .email("ana@gmail.com")
+                .password("Abcd1234@")
+                .rol(Roles.USER)
+                .isActive(true)
+                .build();
+
+        when(this.mediator.dispatch(any(CreateUserCommand.class)))
+                .thenReturn(this.responseRequestDto);
+
+        this.restTestClient
+                .post()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUserDto)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(this.responseRequestDto, response);
+                });
+
+        verify(this.mediator).dispatch(any(CreateUserCommand.class));
     }
 
     @Test

@@ -1,6 +1,10 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controllers;
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,9 +56,43 @@ class UserRestControllerMockMVCTest {
 
     protected ResponseUserDto responseUserDto = new ResponseUserDto(this.id1, "Juan", "Leon", "juan@mail.com", "123", "ADMIN", true, LocalDateTime.now().withNano(0), LocalDateTime.now().withNano(0));
 
+
+    protected ResponseRequestDto responseRequestDto = new ResponseRequestDto("User created successfully", LocalDateTime.now().withNano(0));
+
     @BeforeEach
     void setUp() {
         this.restTestClient = RestTestClient.bindTo(this.mockMvc).build();
+    }
+
+    @Test
+    void shouldReturnStatusCreatedWhenIsCalledMethodCreate() {
+
+        RequestUserDto requestUserDto = RequestUserDto.builder()
+                .name("ana")
+                .lastName("perez")
+                .email("ana@gmail.com")
+                .password("Abcd1234@")
+                .rol(Roles.USER)
+                .isActive(true)
+                .build();
+
+        when(this.mediator.dispatch(any(CreateUserCommand.class)))
+                .thenReturn(this.responseRequestDto);
+
+        this.restTestClient
+                .post()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUserDto)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(this.responseRequestDto, response);
+                });
+
+        verify(this.mediator).dispatch(any(CreateUserCommand.class));
     }
 
     @Test

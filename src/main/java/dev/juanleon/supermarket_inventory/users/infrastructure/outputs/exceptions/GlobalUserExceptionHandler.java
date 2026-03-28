@@ -23,4 +23,17 @@ public class GlobalUserExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
+
+    @ExceptionHandler(NoCreateUserOnDatabaseException.class)
+    public ResponseEntity<ProblemDetail> handlerNoCreateUserOnDatabaseException(NoCreateUserOnDatabaseException exception) {
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        response.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        response.setDetail(exception.getMessage());
+        response.setProperty("date", LocalDateTime.now());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
+    }
 }

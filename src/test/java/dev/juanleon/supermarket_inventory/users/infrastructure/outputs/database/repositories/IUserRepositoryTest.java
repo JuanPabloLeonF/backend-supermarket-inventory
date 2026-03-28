@@ -10,6 +10,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -102,5 +103,29 @@ class IUserRepositoryTest {
     void shouldReturnListOfEmptyWhenIsCalledMethodGetByLastNameWithParamNull() {
         List<UserEntity> result = this.iUserRepository.findByLastName(null);
         assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldPersistUserEntityWithGeneratedIdWhenIsCalledMethodSave() {
+
+        UserEntity newUser = UserEntity.builder()
+                .name("nuevo")
+                .lastName("usuario")
+                .email("persistido.repo@test.com")
+                .password("Abcd1234@")
+                .rol("USER")
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        UserEntity saved = this.iUserRepository.save(newUser);
+
+        assertNotNull(saved.getId());
+
+        Optional<UserEntity> found = this.iUserRepository.findById(saved.getId());
+        assertTrue(found.isPresent());
+        assertEquals("persistido.repo@test.com", found.get().getEmail());
+        assertEquals("nuevo", found.get().getName());
     }
 }
