@@ -3,7 +3,10 @@ package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controlle
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.users.application.commands.delete.DeleteByIdUserCommand;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.commands.update.UpdateByIdUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
@@ -11,6 +14,7 @@ import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByI
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByLastNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -93,6 +97,139 @@ class UserRestControllerMockMVCTest {
                 });
 
         verify(this.mediator).dispatch(any(CreateUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnStatusOkWhenIsCalledMethodUpdateById() {
+
+        RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
+                .id(this.id1)
+                .name("ana")
+                .lastName("perez")
+                .isActive(true)
+                .build();
+
+        ResponseRequestDto responseRequestDto = new ResponseRequestDto("User updated successfully with id: " + this.id1, LocalDateTime.now().withNano(0));
+
+        when(this.mediator.dispatch(any(UpdateByIdUserCommand.class)))
+                .thenReturn(responseRequestDto);
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUpdateUserDto)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(responseRequestDto, response);
+                });
+
+        verify(this.mediator).dispatch(any(UpdateByIdUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUpdateBodyIsInvalid() {
+        RequestUpdateUserDto invalidDto = RequestUpdateUserDto.builder()
+                .id(null)
+                .name("")
+                .lastName("")
+                .isActive(null)
+                .build();
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(invalidDto)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ProblemDetail.class)
+                .value(problem -> {
+                    assertNotNull(problem);
+                    assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), problem.getTitle());
+                    assertEquals(MethodArgumentNotValidException.class.getSimpleName(), problem.getProperties().get("typeError"));
+                });
+
+        verify(this.mediator, never()).dispatch(any(UpdateByIdUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdateUserDoesNotExist() {
+        UUID idNoExistis = UUID.randomUUID();
+        String message = "User not found with id: " + idNoExistis;
+
+        RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
+                .id(idNoExistis)
+                .name("ana")
+                .lastName("perez")
+                .isActive(true)
+                .build();
+
+        when(this.mediator.dispatch(any(UpdateByIdUserCommand.class)))
+                .thenThrow(new NoUpdateUserByIdException(idNoExistis));
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUpdateUserDto)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getTitle());
+                    assertEquals(message, response.getDetail());
+                });
+
+        verify(this.mediator).dispatch(any(UpdateByIdUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnStatusOkWhenIsCalledMethodDeleteById() {
+        ResponseRequestDto responseRequestDto = new ResponseRequestDto("User deleted successfully by id: " + this.id1, LocalDateTime.now().withNano(0));
+
+        when(this.mediator.dispatch(any(DeleteByIdUserCommand.class)))
+                .thenReturn(responseRequestDto);
+
+        this.restTestClient
+                .delete()
+                .uri(BASE_URL + "/{id}", this.id1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(responseRequestDto, response);
+                });
+
+        verify(this.mediator).dispatch(any(DeleteByIdUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeleteUserDoesNotExist() {
+        UUID idNoExistis = UUID.randomUUID();
+        String message = "User not found with id: " + idNoExistis;
+
+        when(this.mediator.dispatch(any(DeleteByIdUserCommand.class)))
+                .thenThrow(new NotFoundUserException(idNoExistis));
+
+        this.restTestClient
+                .delete()
+                .uri(BASE_URL + "/{id}", idNoExistis)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getTitle());
+                    assertEquals(message, response.getDetail());
+                });
+
+        verify(this.mediator).dispatch(any(DeleteByIdUserCommand.class));
     }
 
     @Test

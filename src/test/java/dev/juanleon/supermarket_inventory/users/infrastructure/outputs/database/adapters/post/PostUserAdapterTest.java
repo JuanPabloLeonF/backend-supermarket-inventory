@@ -102,7 +102,7 @@ class PostUserAdapterTest {
                 () -> this.postUserAdapter.create(this.userModel)
         );
 
-        assertEquals("User not created on database", exception.getMessage());
+        assertTrue(exception.getMessage().startsWith("User not created on database with data: "));
 
         verify(this.iMapperUserInfrastructure).toEntity(this.userModel);
         verify(this.iUserRepository).save(entityWithoutId);

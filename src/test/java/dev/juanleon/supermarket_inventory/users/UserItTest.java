@@ -2,6 +2,7 @@ package dev.juanleon.supermarket_inventory.users;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.entities.UserEntity;
@@ -137,6 +138,99 @@ public class UserItTest {
 
         assertTrue(this.iUserRepository.findAll().stream()
                 .anyMatch((user) -> "nuevo.usuario@correo.com".equals(user.getEmail())));
+    }
+
+    @Test
+    void shouldUpdateUserAndReturnOkWhenIsCalledMethodUpdateById() {
+        RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
+                .id(this.userEntitySave1.getId())
+                .name("juan-updated")
+                .lastName("leon-updated")
+                .isActive(false)
+                .build();
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUpdateUserDto)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertNotNull(response.getDate());
+                    assertEquals("User updated successfully with id: " + this.userEntitySave1.getId(), response.getMessage());
+                });
+
+        UserEntity updated = this.iUserRepository.findById(this.userEntitySave1.getId()).orElseThrow();
+        assertEquals("juan-updated", updated.getName());
+        assertEquals("leon-updated", updated.getLastName());
+        assertFalse(updated.getIsActive());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdateUserDoesNotExist() {
+        UUID idNoExistis = UUID.randomUUID();
+        String message = "User not found with id: " + idNoExistis;
+
+        RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
+                .id(idNoExistis)
+                .name("juan-updated")
+                .lastName("leon-updated")
+                .isActive(true)
+                .build();
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUpdateUserDto)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getTitle());
+                    assertEquals(message, response.getDetail());
+                });
+    }
+
+    @Test
+    void shouldDeleteUserAndReturnOkWhenIsCalledMethodDeleteById() {
+        UUID idToDelete = this.userEntitySave2.getId();
+
+        this.restTestClient
+                .delete()
+                .uri(BASE_URL + "/{id}", idToDelete)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertNotNull(response.getDate());
+                    assertEquals("User deleted successfully by id: " + idToDelete, response.getMessage());
+                });
+
+        assertTrue(this.iUserRepository.findById(idToDelete).isEmpty());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeleteUserDoesNotExist() {
+        UUID idNoExistis = UUID.randomUUID();
+        String message = "User not found with id: " + idNoExistis;
+
+        this.restTestClient
+                .delete()
+                .uri(BASE_URL + "/{id}", idNoExistis)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ProblemDetail.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getTitle());
+                    assertEquals(message, response.getDetail());
+                });
     }
 
     @Test
