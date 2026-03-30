@@ -81,7 +81,7 @@ class GetUserUseCaseTest {
         String message = "User not found with id: " + randomId;
 
         when(iGetUserPersistence.getById(randomId))
-                .thenThrow(new NotFoundUserException(message));
+                .thenThrow(new NotFoundUserException(randomId));
 
         NotFoundUserException exception = assertThrows(NotFoundUserException.class, () -> {
             this.getUserUseCase.getById(randomId);

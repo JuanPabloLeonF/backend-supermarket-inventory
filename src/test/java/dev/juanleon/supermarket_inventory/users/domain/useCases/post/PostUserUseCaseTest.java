@@ -47,7 +47,7 @@ class PostUserUseCaseTest {
 
     @Test
     void shouldReturnResponseModelWhenIsCalledMethodCreate() {
-        String messagePersistence = "User created successfully";
+        String messagePersistence = "User created successfully with id: " + this.userModel.id();
 
         when(this.iPostUserPersistence.create(this.userModel)).thenReturn(messagePersistence);
 

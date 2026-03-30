@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controllers;
 
+import dev.juanleon.supermarket_inventory.common.exception.GlobalExceptionsHandler;
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
@@ -55,8 +56,11 @@ class UserRestControllerUnitTest {
         this.mediator = mock(Mediator.class);
         UserRestController controller = new UserRestController(this.mediator);
         this.restTestClient = RestTestClient
-                .bindToController(controller, new GlobalUserExceptionHandler())
-                .build();
+                .bindToController(
+                        controller,
+                        new GlobalUserExceptionHandler(),
+                        new GlobalExceptionsHandler()
+                ).build();
     }
 
     @Test
@@ -157,7 +161,7 @@ class UserRestControllerUnitTest {
         String message = "User not found with id: " + idNoExistis;
 
         when(this.mediator.dispatch(any(GetByIdUserQuery.class)))
-                .thenThrow(new NotFoundUserException(message));
+                .thenThrow(new NotFoundUserException(idNoExistis));
 
         this.restTestClient
                 .get()

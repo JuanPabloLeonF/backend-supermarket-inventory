@@ -8,6 +8,7 @@ import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserA
 import dev.juanleon.supermarket_inventory.users.domain.models.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoCreateUserOnDatabaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

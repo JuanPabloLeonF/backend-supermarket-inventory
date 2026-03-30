@@ -36,4 +36,17 @@ public class GlobalUserExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
     }
+
+    @ExceptionHandler(NoUpdateUserByIdException.class)
+    public ResponseEntity<ProblemDetail> handlerNoUpdateUserByIdException(NoUpdateUserByIdException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
+        problemDetail.setDetail(exception.getMessage());
+        problemDetail.setProperty("date", LocalDateTime.now());
+        problemDetail.setProperty("typeError", NoUpdateUserByIdException.class.getSimpleName());
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(problemDetail);
+    }
 }

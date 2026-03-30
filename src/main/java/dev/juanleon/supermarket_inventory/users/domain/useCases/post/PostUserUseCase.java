@@ -5,6 +5,8 @@ import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
 
+import java.time.LocalDateTime;
+
 public class PostUserUseCase implements IPostUserService {
 
     private final IPostUserPersistence iPostUserPersistence;

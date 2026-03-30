@@ -68,7 +68,7 @@ class GetByIdUserQueryHandlerTest {
         String message = "User not found with id: " + idNoExistis;
 
         when(this.iGetUserHandler.getById(idNoExistis))
-                .thenThrow(new NotFoundUserException(message));
+                .thenThrow(new NotFoundUserException(idNoExistis));
 
         NotFoundUserException exception = assertThrows(NotFoundUserException.class, () -> {
             this.getByIdUserQueryHandler.handle(new GetByIdUserQuery(idNoExistis));

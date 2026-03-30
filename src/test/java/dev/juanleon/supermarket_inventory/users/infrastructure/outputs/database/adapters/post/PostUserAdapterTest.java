@@ -68,21 +68,19 @@ class PostUserAdapterTest {
         when(this.iMapperUserInfrastructure.toEntity(this.userModel)).thenReturn(this.userEntity);
 
         when(this.iUserRepository.save(any(UserEntity.class))).thenAnswer(invocation -> {
-            UserEntity e = invocation.getArgument(0);
-            e.setId(this.id1);
-            return e;
+            return invocation.getArgument(0);
         });
 
         String response = this.postUserAdapter.create(this.userModel);
 
-        assertEquals("User created successfully", response);
+        assertTrue(response.contains("User created successfully with id: "));
 
         verify(this.iMapperUserInfrastructure).toEntity(this.userModel);
         verify(this.iUserRepository).save(any(UserEntity.class));
     }
 
     @Test
-    void shouldThrowNoCreateUserOnDatabaseExceptionWhenIsCalledMethodCreateWithSavedIdNull() {
+    void shouldReturnThrowNoCreateUserOnDatabaseExceptionWhenIsCalledMethodCreateWithSavedIdNull() {
 
         UserEntity entityWithoutId = UserEntity.builder()
                 .id(null)

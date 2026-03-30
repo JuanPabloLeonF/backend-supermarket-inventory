@@ -109,7 +109,7 @@ class GetUserHandlerTest {
         String message = "User not found with id: " + idNoExistis;
 
         when(this.iGetUserService.getById(idNoExistis))
-                .thenThrow(new NotFoundUserException(message));
+                .thenThrow(new NotFoundUserException(idNoExistis));
 
         NotFoundUserException exception = assertThrows(NotFoundUserException.class, () -> {
             this.getUserHandler.getById(idNoExistis);

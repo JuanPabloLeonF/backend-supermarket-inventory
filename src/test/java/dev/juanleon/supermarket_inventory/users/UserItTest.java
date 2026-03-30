@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -130,12 +131,12 @@ public class UserItTest {
                 .expectBody(ResponseRequestDto.class)
                 .value((response) -> {
                     assertNotNull(response);
-                    assertEquals("User created successfully", response.getMessage());
                     assertNotNull(response.getDate());
+                    assertTrue(response.getMessage().contains("User created successfully with id: "));
                 });
 
         assertTrue(this.iUserRepository.findAll().stream()
-                .anyMatch((u) -> "nuevo.usuario@correo.com".equals(u.getEmail())));
+                .anyMatch((user) -> "nuevo.usuario@correo.com".equals(user.getEmail())));
     }
 
     @Test

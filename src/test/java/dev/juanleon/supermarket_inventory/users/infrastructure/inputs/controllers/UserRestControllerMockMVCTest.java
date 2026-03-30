@@ -23,6 +23,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.client.RestTestClient;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -32,8 +33,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @WebMvcTest(UserRestController.class)
 class UserRestControllerMockMVCTest {
@@ -93,6 +93,43 @@ class UserRestControllerMockMVCTest {
                 });
 
         verify(this.mediator).dispatch(any(CreateUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenRequestBodyIsMissing() {
+        this.restTestClient
+                .post()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest();
+
+        verify(this.mediator, never()).dispatch(any(CreateUserCommand.class));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenInputIsInvalid() {
+        RequestUserDto invalidDto = RequestUserDto.builder()
+                .name("")
+                .email("no-es-un-email")
+                .build();
+
+        this.restTestClient
+                .post()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(invalidDto)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ProblemDetail.class)
+                .value(problem -> {
+                    assertNotNull(problem);
+                    assertNotNull(problem.getProperties());
+                    assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), problem.getTitle());
+                    assertEquals(MethodArgumentNotValidException.class.getSimpleName(), problem.getProperties().get("typeError"));
+                });
+
+        verify(this.mediator, never()).dispatch(any(CreateUserCommand.class));
     }
 
     @Test
@@ -161,7 +198,7 @@ class UserRestControllerMockMVCTest {
         String message = "User not found with id: " + idNoExistis;
 
         when(this.mediator.dispatch(any(GetByIdUserQuery.class)))
-                .thenThrow(new NotFoundUserException(message));
+                .thenThrow(new NotFoundUserException(idNoExistis));
 
         this.restTestClient
                 .get()

@@ -28,7 +28,7 @@ public class GetUserAdapter implements IGetUserPersistence {
     public UserModel getById(UUID id) {
         return this.iUserRepository.findById(id)
                 .map(this.iMapperUserInfrastructure::toModel)
-                .orElseThrow(() -> new NotFoundUserException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundUserException(id));
     }
 
     @Override

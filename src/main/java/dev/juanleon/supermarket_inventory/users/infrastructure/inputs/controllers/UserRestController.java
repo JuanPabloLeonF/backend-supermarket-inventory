@@ -2,7 +2,10 @@ package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controlle
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.users.application.commands.delete.DeleteByIdUserCommand;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.commands.update.UpdateByIdUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
@@ -13,12 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -67,6 +65,22 @@ public class UserRestController {
         CreateUserCommand command = new CreateUserCommand(requestUserDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(mediator.dispatch(command));
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseRequestDto> updateById(@Valid @RequestBody RequestUpdateUserDto requestUpdateUserDto) {
+        UpdateByIdUserCommand command = new UpdateByIdUserCommand(requestUpdateUserDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(mediator.dispatch(command));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseRequestDto> deleteById(@PathVariable("id") UUID id) {
+        DeleteByIdUserCommand command = new DeleteByIdUserCommand(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(mediator.dispatch(command));
     }
 }
