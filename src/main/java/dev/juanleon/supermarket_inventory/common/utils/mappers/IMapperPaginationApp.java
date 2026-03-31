@@ -26,7 +26,23 @@ public interface IMapperPaginationApp {
         return PageRequest.of(request.page(), request.size());
     }
 
-    default <E, M> PagedResponse<M> toPagedResponse(Page<E> page, Function<E, M> mapperFunction) {
+    default <M,R> PagedResponse<R> pageResponseToPageResponseTypeResponse(PagedResponse<M> pagedResponse, Function<M, R> mapperFunction) {
+
+        List<R> content = pagedResponse.content().stream()
+                .map(mapperFunction)
+                .toList();
+
+        return PagedResponse.<R>builder()
+                .content(content)
+                .pageNumber(pagedResponse.pageNumber())
+                .pageSize(pagedResponse.pageSize())
+                .totalElements(pagedResponse.totalElements())
+                .totalPages(pagedResponse.totalPages())
+                .isLast(pagedResponse.isLast())
+                .build();
+    }
+
+    default <E, M> PagedResponse<M> pagetoPagedResponse(Page<E> page, Function<E, M> mapperFunction) {
 
         List<M> content = page.getContent().stream()
                 .map(mapperFunction)

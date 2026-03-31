@@ -10,6 +10,8 @@ spring:
 # API
 server:
   port: ${APP_PORT_DEV:2000}
+  servlet:
+    context-path: /api/v1
 
 # SWAGGER OPEN API
 springdoc:

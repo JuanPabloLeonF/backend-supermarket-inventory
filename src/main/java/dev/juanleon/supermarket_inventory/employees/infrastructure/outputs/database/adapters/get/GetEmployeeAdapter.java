@@ -36,20 +36,20 @@ public class GetEmployeeAdapter implements IGetEmployeePersistence {
     public PagedResponse<EmployeeModel> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<EmployeeEntity> entityPage = iEmployeeRepository.findByUserEntity_NameAndUserEntity_LastName(name, lastName, pageable);
-        return this.iMapperPaginationApp.toPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
+        return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
     }
 
     @Override
     public PagedResponse<EmployeeModel> getByPosition(String position, PaginationRequest paginationRequest) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<EmployeeEntity> entityPage = iEmployeeRepository.findByPosition(position, pageable);
-        return this.iMapperPaginationApp.toPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
+        return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
     }
 
     @Override
     public PagedResponse<EmployeeModel> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<EmployeeEntity> entityPage = iEmployeeRepository.findByHireDateGreaterThanEqual(hireDate, pageable);
-        return this.iMapperPaginationApp.toPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
+        return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
     }
 }
