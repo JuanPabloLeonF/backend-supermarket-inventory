@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_NOT_FOUND_BY_ID;
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -109,7 +111,10 @@ class UserRestControllerMockMVCTest {
                 .isActive(true)
                 .build();
 
-        ResponseRequestDto responseRequestDto = new ResponseRequestDto("User updated successfully with id: " + this.id1, LocalDateTime.now().withNano(0));
+        ResponseRequestDto responseRequestDto = ResponseRequestDto.builder()
+                .message(USER_UPDATE_SUCCESSFULLY_BY_ID.format(this.id1))
+                .date(LocalDateTime.now().withNano(0))
+                .build();
 
         when(this.mediator.dispatch(any(UpdateByIdUserCommand.class)))
                 .thenReturn(responseRequestDto);
@@ -149,6 +154,7 @@ class UserRestControllerMockMVCTest {
                 .expectBody(ProblemDetail.class)
                 .value(problem -> {
                     assertNotNull(problem);
+                    assertNotNull(problem.getProperties());
                     assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), problem.getTitle());
                     assertEquals(MethodArgumentNotValidException.class.getSimpleName(), problem.getProperties().get("typeError"));
                 });
@@ -159,7 +165,7 @@ class UserRestControllerMockMVCTest {
     @Test
     void shouldReturnNotFoundWhenUpdateUserDoesNotExist() {
         UUID idNoExistis = UUID.randomUUID();
-        String message = "User not found with id: " + idNoExistis;
+        String message = USER_NOT_FOUND_BY_ID.format(idNoExistis);
 
         RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
                 .id(idNoExistis)

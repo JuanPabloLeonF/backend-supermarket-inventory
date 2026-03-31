@@ -5,6 +5,8 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.commands.update.UpdateByIdUserCommand;
+import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -49,7 +52,10 @@ class UserRestControllerUnitTest {
 
     protected ResponseUserDto responseUserDto = this.responseUserDtoList.getFirst();
 
-    protected ResponseRequestDto responseRequestDto = new ResponseRequestDto("User created successfully", LocalDateTime.now().withNano(0));
+    protected ResponseRequestDto responseRequestDto = new ResponseRequestDto(
+            "User created successfully",
+            LocalDateTime.now().withNano(0)
+    );
 
     @BeforeEach
     void setUp() {
@@ -276,5 +282,42 @@ class UserRestControllerUnitTest {
                 });
 
         verify(this.mediator).dispatch(any(GetByLastNameUserQuery.class));
+    }
+
+    @Test
+    void shouldReturnResponseRequestDtoWhenIsCalledUpdateById() {
+
+        UUID idData = UUID.randomUUID();
+
+        ResponseRequestDto dataReturn = ResponseRequestDto.builder()
+                .message(USER_UPDATE_SUCCESSFULLY_BY_ID.format(idData))
+                .date(LocalDateTime.now().withNano(0))
+                .build();
+
+        RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
+                .id(idData)
+                .name("pipe")
+                .lastName("leon")
+                .isActive(true)
+                .build();
+
+        when(this.mediator.dispatch(any(UpdateByIdUserCommand.class)))
+                .thenReturn(dataReturn);
+
+        this.restTestClient
+                .put()
+                .uri(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestUpdateUserDto)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ResponseRequestDto.class)
+                .value((response) -> {
+                    assertNotNull(response);
+                    assertNotNull(response.getDate());
+                    assertEquals(dataReturn.getMessage(), response.getMessage());
+                });
+
+        verify(this.mediator).dispatch(any(UpdateByIdUserCommand.class));
     }
 }

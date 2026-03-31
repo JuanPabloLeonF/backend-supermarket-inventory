@@ -16,6 +16,18 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionsHandler {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handlerIllegalArgumentException(IllegalArgumentException exception) {
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        response.setDetail(exception.getMessage());
+        response.setProperty("date", LocalDateTime.now());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
+    }
+
     @ExceptionHandler(NotFoundTypeRequestHandlerMediator.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundTypeRequestHandlerMediator(NotFoundTypeRequestHandlerMediator exception) {
         ProblemDetail response = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);

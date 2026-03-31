@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -26,6 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_NOT_FOUND_BY_ID;
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureRestTestClient
@@ -142,12 +143,15 @@ public class UserItTest {
 
     @Test
     void shouldUpdateUserAndReturnOkWhenIsCalledMethodUpdateById() {
+
         RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
                 .id(this.userEntitySave1.getId())
                 .name("juan-updated")
                 .lastName("leon-updated")
                 .isActive(false)
                 .build();
+
+        String message = USER_UPDATE_SUCCESSFULLY_BY_ID.format(this.userEntitySave1.getId());
 
         this.restTestClient
                 .put()
@@ -160,19 +164,23 @@ public class UserItTest {
                 .value((response) -> {
                     assertNotNull(response);
                     assertNotNull(response.getDate());
-                    assertEquals("User updated successfully with id: " + this.userEntitySave1.getId(), response.getMessage());
+                    assertEquals(message, response.getMessage());
                 });
 
-        UserEntity updated = this.iUserRepository.findById(this.userEntitySave1.getId()).orElseThrow();
-        assertEquals("juan-updated", updated.getName());
-        assertEquals("leon-updated", updated.getLastName());
-        assertFalse(updated.getIsActive());
+        this.iUserRepository.findById(this.userEntitySave1.getId())
+                .map((updated) -> {
+                    assertEquals(requestUpdateUserDto.getName(), updated.getName());
+                    assertEquals(requestUpdateUserDto.getLastName(), updated.getLastName());
+                    assertFalse(updated.getIsActive());
+                    return updated;
+                })
+                .orElseThrow();
     }
 
     @Test
     void shouldReturnNotFoundWhenUpdateUserDoesNotExist() {
         UUID idNoExistis = UUID.randomUUID();
-        String message = "User not found with id: " + idNoExistis;
+        String message = USER_NOT_FOUND_BY_ID.format(idNoExistis);
 
         RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
                 .id(idNoExistis)
