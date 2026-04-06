@@ -20,15 +20,15 @@ public class UpdateUserAdapter implements IUpdateUserPersistence {
     @Override
     public String updateById(UserModel userModel) {
 
-        return this.iUserRepository.findById(userModel.id())
+        return this.iUserRepository.findById(userModel.getId())
                 .map((entity) -> {
-                    entity.setName(userModel.name());
-                    entity.setLastName(userModel.lastName());
-                    entity.setIsActive(userModel.isActive());
+                    entity.setName(userModel.getName());
+                    entity.setLastName(userModel.getLastName());
+                    entity.setIsActive(userModel.getIsActive());
                     entity.setUpdatedAt(LocalDateTime.now());
                     this.iUserRepository.save(entity);
                     return USER_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
                 })
-                .orElseThrow(() -> new NoUpdateUserByIdException(userModel.id()));
+                .orElseThrow(() -> new NoUpdateUserByIdException(userModel.getId()));
     }
 }

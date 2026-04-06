@@ -8,18 +8,18 @@ import java.util.UUID;
 
 public interface IFileUtils {
 
-    public void deleteFile(String urlImage);
-    public String saveFile(MultipartFile file);
+    void deleteFile(String urlImage);
+    String saveFile(MultipartFile file);
 
-    default public String generateUniqueFileName(String fileName) {
+    default String generateUniqueFileName(String fileName) {
         return UUID.randomUUID() + "_" + fileName;
     }
 
-    default public Path getUploadPath(String urlPath) {
+    default Path getUploadPath(String urlPath) {
         return Path.of(urlPath);
     }
 
-    default public void createDirectoriesIfNotExists(Path path) throws Exception {
+    default void createDirectoriesIfNotExists(Path path) throws Exception {
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }

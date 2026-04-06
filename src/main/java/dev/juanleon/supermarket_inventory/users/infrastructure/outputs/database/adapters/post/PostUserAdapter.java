@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_CREATED_SUCCESSFULLY;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,17 +20,17 @@ public class PostUserAdapter implements IPostUserPersistence {
     private final IMapperUserInfrastructure iMapperUserInfrastructure;
 
     @Override
-    public String create(UserModel userModel) {
+    public UserModel create(UserModel userModel) {
         
         UserEntity entity = this.iMapperUserInfrastructure.toEntity(userModel);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setUpdatedAt(LocalDateTime.now());
-        UUID id = this.iUserRepository.save(entity).getId();
+        UserEntity userCreated = this.iUserRepository.save(entity);
 
-        if (id == null) {
-            throw new NoCreateUserOnDatabaseException(userModel.email(), userModel.name());
+        if (userCreated.getId() == null) {
+            throw new NoCreateUserOnDatabaseException(userModel.getEmail(), userModel.getName());
         }
 
-        return USER_CREATED_SUCCESSFULLY.format(id);
+        return this.iMapperUserInfrastructure.toModel(userCreated);
     }
 }

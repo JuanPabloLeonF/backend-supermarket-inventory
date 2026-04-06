@@ -3,6 +3,9 @@ package dev.juanleon.supermarket_inventory.employees.infrastructure.inputs.contr
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.employees.application.commands.post.RegisterEmployeeAndUserCommand;
+import dev.juanleon.supermarket_inventory.employees.application.dto.RequestEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.dto.RequestNameAndLastName;
 import dev.juanleon.supermarket_inventory.employees.application.dto.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getBy.GetByHireDateEmployeeQuery;
@@ -59,5 +62,13 @@ public class EmployeeRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseRequestDto> registerEmployeeAndUser(@Valid @ModelAttribute RequestEmployeeDto requestEmployeeDto) {
+        RegisterEmployeeAndUserCommand command = new RegisterEmployeeAndUserCommand(requestEmployeeDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(this.mediator.dispatch(command));
     }
 }

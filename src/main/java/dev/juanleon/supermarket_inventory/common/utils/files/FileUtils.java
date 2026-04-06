@@ -1,6 +1,7 @@
 package dev.juanleon.supermarket_inventory.common.utils.files;
 
 import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,13 +11,10 @@ import java.nio.file.*;
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class FileUtils implements IFileUtils {
 
     private final AppConfigurationProperties appConfigurationProperties;
-
-    public FileUtils(AppConfigurationProperties appConfigurationProperties) {
-        this.appConfigurationProperties = appConfigurationProperties;
-    }
 
     public void deleteFile(String urlImage) {
 
@@ -26,7 +24,7 @@ public class FileUtils implements IFileUtils {
                 throw new RuntimeException("No existe ningun archivo en la ruta: " + urlImage);
             }
 
-            Path filePath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesProducts())
+            Path filePath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesEmployees())
                     .resolve(urlImage)
                     .normalize();
 
@@ -49,7 +47,7 @@ public class FileUtils implements IFileUtils {
 
             uniqueFileName = generateUniqueFileName(fileName);
 
-            Path uploadPath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesProducts());
+            Path uploadPath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesEmployees());
 
             createDirectoriesIfNotExists(uploadPath);
 

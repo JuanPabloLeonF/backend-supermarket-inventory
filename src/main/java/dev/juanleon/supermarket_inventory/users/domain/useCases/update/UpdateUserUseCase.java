@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.update;
 
-import dev.juanleon.supermarket_inventory.users.domain.models.ResponseModel;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.update.IUpdateUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.services.update.IUpdateUserService;

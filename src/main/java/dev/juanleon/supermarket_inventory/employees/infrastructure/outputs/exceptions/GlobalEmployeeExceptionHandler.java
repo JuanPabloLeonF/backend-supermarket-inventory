@@ -23,4 +23,17 @@ public class GlobalEmployeeExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
+
+    @ExceptionHandler(NoCreateEmployeeOnDatabaseException.class)
+    public ResponseEntity<ProblemDetail> handlerNoCreateEmployeeOnDatabaseException(NoCreateEmployeeOnDatabaseException exception) {
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        response.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        response.setDetail(exception.getMessage());
+        response.setProperty("date", LocalDateTime.now());
+        response.setProperty("typeError", exception.getClass().getName());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
+    }
 }

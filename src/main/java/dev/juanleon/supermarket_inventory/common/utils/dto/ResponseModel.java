@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.users.domain.models;
+package dev.juanleon.supermarket_inventory.common.utils.dto;
 
 import java.time.LocalDateTime;
 

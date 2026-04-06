@@ -13,7 +13,7 @@ import java.util.List;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface IMapperUserInfrastructure {
-    public UserEntity toEntity(UserModel userModel);
-    public UserModel toModel(UserEntity userEntity);
-    public List<UserModel> toListModel(List<UserEntity> userEntities);
+    UserEntity toEntity(UserModel userModel);
+    UserModel toModel(UserEntity userEntity);
+    List<UserModel> toListModel(List<UserEntity> userEntities);
 }

@@ -19,4 +19,4 @@ spring:
 
 # APPLICATION
 app:
-  path-upload-images-products: ${UPLOAD_PATH_PRODUCTS_DEV:uploads/dev/products}
+  path-upload-images-employees: ${UPLOAD_PATH_EMPLOYEE:uploads/employees}

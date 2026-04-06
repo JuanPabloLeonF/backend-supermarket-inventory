@@ -1,11 +1,9 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.post;
 
-import dev.juanleon.supermarket_inventory.users.domain.models.ResponseModel;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
-
-import java.time.LocalDateTime;
 
 public class PostUserUseCase implements IPostUserService {
 
@@ -17,7 +15,7 @@ public class PostUserUseCase implements IPostUserService {
 
     @Override
     public ResponseModel create(UserModel userModel) {
-        String response = this.iPostUserPersistence.create(userModel);
+        String response = this.iPostUserPersistence.create(userModel).toString();
         return new ResponseModel(response);
     }
 }

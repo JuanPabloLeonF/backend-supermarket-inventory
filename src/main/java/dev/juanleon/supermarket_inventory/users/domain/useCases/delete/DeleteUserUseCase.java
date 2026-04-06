@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.delete;
 
-import dev.juanleon.supermarket_inventory.users.domain.models.ResponseModel;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.delete.IDeleteUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.services.delete.IDeleteUserService;
 
