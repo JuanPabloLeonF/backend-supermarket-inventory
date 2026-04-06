@@ -21,7 +21,6 @@ public class DeleteUserAdapter implements IDeleteUserPersistence {
                 .map(entity -> {
                     this.iUserRepository.deleteById(entity.getId());
                     return USER_DELETED_SUCCESSFULLY_BY_ID.format(id);
-                })
-                .orElseThrow(() -> new NotFoundUserException(id));
+                }).orElseThrow(() -> new NotFoundUserException(id));
     }
 }

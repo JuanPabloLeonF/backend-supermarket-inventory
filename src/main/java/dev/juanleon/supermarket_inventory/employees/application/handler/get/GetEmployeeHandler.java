@@ -24,6 +24,17 @@ public class GetEmployeeHandler implements IGetEmployeeHandler {
 
     @Override
     @Transactional(readOnly = true)
+    public PagedResponse<ResponseEmployeeDto> getAll(PaginationRequest paginationRequest) {
+        PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getAll(paginationRequest);
+        return this.iMapperPaginationApp
+                .pageResponseToPageResponseTypeResponse(
+                        employeeModelPagedResponse,
+                        this.iMapperEmployeeApplication::toDto
+                );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public ResponseEmployeeDto getById(UUID id) {
         return this.iMapperEmployeeApplication
                 .toDto(this.iGetEmployeeService.getById(id));

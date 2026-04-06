@@ -18,6 +18,11 @@ public class GetEmployeeUseCase implements IGetEmployeeService {
     }
 
     @Override
+    public PagedResponse<EmployeeModel> getAll(PaginationRequest paginationRequest) {
+        return this.iGetEmployeePersistence.getAll(paginationRequest);
+    }
+
+    @Override
     public EmployeeModel getById(UUID id) {
         return this.iGetEmployeePersistence.getById(id);
     }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface IGetEmployeeHandler {
+    PagedResponse<ResponseEmployeeDto> getAll(PaginationRequest paginationRequest);
     ResponseEmployeeDto getById(UUID id);
     PagedResponse<ResponseEmployeeDto> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest);
     PagedResponse<ResponseEmployeeDto> getByPosition(String position, PaginationRequest paginationRequest);
