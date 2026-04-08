@@ -19,7 +19,6 @@ public class UpdateUserAdapter implements IUpdateUserPersistence {
 
     @Override
     public String updateById(UserModel userModel) {
-
         return this.iUserRepository.findById(userModel.getId())
                 .map((entity) -> {
                     entity.setName(userModel.getName());
@@ -28,7 +27,6 @@ public class UpdateUserAdapter implements IUpdateUserPersistence {
                     entity.setUpdatedAt(LocalDateTime.now());
                     this.iUserRepository.save(entity);
                     return USER_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
-                })
-                .orElseThrow(() -> new NoUpdateUserByIdException(userModel.getId()));
+                }).orElseThrow(() -> new NoUpdateUserByIdException(userModel.getId()));
     }
 }

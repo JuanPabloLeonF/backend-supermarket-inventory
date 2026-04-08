@@ -4,14 +4,18 @@ import dev.juanleon.supermarket_inventory.common.utils.files.IFileUtils;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.delete.IDeleteEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.get.IGetEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.post.IPostEmployeePersistence;
+import dev.juanleon.supermarket_inventory.employees.domain.persistence.update.IUpdateEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.services.delete.IDeleteEmployeeService;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 import dev.juanleon.supermarket_inventory.employees.domain.services.post.IPostEmployeeService;
+import dev.juanleon.supermarket_inventory.employees.domain.services.update.IUpdateEmployeeService;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.delete.DeleteEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.get.GetEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.post.PostEmployeeUseCase;
+import dev.juanleon.supermarket_inventory.employees.domain.useCases.update.UpdateEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.delete.IDeleteUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
+import dev.juanleon.supermarket_inventory.users.domain.persistence.update.IUpdateUserPersistence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,5 +42,13 @@ public class BeanEmployeeConfiguration {
             IFileUtils iFileUtils
     ) {
         return new DeleteEmployeeUseCase(iDeleteEmployeePersistence, iDeleteUserPersistence, iFileUtils);
+    }
+
+    @Bean
+    public IUpdateEmployeeService iUpdateEmployeeService(
+            IUpdateEmployeePersistence iUpdateEmployeePersistence,
+            IUpdateUserPersistence iUpdateUserPersistence
+    ) {
+        return new UpdateEmployeeUseCase(iUpdateEmployeePersistence, iUpdateUserPersistence);
     }
 }

@@ -2,7 +2,6 @@ package dev.juanleon.supermarket_inventory.users;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.entities.UserEntity;

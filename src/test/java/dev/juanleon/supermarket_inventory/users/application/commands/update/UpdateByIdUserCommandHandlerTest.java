@@ -1,8 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.application.commands.update;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
-import dev.juanleon.supermarket_inventory.users.application.handler.update.IUpdateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

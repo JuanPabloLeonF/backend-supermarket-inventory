@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.employees.application.dto;
+package dev.juanleon.supermarket_inventory.employees.application.dto.requets;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;

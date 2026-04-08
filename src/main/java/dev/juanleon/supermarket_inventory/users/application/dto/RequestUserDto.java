@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RequestUserDto {
+
     @NotBlank(message = "Name is required")
     @Size(min = 2, max = 40, message = "Name must be between 2 and 40 characters")
     private String name;

@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.employees.application.dto;
+package dev.juanleon.supermarket_inventory.employees.application.dto.requets;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import jakarta.validation.constraints.NotBlank;

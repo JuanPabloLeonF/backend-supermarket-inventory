@@ -5,8 +5,6 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
-import dev.juanleon.supermarket_inventory.users.application.commands.update.UpdateByIdUserCommand;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;

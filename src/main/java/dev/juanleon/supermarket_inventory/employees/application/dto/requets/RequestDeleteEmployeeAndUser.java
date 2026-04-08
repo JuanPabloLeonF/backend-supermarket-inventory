@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.employees.application.dto;
+package dev.juanleon.supermarket_inventory.employees.application.dto.requets;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

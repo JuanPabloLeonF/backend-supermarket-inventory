@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.employees.application.dto;
+package dev.juanleon.supermarket_inventory.employees.application.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -25,5 +25,5 @@ public class ResponseEmployeeDto {
     private String position;
     private BigDecimal salary;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate hireDate;
+    private LocalDateTime hireDate;
 }

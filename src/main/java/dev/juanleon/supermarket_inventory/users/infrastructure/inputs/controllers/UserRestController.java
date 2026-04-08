@@ -4,8 +4,6 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.users.application.commands.delete.DeleteByIdUserCommand;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
-import dev.juanleon.supermarket_inventory.users.application.commands.update.UpdateByIdUserCommand;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUpdateUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
@@ -65,14 +63,6 @@ public class UserRestController {
         CreateUserCommand command = new CreateUserCommand(requestUserDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(mediator.dispatch(command));
-    }
-
-    @PutMapping
-    public ResponseEntity<ResponseRequestDto> updateById(@Valid @RequestBody RequestUpdateUserDto requestUpdateUserDto) {
-        UpdateByIdUserCommand command = new UpdateByIdUserCommand(requestUpdateUserDto);
-        return ResponseEntity
-                .status(HttpStatus.OK)
                 .body(mediator.dispatch(command));
     }
 

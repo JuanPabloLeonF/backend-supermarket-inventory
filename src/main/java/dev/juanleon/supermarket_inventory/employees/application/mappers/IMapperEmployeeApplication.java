@@ -1,7 +1,8 @@
 package dev.juanleon.supermarket_inventory.employees.application.mappers;
 
-import dev.juanleon.supermarket_inventory.employees.application.dto.RequestEmployeeDto;
-import dev.juanleon.supermarket_inventory.employees.application.dto.ResponseEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestUpdateEmployeeAndUser;
+import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserApplication;
 import org.mapstruct.*;
@@ -13,6 +14,10 @@ import org.mapstruct.*;
         uses = {IMapperUserApplication.class}
 )
 public interface IMapperEmployeeApplication {
+
+    @Mapping(target = "urlImg", ignore = true)
+    @Mapping(target = "userModel", source = "requestUserUpdateDto")
+    EmployeeModel toModel(RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser);
 
     @Mappings(value = {
             @Mapping(target = "id", ignore = true),

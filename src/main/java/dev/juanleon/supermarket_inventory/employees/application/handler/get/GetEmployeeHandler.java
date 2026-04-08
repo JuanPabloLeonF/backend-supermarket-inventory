@@ -3,7 +3,7 @@ package dev.juanleon.supermarket_inventory.employees.application.handler.get;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperPaginationApp;
-import dev.juanleon.supermarket_inventory.employees.application.dto.ResponseEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperEmployeeApplication;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;

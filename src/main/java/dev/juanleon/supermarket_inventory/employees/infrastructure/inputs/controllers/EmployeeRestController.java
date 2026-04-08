@@ -6,10 +6,12 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.employees.application.commands.delete.DeleteByIdEmployeeAndUserCommand;
 import dev.juanleon.supermarket_inventory.employees.application.commands.post.RegisterEmployeeAndUserCommand;
-import dev.juanleon.supermarket_inventory.employees.application.dto.RequestDeleteEmployeeAndUser;
-import dev.juanleon.supermarket_inventory.employees.application.dto.RequestEmployeeDto;
-import dev.juanleon.supermarket_inventory.employees.application.dto.RequestNameAndLastName;
-import dev.juanleon.supermarket_inventory.employees.application.dto.ResponseEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.commands.update.UpdateByIdEmployeeAndUserCommand;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestDeleteEmployeeAndUser;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestNameAndLastName;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestUpdateEmployeeAndUser;
+import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getAll.GetAllEmployeeQuery;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getBy.GetByHireDateEmployeeQuery;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getBy.GetByIdEmployeeQuery;
@@ -86,6 +88,14 @@ public class EmployeeRestController {
     @DeleteMapping
     public ResponseEntity<ResponseRequestDto> deleteByIdEmployeeAndUser(@Valid @RequestBody RequestDeleteEmployeeAndUser request) {
         DeleteByIdEmployeeAndUserCommand command = new DeleteByIdEmployeeAndUserCommand(request.getIdEmployee(), request.getIdUser());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseRequestDto> updateByIdEmployeeAndUser(@Valid @RequestBody RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser) {
+        UpdateByIdEmployeeAndUserCommand command = new UpdateByIdEmployeeAndUserCommand(requestUpdateEmployeeAndUser);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

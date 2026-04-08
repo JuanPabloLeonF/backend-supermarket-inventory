@@ -4,7 +4,7 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.files.IFileUtils;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
-import dev.juanleon.supermarket_inventory.employees.application.dto.RequestEmployeeDto;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperEmployeeApplication;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.post.IPostEmployeeService;
