@@ -1,14 +1,12 @@
 package dev.juanleon.supermarket_inventory.common.utils.files;
 
 import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
+import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.nio.file.*;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -35,12 +33,7 @@ public class FileUtils implements IFileUtils {
         }
     }
 
-    public String saveFile(MultipartFile file) {
-
-        if (file == null || file.isEmpty()) {
-            throw new RuntimeException("El archivo no puede ser nulo");
-        }
-
+    public String saveFile(InputFileDto file) {
         String uniqueFileName;
 
         try {
@@ -66,11 +59,7 @@ public class FileUtils implements IFileUtils {
     }
 
     @Override
-    public String updateFileExisting(MultipartFile file, String urlImage) {
-
-        if (file == null || file.isEmpty()) {
-            throw new RuntimeException("El archivo no puede ser nulo");
-        }
+    public String updateFileExisting(InputFileDto file, String urlImage) {
 
         if (urlImage == null || urlImage.isBlank()) {
             throw new RuntimeException("No existe ningun archivo en la ruta: " + urlImage);
@@ -82,7 +71,7 @@ public class FileUtils implements IFileUtils {
 
             InputStream inputStreamImg = this.convertFileImgToWebp(file);
 
-            uniqueFileName = urlImage;
+            uniqueFileName = generateUniqueFileName(file);
 
             Path uploadPath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesEmployees());
 
@@ -91,6 +80,8 @@ public class FileUtils implements IFileUtils {
                     uploadPath.resolve(uniqueFileName),
                     StandardCopyOption.REPLACE_EXISTING
             );
+
+            this.deleteFile(urlImage);
 
         } catch (Exception exception) {
             throw new RuntimeException("Error guardando archivo: " + exception.getMessage());

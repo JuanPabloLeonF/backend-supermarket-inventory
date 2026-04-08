@@ -30,9 +30,10 @@ public class BeanEmployeeConfiguration {
     @Bean
     public IPostEmployeeService iPostEmployeeService (
             IPostEmployeePersistence iPostEmployeePersistence,
-            IPostUserPersistence iPostUserPersistence
+            IPostUserPersistence iPostUserPersistence,
+            IFileUtils iFileUtils
         ) {
-        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserPersistence);
+        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserPersistence, iFileUtils);
     }
 
     @Bean
@@ -47,11 +48,15 @@ public class BeanEmployeeConfiguration {
     @Bean
     public IUpdateEmployeeService iUpdateEmployeeService(
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
-            IUpdateUserPersistence iUpdateUserPersistence
+            IGetEmployeePersistence iGetEmployeePersistence,
+            IUpdateUserPersistence iUpdateUserPersistence,
+            IFileUtils iFileUtils
     ) {
         return new UpdateEmployeeUseCase(
                 iUpdateEmployeePersistence,
-                iUpdateUserPersistence
+                iGetEmployeePersistence,
+                iUpdateUserPersistence,
+                iFileUtils
         );
     }
 }
