@@ -34,7 +34,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.mapstruct:mapstruct:1.6.3'
-
+    implementation 'com.sksamuel.scrimage:scrimage-core:4.3.10'
+	implementation 'com.sksamuel.scrimage:scrimage-webp:4.3.10'
 	compileOnly 'org.projectlombok:lombok'
 
 

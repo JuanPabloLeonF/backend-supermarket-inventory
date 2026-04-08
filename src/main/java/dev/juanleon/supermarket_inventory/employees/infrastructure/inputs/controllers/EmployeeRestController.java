@@ -7,10 +7,8 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.employees.application.commands.delete.DeleteByIdEmployeeAndUserCommand;
 import dev.juanleon.supermarket_inventory.employees.application.commands.post.RegisterEmployeeAndUserCommand;
 import dev.juanleon.supermarket_inventory.employees.application.commands.update.UpdateByIdEmployeeAndUserCommand;
-import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestDeleteEmployeeAndUser;
-import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestEmployeeDto;
-import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestNameAndLastName;
-import dev.juanleon.supermarket_inventory.employees.application.dto.requets.RequestUpdateEmployeeAndUser;
+import dev.juanleon.supermarket_inventory.employees.application.commands.update.UpdateByIdImgCommand;
+import dev.juanleon.supermarket_inventory.employees.application.dto.requets.*;
 import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getAll.GetAllEmployeeQuery;
 import dev.juanleon.supermarket_inventory.employees.application.queries.getBy.GetByHireDateEmployeeQuery;
@@ -85,17 +83,25 @@ public class EmployeeRestController {
                 .body(this.mediator.dispatch(command));
     }
 
-    @DeleteMapping
-    public ResponseEntity<ResponseRequestDto> deleteByIdEmployeeAndUser(@Valid @RequestBody RequestDeleteEmployeeAndUser request) {
-        DeleteByIdEmployeeAndUserCommand command = new DeleteByIdEmployeeAndUserCommand(request.getIdEmployee(), request.getIdUser());
+    @PutMapping
+    public ResponseEntity<ResponseRequestDto> updateByIdEmployeeAndUser(@Valid @RequestBody RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser) {
+        UpdateByIdEmployeeAndUserCommand command = new UpdateByIdEmployeeAndUserCommand(requestUpdateEmployeeAndUser);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseRequestDto> updateByIdEmployeeAndUser(@Valid @RequestBody RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser) {
-        UpdateByIdEmployeeAndUserCommand command = new UpdateByIdEmployeeAndUserCommand(requestUpdateEmployeeAndUser);
+    @PutMapping("/image")
+    public ResponseEntity<ResponseRequestDto> updateByIdImg(@Valid @ModelAttribute RequestUpdateImage request) {
+        UpdateByIdImgCommand command = new UpdateByIdImgCommand(request.getFileImg(), request.getId());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseRequestDto> deleteByIdEmployeeAndUser(@Valid @RequestBody RequestDeleteEmployeeAndUser request) {
+        DeleteByIdEmployeeAndUserCommand command = new DeleteByIdEmployeeAndUserCommand(request.getIdEmployee(), request.getIdUser());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

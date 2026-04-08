@@ -59,4 +59,11 @@ public class GetEmployeeAdapter implements IGetEmployeePersistence {
         Page<EmployeeEntity> entityPage = iEmployeeRepository.findByHireDateGreaterThanEqual(hireDate, pageable);
         return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
     }
+
+    @Override
+    public String getByIdUrlImage(UUID id) {
+        return this.iEmployeeRepository.findById(id)
+                .map(EmployeeEntity::getUrlImg)
+                .orElseThrow(() -> new NotFoundEmployeeException(id));
+    }
 }

@@ -13,4 +13,5 @@ public interface IGetEmployeePersistence {
     PagedResponse<EmployeeModel> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest);
     PagedResponse<EmployeeModel> getByPosition(String position, PaginationRequest paginationRequest);
     PagedResponse<EmployeeModel> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest);
+    String getByIdUrlImage(UUID id);
 }

@@ -49,6 +49,9 @@ public class BeanEmployeeConfiguration {
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
             IUpdateUserPersistence iUpdateUserPersistence
     ) {
-        return new UpdateEmployeeUseCase(iUpdateEmployeePersistence, iUpdateUserPersistence);
+        return new UpdateEmployeeUseCase(
+                iUpdateEmployeePersistence,
+                iUpdateUserPersistence
+        );
     }
 }

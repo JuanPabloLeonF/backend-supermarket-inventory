@@ -7,6 +7,8 @@ import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.excep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -28,5 +30,15 @@ public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
                     this.iEmployeeRepository.save(entity);
                     return EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
                 }).orElseThrow(() -> new NotFoundEmployeeException(employeeModel.getId()));
+    }
+
+    @Override
+    public String updateByIdImage(String urlImg, UUID id) {
+        return this.iEmployeeRepository.findById(id)
+                .map(entity -> {
+                    entity.setUrlImg(urlImg);
+                    this.iEmployeeRepository.save(entity);
+                    return EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
+                }).orElseThrow(() -> new NotFoundEmployeeException(id));
     }
 }

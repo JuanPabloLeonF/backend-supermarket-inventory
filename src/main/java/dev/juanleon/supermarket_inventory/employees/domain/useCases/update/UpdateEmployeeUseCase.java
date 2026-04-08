@@ -6,6 +6,8 @@ import dev.juanleon.supermarket_inventory.employees.domain.persistence.update.IU
 import dev.juanleon.supermarket_inventory.employees.domain.services.update.IUpdateEmployeeService;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.update.IUpdateUserPersistence;
 
+import java.util.UUID;
+
 import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.FORMAT_STRING_MESSAGE;
 
 public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
@@ -23,5 +25,11 @@ public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
         String responseEmployee = this.iUpdateEmployeePersistence.updateById(employeeModel);
         String responseUser = this.iUpdateUserPersistence.updateById(employeeModel.getUserModel());
         return new ResponseModel(FORMAT_STRING_MESSAGE.format(responseEmployee, responseUser));
+    }
+
+    @Override
+    public ResponseModel updateByIdImage(String urlImg, UUID id) {
+        String response = this.iUpdateEmployeePersistence.updateByIdImage(urlImg, id);
+        return new ResponseModel(response);
     }
 }

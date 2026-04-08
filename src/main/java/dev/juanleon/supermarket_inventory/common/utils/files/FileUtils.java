@@ -37,22 +37,23 @@ public class FileUtils implements IFileUtils {
 
     public String saveFile(MultipartFile file) {
 
+        if (file == null || file.isEmpty()) {
+            throw new RuntimeException("El archivo no puede ser nulo");
+        }
+
         String uniqueFileName;
 
-        try (InputStream inputStream = file.getInputStream()) {
+        try {
+            InputStream inputStreamImg = this.convertFileImgToWebp(file);
 
-            String fileName = StringUtils.cleanPath(
-                    Objects.requireNonNull(file.getOriginalFilename())
-            );
-
-            uniqueFileName = generateUniqueFileName(fileName);
+            uniqueFileName = generateUniqueFileName(file);
 
             Path uploadPath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesEmployees());
 
-            createDirectoriesIfNotExists(uploadPath);
+            this.createDirectoriesIfNotExists(uploadPath);
 
             Files.copy(
-                    inputStream,
+                    inputStreamImg,
                     uploadPath.resolve(uniqueFileName),
                     StandardCopyOption.REPLACE_EXISTING
             );
@@ -61,6 +62,39 @@ public class FileUtils implements IFileUtils {
             throw new RuntimeException("Error guardando archivo: " + exception.getMessage());
         }
 
+        return uniqueFileName;
+    }
+
+    @Override
+    public String updateFileExisting(MultipartFile file, String urlImage) {
+
+        if (file == null || file.isEmpty()) {
+            throw new RuntimeException("El archivo no puede ser nulo");
+        }
+
+        if (urlImage == null || urlImage.isBlank()) {
+            throw new RuntimeException("No existe ningun archivo en la ruta: " + urlImage);
+        }
+
+        String uniqueFileName;
+
+        try {
+
+            InputStream inputStreamImg = this.convertFileImgToWebp(file);
+
+            uniqueFileName = urlImage;
+
+            Path uploadPath = this.getUploadPath(this.appConfigurationProperties.getPathUploadImagesEmployees());
+
+            Files.copy(
+                    inputStreamImg,
+                    uploadPath.resolve(uniqueFileName),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+        } catch (Exception exception) {
+            throw new RuntimeException("Error guardando archivo: " + exception.getMessage());
+        }
         return uniqueFileName;
     }
 }
