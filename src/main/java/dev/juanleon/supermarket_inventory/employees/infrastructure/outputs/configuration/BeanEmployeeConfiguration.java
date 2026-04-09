@@ -1,6 +1,7 @@
 package dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.configuration;
 
-import dev.juanleon.supermarket_inventory.common.utils.files.IFileUtils;
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exterior.repository.IFileUtils;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.delete.IDeleteEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.get.IGetEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.post.IPostEmployeePersistence;
@@ -33,18 +34,20 @@ public class BeanEmployeeConfiguration {
             IPostEmployeePersistence iPostEmployeePersistence,
             IPostUserService iPostUserService,
             IGetUserService iGetUserService,
-            IFileUtils iFileUtils
+            IFileUtils iFileUtils,
+            AppConfigurationProperties appConfigurationProperties
         ) {
-        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserService, iGetUserService, iFileUtils);
+        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserService, iGetUserService, iFileUtils, appConfigurationProperties);
     }
 
     @Bean
     public IDeleteEmployeeService iDeleteEmployeeService(
             IDeleteEmployeePersistence iDeleteEmployeePersistence,
             IDeleteUserService iDeleteUserService,
-            IFileUtils iFileUtils
+            IFileUtils iFileUtils,
+            AppConfigurationProperties appConfigurationProperties
     ) {
-        return new DeleteEmployeeUseCase(iDeleteEmployeePersistence, iDeleteUserService, iFileUtils);
+        return new DeleteEmployeeUseCase(iDeleteEmployeePersistence, iDeleteUserService, iFileUtils, appConfigurationProperties);
     }
 
     @Bean
@@ -52,13 +55,15 @@ public class BeanEmployeeConfiguration {
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
             IGetEmployeeService iGetEmployeeService,
             IUpdateUserService iUpdateUserService,
-            IFileUtils iFileUtils
+            IFileUtils iFileUtils,
+            AppConfigurationProperties appConfigurationProperties
     ) {
         return new UpdateEmployeeUseCase(
                 iUpdateEmployeePersistence,
                 iGetEmployeeService,
                 iUpdateUserService,
-                iFileUtils
+                iFileUtils,
+                appConfigurationProperties
         );
     }
 }

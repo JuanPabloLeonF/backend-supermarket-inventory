@@ -1,8 +1,9 @@
 package dev.juanleon.supermarket_inventory.employees.domain.useCases.update;
 
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
-import dev.juanleon.supermarket_inventory.common.utils.files.IFileUtils;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exterior.repository.IFileUtils;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.update.IUpdateEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
@@ -19,12 +20,14 @@ public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
     private final IGetEmployeeService iGetEmployeeService;
     private final IUpdateUserService iUpdateUserService;
     private final IFileUtils iFileUtils;
+    private final AppConfigurationProperties appConfigurationProperties;
 
-    public UpdateEmployeeUseCase(IUpdateEmployeePersistence iUpdateEmployeePersistence, IGetEmployeeService iGetEmployeeService, IUpdateUserService iUpdateUserService, IFileUtils iFileUtils) {
+    public UpdateEmployeeUseCase(IUpdateEmployeePersistence iUpdateEmployeePersistence, IGetEmployeeService iGetEmployeeService, IUpdateUserService iUpdateUserService, IFileUtils iFileUtils, AppConfigurationProperties appConfigurationProperties) {
         this.iUpdateEmployeePersistence = iUpdateEmployeePersistence;
         this.iGetEmployeeService = iGetEmployeeService;
         this.iUpdateUserService = iUpdateUserService;
         this.iFileUtils = iFileUtils;
+        this.appConfigurationProperties = appConfigurationProperties;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
     @Override
     public ResponseModel updateByIdImage(UUID id, InputFileDto inputFileDto) {
         String urlImg = this.iGetEmployeeService.getByIdUrlImage(id);
-        String urlImgUpdated = this.iFileUtils.updateFileExisting(inputFileDto, urlImg);
+        String urlImgUpdated = this.iFileUtils.updateFileExisting(inputFileDto, urlImg, this.appConfigurationProperties.getPathUploadImagesEmployees());
         String response = this.iUpdateEmployeePersistence.updateByIdImage(urlImgUpdated, id);
         return new ResponseModel(response);
     }

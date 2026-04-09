@@ -22,3 +22,4 @@ spring:
 # APPLICATION
 app:
   path-upload-images-employees: ${UPLOAD_PATH_EMPLOYEE:uploads/employees}
+  path-upload-files-pdf-reports: ${UPLOAD_PATH_FILES_PDF_REPORTS:uploads/reports}

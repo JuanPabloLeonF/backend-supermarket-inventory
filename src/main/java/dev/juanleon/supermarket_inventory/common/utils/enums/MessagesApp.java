@@ -18,6 +18,8 @@ public enum MessagesApp {
     EMPLOYEE_NOT_FOUND_BY_ID("Employee not found with id: %s"),
     EMPLOYEE_NOT_CREATED_ON_DATABASE("Employee not created on database with data: %s , %s"),
 
+    REPORT_NOT_FOUND_BY_ID("Report not found with id: %s"),
+
 
     FORMAT_STRING_MESSAGE("%s %s"),
 
