@@ -7,23 +7,27 @@ import dev.juanleon.supermarket_inventory.employees.domain.persistence.post.IPos
 import dev.juanleon.supermarket_inventory.employees.domain.services.post.IPostEmployeeService;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
-import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
+import dev.juanleon.supermarket_inventory.users.domain.services.get.IGetUserService;
+import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
 
 public class PostEmployeeUseCase implements IPostEmployeeService {
 
     private final IPostEmployeePersistence iPostEmployeePersistence;
-    private final IPostUserPersistence iPostUserPersistence;
+    private final IPostUserService iPostUserService;
+    private final IGetUserService iGetUserService;
     private final IFileUtils iFileUtils;
 
-    public PostEmployeeUseCase(IPostEmployeePersistence iPostEmployeePersistence, IPostUserPersistence iPostUserPersistence, IFileUtils iFileUtils) {
+    public PostEmployeeUseCase(IPostEmployeePersistence iPostEmployeePersistence, IPostUserService iPostUserService, IGetUserService iGetUserService, IFileUtils iFileUtils) {
         this.iPostEmployeePersistence = iPostEmployeePersistence;
-        this.iPostUserPersistence = iPostUserPersistence;
+        this.iPostUserService = iPostUserService;
+        this.iGetUserService = iGetUserService;
         this.iFileUtils = iFileUtils;
     }
 
     @Override
     public ResponseModel registerEmployeeAndUser(EmployeeModel employeeModel, InputFileDto inputFileDto) {
-        UserModel userModelCreated = this.iPostUserPersistence.create(employeeModel.getUserModel());
+        this.iGetUserService.checkEmailIfExist(employeeModel.getUserModel().getEmail());
+        UserModel userModelCreated = this.iPostUserService.create(employeeModel.getUserModel());
         employeeModel.setUserModel(userModelCreated);
         String urlImg = this.iFileUtils.saveFile(inputFileDto);
         employeeModel.setUrlImg(urlImg);

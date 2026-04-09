@@ -17,7 +17,7 @@ public class GlobalEmployeeExceptionHandler {
         response.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
         response.setDetail(exception.getMessage());
         response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getName());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -30,7 +30,7 @@ public class GlobalEmployeeExceptionHandler {
         response.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         response.setDetail(exception.getMessage());
         response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getName());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -11,13 +11,26 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalUserExceptionHandler {
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ProblemDetail> handlerEmailAlreadyExistsException(EmailAlreadyExistsException exception) {
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        response.setDetail(exception.getMessage());
+        response.setProperty("date", LocalDateTime.now());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
+    }
+
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundUserException(NotFoundUserException exception) {
         ProblemDetail response = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         response.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
         response.setDetail(exception.getMessage());
         response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getName());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

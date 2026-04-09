@@ -59,7 +59,7 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody RequestUserDto requestUserDto) {
+    public ResponseEntity<ResponseUserDto> create(@Valid @RequestBody RequestUserDto requestUserDto) {
         CreateUserCommand command = new CreateUserCommand(requestUserDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.get.IGetUserPersistence;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.mappers.IMapperUserInfrastructure;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.repositories.IUserRepository;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.EmailAlreadyExistsException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -41,5 +42,13 @@ public class GetUserAdapter implements IGetUserPersistence {
     public List<UserModel> getByLastName(String lastName) {
         return this.iMapperUserInfrastructure
                 .toListModel(this.iUserRepository.findByLastName(lastName));
+    }
+
+    @Override
+    public void checkEmailIfExist(String email) {
+        this.iUserRepository.findByEmail(email)
+                .ifPresent(entity -> {
+                    throw new EmailAlreadyExistsException(entity.getEmail());
+                });
     }
 }

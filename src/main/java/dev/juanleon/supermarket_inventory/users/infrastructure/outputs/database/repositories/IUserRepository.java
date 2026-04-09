@@ -4,9 +4,11 @@ import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IUserRepository extends JpaRepository<UserEntity, UUID> {
-    public List<UserEntity> findByName(String name);
-    public List<UserEntity> findByLastName(String lastName);
+    List<UserEntity> findByName(String name);
+    List<UserEntity> findByLastName(String lastName);
+    Optional<UserEntity> findByEmail(String email);
 }

@@ -34,4 +34,9 @@ public class GetUserUseCase implements IGetUserService {
     public List<UserModel> getByLastName(String lastName) {
         return this.iGetUserPersistence.getByLastName(lastName);
     }
+
+    @Override
+    public void checkEmailIfExist(String email) {
+        this.iGetUserPersistence.checkEmailIfExist(email);
+    }
 }

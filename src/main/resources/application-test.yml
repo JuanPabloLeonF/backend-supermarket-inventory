@@ -3,10 +3,8 @@ spring:
 
   # DATABASE
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/db_supermarket_inventory}
-    driverClassName: org.postgresql.Driver
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driverClassName: org.h2.Driver
 
   # JPA
   jpa:

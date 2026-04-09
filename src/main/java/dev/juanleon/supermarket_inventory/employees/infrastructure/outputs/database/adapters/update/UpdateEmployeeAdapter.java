@@ -7,6 +7,7 @@ import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.excep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID;
@@ -37,6 +38,7 @@ public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
         return this.iEmployeeRepository.findById(id)
                 .map(entity -> {
                     entity.setUrlImg(urlImg);
+                    entity.getUserEntity().setUpdatedAt(LocalDateTime.now());
                     this.iEmployeeRepository.save(entity);
                     return EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
                 }).orElseThrow(() -> new NotFoundEmployeeException(id));

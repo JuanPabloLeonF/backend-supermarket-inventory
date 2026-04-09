@@ -10,12 +10,14 @@ public enum MessagesApp {
     USER_CREATED_SUCCESSFULLY("User created successfully with id: %s"),
     USER_NOT_FOUND_BY_ID("User not found with id: %s"),
     USER_NOT_CREATED_ON_DATABASE("User not created on database with data: %s , %s"),
+    EMAIL_ALREADY_EXISTS_USER("Email already exists with email: %s"),
 
     EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID("Employee updated successfully with id: %s"),
     EMPLOYEE_CREATED_SUCCESSFULLY("Employee created successfully with id: %s"),
     EMPLOYEE_DELETED_SUCCESSFULLY_BY_ID("Employee deleted successfully by id: %s"),
     EMPLOYEE_NOT_FOUND_BY_ID("Employee not found with id: %s"),
     EMPLOYEE_NOT_CREATED_ON_DATABASE("Employee not created on database with data: %s , %s"),
+
 
     FORMAT_STRING_MESSAGE("%s %s"),
 

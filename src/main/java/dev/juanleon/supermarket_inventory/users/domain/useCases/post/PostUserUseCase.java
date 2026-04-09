@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.post;
 
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
 import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
@@ -14,8 +13,7 @@ public class PostUserUseCase implements IPostUserService {
     }
 
     @Override
-    public ResponseModel create(UserModel userModel) {
-        String response = this.iPostUserPersistence.create(userModel).toString();
-        return new ResponseModel(response);
+    public UserModel create(UserModel userModel) {
+        return this.iPostUserPersistence.create(userModel);
     }
 }

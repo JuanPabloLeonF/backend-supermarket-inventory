@@ -41,4 +41,9 @@ public class GetEmployeeUseCase implements IGetEmployeeService {
     public PagedResponse<EmployeeModel> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
         return this.iGetEmployeePersistence.getByHireDate(hireDate, paginationRequest);
     }
+
+    @Override
+    public String getByIdUrlImage(UUID id) {
+        return this.iGetEmployeePersistence.getByIdUrlImage(id);
+    }
 }

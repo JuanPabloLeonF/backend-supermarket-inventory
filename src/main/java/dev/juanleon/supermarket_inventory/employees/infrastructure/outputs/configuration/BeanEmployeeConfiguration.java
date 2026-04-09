@@ -13,9 +13,10 @@ import dev.juanleon.supermarket_inventory.employees.domain.useCases.delete.Delet
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.get.GetEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.post.PostEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.update.UpdateEmployeeUseCase;
-import dev.juanleon.supermarket_inventory.users.domain.persistence.delete.IDeleteUserPersistence;
-import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
-import dev.juanleon.supermarket_inventory.users.domain.persistence.update.IUpdateUserPersistence;
+import dev.juanleon.supermarket_inventory.users.domain.services.delete.IDeleteUserService;
+import dev.juanleon.supermarket_inventory.users.domain.services.get.IGetUserService;
+import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
+import dev.juanleon.supermarket_inventory.users.domain.services.update.IUpdateUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,32 +31,33 @@ public class BeanEmployeeConfiguration {
     @Bean
     public IPostEmployeeService iPostEmployeeService (
             IPostEmployeePersistence iPostEmployeePersistence,
-            IPostUserPersistence iPostUserPersistence,
+            IPostUserService iPostUserService,
+            IGetUserService iGetUserService,
             IFileUtils iFileUtils
         ) {
-        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserPersistence, iFileUtils);
+        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserService, iGetUserService, iFileUtils);
     }
 
     @Bean
     public IDeleteEmployeeService iDeleteEmployeeService(
             IDeleteEmployeePersistence iDeleteEmployeePersistence,
-            IDeleteUserPersistence iDeleteUserPersistence,
+            IDeleteUserService iDeleteUserService,
             IFileUtils iFileUtils
     ) {
-        return new DeleteEmployeeUseCase(iDeleteEmployeePersistence, iDeleteUserPersistence, iFileUtils);
+        return new DeleteEmployeeUseCase(iDeleteEmployeePersistence, iDeleteUserService, iFileUtils);
     }
 
     @Bean
     public IUpdateEmployeeService iUpdateEmployeeService(
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
-            IGetEmployeePersistence iGetEmployeePersistence,
-            IUpdateUserPersistence iUpdateUserPersistence,
+            IGetEmployeeService iGetEmployeeService,
+            IUpdateUserService iUpdateUserService,
             IFileUtils iFileUtils
     ) {
         return new UpdateEmployeeUseCase(
                 iUpdateEmployeePersistence,
-                iGetEmployeePersistence,
-                iUpdateUserPersistence,
+                iGetEmployeeService,
+                iUpdateUserService,
                 iFileUtils
         );
     }

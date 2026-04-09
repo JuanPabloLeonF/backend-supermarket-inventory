@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IGetUserPersistence {
-    public List<UserModel> getAll();
-    public UserModel getById(UUID id);
-    public List<UserModel> getByName(String name);
-    public List<UserModel> getByLastName(String lastName);
+    List<UserModel> getAll();
+    UserModel getById(UUID id);
+    List<UserModel> getByName(String name);
+    List<UserModel> getByLastName(String lastName);
+    void checkEmailIfExist(String email);
 }

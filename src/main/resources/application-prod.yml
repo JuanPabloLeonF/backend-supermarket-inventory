@@ -1,10 +1,10 @@
 spring:
     # DATABASE
     datasource:
-        url: ${DB_URL:jdbc:postgresql://localhost:5432/db_spring_api}
+        url: ${DB_URL}
         driverClassName: org.postgresql.Driver
-        username: ${DB_USERNAME:postgres}
-        password: ${DB_PASSWORD:postgres}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
 
     # JPA
     jpa:
@@ -19,4 +19,4 @@ spring:
 
 # APPLICATION
 app:
-    path-upload-images-products: uploads/products/
+    path-upload-images-products: ${UPLOAD_PATH_EMPLOYEE}

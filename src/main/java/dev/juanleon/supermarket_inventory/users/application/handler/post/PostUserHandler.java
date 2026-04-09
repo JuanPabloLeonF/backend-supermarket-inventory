@@ -1,10 +1,9 @@
 package dev.juanleon.supermarket_inventory.users.application.handler.post;
 
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
+import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserApplication;
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +20,9 @@ public class PostUserHandler implements IPostUserHandler {
 
     @Transactional
     @Override
-    public ResponseRequestDto create(RequestUserDto requestUserDto) {
+    public ResponseUserDto create(RequestUserDto requestUserDto) {
         UserModel userModel = this.iMapperUserApplication.toModel(requestUserDto);
-        ResponseModel responseModel = this.iPostUserService.create(userModel);
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        UserModel userModelCreated = this.iPostUserService.create(userModel);
+        return this.iMapperUserApplication.toDto(userModelCreated);
     }
 }

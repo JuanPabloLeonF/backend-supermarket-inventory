@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IGetUserHandler {
-    public List<ResponseUserDto> getAll();
-    public ResponseUserDto getById(UUID id);
-    public List<ResponseUserDto> getByName(String name);
-    public List<ResponseUserDto> getByLastName(String lastName);
+    List<ResponseUserDto> getAll();
+    ResponseUserDto getById(UUID id);
+    List<ResponseUserDto> getByName(String name);
+    List<ResponseUserDto> getByLastName(String lastName);
 }
