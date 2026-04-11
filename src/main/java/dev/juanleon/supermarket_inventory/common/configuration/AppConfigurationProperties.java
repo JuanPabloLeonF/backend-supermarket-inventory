@@ -11,5 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app")
 public class AppConfigurationProperties {
     private String pathUploadImagesEmployees;
-    private String pathUploadFilesPdfReports;
+    private String pathUploadFilesPdfReportsSales;
 }

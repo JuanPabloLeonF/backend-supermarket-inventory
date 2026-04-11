@@ -30,7 +30,7 @@ public class DeleteEmployeeUseCase implements IDeleteEmployeeService {
     public ResponseModel deleteEmployeeAndUser(UUID idEmployee, UUID idUser) {
         String urlImg = this.iDeleteEmployeePersistence.deleteEmployeeAndUser(idEmployee);
         String responseUser = this.iDeleteUserService.deleteById(idUser).message();
-        this.iFileUtils.deleteFile(this.appConfigurationProperties.getPathUploadImagesEmployees());
+        this.iFileUtils.deleteFile(, this.appConfigurationProperties.getPathUploadImagesEmployees());
         return new ResponseModel(
                 FORMAT_STRING_MESSAGE.format(
                         EMPLOYEE_DELETED_SUCCESSFULLY_BY_ID.format(idEmployee),

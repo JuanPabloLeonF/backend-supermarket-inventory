@@ -2,26 +2,42 @@ package dev.juanleon.supermarket_inventory.files.infrastructure.exterior.reposit
 
 import com.sksamuel.scrimage.ImmutableImage;
 import com.sksamuel.scrimage.webp.WebpWriter;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.ErrorConvertingImageToWebpException;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.ErrorCreatedDirectoriesException;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.ErrorFileTypeNotAllowedException;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.ErrorTryingDeleteFileException;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface IFileUtils {
 
-    void deleteFile(Path path);
     void saveFile(InputStream inputStream, Path pathUpload);
     String processAndSaveWebp(InputStream input, String originalName, String pathUpload);
-    Optional<Path> findFile(String fileName, String pathUpload);
+    Optional<File> findFile(String fileName, String pathUpload);
+    InputStream convertHtmlToPdf(String processedHtml);
 
-    default boolean existsFile(String fileName, String pathUpload) {
-        return findFile(fileName, pathUpload).isPresent();
+    default void validateContentType(String contentType, List<String> allowedTypes) {
+        if (contentType == null || !allowedTypes.contains(contentType)) {
+            throw new ErrorFileTypeNotAllowedException(contentType);
+        }
+    }
+
+    default void deleteFileByFile(File file) {
+        try {
+            Files.deleteIfExists(file.toPath());
+        } catch (IOException exception) {
+            throw new ErrorTryingDeleteFileException(exception.getMessage());
+        }
     }
 
     default InputStream convertFileImgToWebp(InputStream inputStream) {
@@ -30,8 +46,8 @@ public interface IFileUtils {
                     .fromStream(inputStream)
                     .bytes(WebpWriter.DEFAULT);
             return new ByteArrayInputStream(webpBytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Fallo al convertir imagen a WebP: " + e.getMessage());
+        } catch (Exception exception) {
+            throw new ErrorConvertingImageToWebpException(exception.getMessage());
         }
     }
 
@@ -51,8 +67,8 @@ public interface IFileUtils {
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-            } catch (IOException e) {
-                throw new RuntimeException("Fallo al crear directorio: " + e.getMessage());
+            } catch (IOException exception) {
+                throw new ErrorCreatedDirectoriesException(exception.getMessage());
             }
         }
     }

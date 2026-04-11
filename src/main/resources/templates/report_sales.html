@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        body { font-family: 'Arial', sans-serif; font-size: 12px; color: #333; margin: 20px; }
+        .header { text-align: center; border-bottom: 2px solid #444; margin-bottom: 20px; padding-bottom: 10px; }
+        .info-section { width: 100%; margin-bottom: 20px; }
+        .info-box { width: 48%; display: inline-block; vertical-align: top; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #354a5f; color: white; padding: 10px; text-align: left; }
+        td { border-bottom: 1px solid #ddd; padding: 10px; }
+
+        .totals-container { margin-top: 20px; text-align: right; }
+        .totals-table { width: 35%; margin-left: 65%; }
+        .totals-table td { border: none; padding: 5px; }
+        .grand-total { font-size: 16px; font-weight: bold; color: #d32f2f; }
+
+        .footer { position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 10px; color: #777; }
+        .label { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>COMPROBANTE DE VENTA</h1>
+    <p>Supermercado Inventory S.A.</p>
+</div>
+
+<div class="info-section">
+    <div class="info-box">
+        <p><span class="label">CLIENTE:</span> <span th:text="${saleReportDto.customerName}">Juan Perez</span></p>
+        <p><span class="label">CÉDULA:</span> <span th:text="${saleReportDto.customerId}">123456789</span></p>
+        <p><span class="label">ATENDIDO POR:</span> <span th:text="${saleReportDto.employeeName}">Vendedor Estrella</span></p>
+    </div>
+    <div class="info-box" style="text-align: right;">
+        <p><span class="label">FECHA:</span> <span th:text="${#temporals.format(saleReportDto.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2026-04-10 16:00:00</span></p>
+        <p><span class="label">TIPO DE PAGO:</span> <span th:text="${saleReportDto.paymentType}">EFECTIVO</span></p>
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Descripción</th>
+        <th style="text-align: center;">Cant.</th>
+        <th style="text-align: right;">Precio Unit.</th>
+        <th style="text-align: right;">Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${saleReportDto.items}">
+        <td th:text="${item.name}">Escoba Premium</td>
+        <td style="text-align: center;" th:text="${item.quantity}">2</td>
+        <td style="text-align: right;" th:text="${#numbers.formatCurrency(item.unitPrice)}">$ 10.00</td>
+        <td style="text-align: right;" th:text="${#numbers.formatCurrency(item.quantity * item.unitPrice)}">$ 20.00</td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="totals-container">
+    <table class="totals-table">
+        <tr>
+            <td>Subtotal:</td>
+            <td th:text="${#numbers.formatCurrency(saleReportDto.subtotal)}">$ 0.00</td>
+        </tr>
+        <tr>
+            <td>IVA:</td>
+            <td th:text="${#numbers.formatCurrency(saleReportDto.taxAmount)}">$ 0.00</td>
+        </tr>
+        <tr class="grand-total">
+            <td>TOTAL:</td>
+            <td th:text="${#numbers.formatCurrency(saleReportDto.total)}">$ 0.00</td>
+        </tr>
+    </table>
+</div>
+
+<div class="footer">
+    <p>Gracias por su compra. Conserve este recibo para cualquier reclamo.</p>
+</div>
+
+</body>
+</html>

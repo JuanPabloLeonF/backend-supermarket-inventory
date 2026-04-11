@@ -14,7 +14,7 @@ public class ReportModel {
     private String filePath;
     private LocalDateTime generatedAt;
 
-    ReportModel(){}
+    public ReportModel(){}
 
     public ReportModel(UUID id, EmployeeEntity employee, String reportType, String period, String filePath, LocalDateTime generatedAt) {
         this.id = id;

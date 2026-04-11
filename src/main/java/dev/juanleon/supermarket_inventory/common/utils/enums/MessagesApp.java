@@ -20,6 +20,14 @@ public enum MessagesApp {
 
     REPORT_NOT_FOUND_BY_ID("Report not found with id: %s"),
 
+    FILE_ERROR_TRYING_DELETE("Error when trying to delete a file: %s"),
+    FILE_ERROR_TRYING_SAVE("Error when trying to save a file: %s"),
+    File_DELETED_SUCCESSFULLY_BY_URL("File deleted successfully with url: %s"),
+    FILE_NOT_FOUND_BY_URL("File not found with url: %s"),
+    FILE_ERROR_CONVERT_IMAGE_TO_WEBP("Error converting image to webp format: %s" ),
+    FAILURE_ERROR_CREATING_DIRECTORIES("Failure when creating directories: %s" ),
+    ERROR_FILE_TYPE_NOT_ALLOWED_EXCEPTION("Error file type not allowed: %s"),
+
 
     FORMAT_STRING_MESSAGE("%s %s"),
 
