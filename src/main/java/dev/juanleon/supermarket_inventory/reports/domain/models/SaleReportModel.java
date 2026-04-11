@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class SaleReportDto {
+public class SaleReportModel {
 
     private String customerName;
     private String customerId;
@@ -16,14 +16,14 @@ public class SaleReportDto {
     private BigDecimal taxAmount;
     private BigDecimal total;
 
-    public SaleReportDto() {
+    public SaleReportModel() {
     }
 
-    public SaleReportDto(String customerName, String customerId, String employeeName, LocalDateTime createdAt, String paymentType, List<SaleItemDto> items, BigDecimal subtotal, BigDecimal taxAmount, BigDecimal total) {
+    public SaleReportModel(String customerName, String customerId, String employeeName, String paymentType, List<SaleItemDto> items, BigDecimal subtotal, BigDecimal taxAmount, BigDecimal total) {
         this.customerName = customerName;
         this.customerId = customerId;
         this.employeeName = employeeName;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDateTime.now().withNano(0);
         this.paymentType = paymentType;
         this.items = items;
         this.subtotal = subtotal;
@@ -101,5 +101,20 @@ public class SaleReportDto {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "SaleReportModel{" +
+                "customerName='" + customerName + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", employeeName='" + employeeName + '\'' +
+                ", createdAt=" + createdAt +
+                ", paymentType='" + paymentType + '\'' +
+                ", items=" + items +
+                ", subtotal=" + subtotal +
+                ", taxAmount=" + taxAmount +
+                ", total=" + total +
+                '}';
     }
 }

@@ -1,8 +1,7 @@
 package dev.juanleon.supermarket_inventory.employees.domain.useCases.post;
 
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
-import dev.juanleon.supermarket_inventory.files.infrastructure.exterior.repository.IFileUtils;
+import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.post.IPostEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.services.post.IPostEmployeeService;
@@ -16,15 +15,13 @@ public class PostEmployeeUseCase implements IPostEmployeeService {
     private final IPostEmployeePersistence iPostEmployeePersistence;
     private final IPostUserService iPostUserService;
     private final IGetUserService iGetUserService;
-    private final IFileUtils iFileUtils;
-    private final AppConfigurationProperties appConfigurationProperties;
+    private final IFilesService iFilesService;
 
-    public PostEmployeeUseCase(IPostEmployeePersistence iPostEmployeePersistence, IPostUserService iPostUserService, IGetUserService iGetUserService, IFileUtils iFileUtils, AppConfigurationProperties appConfigurationProperties) {
+    public PostEmployeeUseCase(IPostEmployeePersistence iPostEmployeePersistence, IPostUserService iPostUserService, IGetUserService iGetUserService, IFilesService iFilesService) {
         this.iPostEmployeePersistence = iPostEmployeePersistence;
         this.iPostUserService = iPostUserService;
         this.iGetUserService = iGetUserService;
-        this.iFileUtils = iFileUtils;
-        this.appConfigurationProperties = appConfigurationProperties;
+        this.iFilesService = iFilesService;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class PostEmployeeUseCase implements IPostEmployeeService {
         this.iGetUserService.checkEmailIfExist(employeeModel.getUserModel().getEmail());
         UserModel userModelCreated = this.iPostUserService.create(employeeModel.getUserModel());
         employeeModel.setUserModel(userModelCreated);
-        String urlImg = this.iFileUtils.saveFile(inputFileDto, this.appConfigurationProperties.getPathUploadImagesEmployees());
+        String urlImg = this.iFilesService.createImage(inputFileDto);
         employeeModel.setUrlImg(urlImg);
         String message = this.iPostEmployeePersistence.create(employeeModel);
         return new ResponseModel(message);

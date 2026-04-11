@@ -35,7 +35,7 @@ public class FileUtils implements IFileUtils {
     }
 
     @Override
-    public Optional<File> findFile(String fileName, String pathUpload) {
+    public Optional<Path> findFile(String fileName, String pathUpload) {
         if (fileName == null || fileName.isBlank()) {
             return Optional.empty();
         }
@@ -45,7 +45,7 @@ public class FileUtils implements IFileUtils {
                 .normalize();
 
         if (Files.exists(filePath) && Files.isRegularFile(filePath)) {
-            return Optional.of(filePath.toFile());
+            return Optional.of(filePath);
         }
 
         return Optional.empty();

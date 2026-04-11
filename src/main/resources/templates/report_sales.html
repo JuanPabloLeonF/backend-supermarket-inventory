@@ -30,13 +30,13 @@
 
 <div class="info-section">
     <div class="info-box">
-        <p><span class="label">CLIENTE:</span> <span th:text="${saleReportDto.customerName}">Juan Perez</span></p>
-        <p><span class="label">CÉDULA:</span> <span th:text="${saleReportDto.customerId}">123456789</span></p>
-        <p><span class="label">ATENDIDO POR:</span> <span th:text="${saleReportDto.employeeName}">Vendedor Estrella</span></p>
+        <p><span class="label">CLIENTE:</span> <span th:text="${saleReportModel.customerName}">Juan Perez</span></p>
+        <p><span class="label">CÉDULA:</span> <span th:text="${saleReportModel.customerId}">123456789</span></p>
+        <p><span class="label">ATENDIDO POR:</span> <span th:text="${saleReportModel.employeeName}">Vendedor Estrella</span></p>
     </div>
     <div class="info-box" style="text-align: right;">
-        <p><span class="label">FECHA:</span> <span th:text="${#temporals.format(saleReportDto.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2026-04-10 16:00:00</span></p>
-        <p><span class="label">TIPO DE PAGO:</span> <span th:text="${saleReportDto.paymentType}">EFECTIVO</span></p>
+        <p><span class="label">FECHA:</span> <span th:text="${#temporals.format(saleReportModel.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2026-04-10 16:00:00</span></p>
+        <p><span class="label">TIPO DE PAGO:</span> <span th:text="${saleReportModel.paymentType}">EFECTIVO</span></p>
     </div>
 </div>
 
@@ -50,7 +50,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${saleReportDto.items}">
+    <tr th:each="item : ${saleReportModel.items}">
         <td th:text="${item.name}">Escoba Premium</td>
         <td style="text-align: center;" th:text="${item.quantity}">2</td>
         <td style="text-align: right;" th:text="${#numbers.formatCurrency(item.unitPrice)}">$ 10.00</td>
@@ -63,15 +63,15 @@
     <table class="totals-table">
         <tr>
             <td>Subtotal:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportDto.subtotal)}">$ 0.00</td>
+            <td th:text="${#numbers.formatCurrency(saleReportModel.subtotal)}">$ 0.00</td>
         </tr>
         <tr>
             <td>IVA:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportDto.taxAmount)}">$ 0.00</td>
+            <td th:text="${#numbers.formatCurrency(saleReportModel.taxAmount)}">$ 0.00</td>
         </tr>
         <tr class="grand-total">
             <td>TOTAL:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportDto.total)}">$ 0.00</td>
+            <td th:text="${#numbers.formatCurrency(saleReportModel.total)}">$ 0.00</td>
         </tr>
     </table>
 </div>

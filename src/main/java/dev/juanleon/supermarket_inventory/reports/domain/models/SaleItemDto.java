@@ -1,15 +1,17 @@
 package dev.juanleon.supermarket_inventory.reports.domain.models;
 
+import java.math.BigDecimal;
+
 public class SaleItemDto {
 
     private String name;
     private Integer quantity;
-    private Double unitPrice;
+    private BigDecimal unitPrice;
 
     public SaleItemDto() {
     }
 
-    public SaleItemDto(String name, Integer quantity, Double unitPrice) {
+    public SaleItemDto(String name, Integer quantity, BigDecimal unitPrice) {
         this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
@@ -31,11 +33,20 @@ public class SaleItemDto {
         this.quantity = quantity;
     }
 
-    public Double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "SaleItemDto{" +
+                "name='" + name + '\'' +
+                ", quantity=" + quantity +
+                ", unitPrice=" + unitPrice +
+                '}';
     }
 }

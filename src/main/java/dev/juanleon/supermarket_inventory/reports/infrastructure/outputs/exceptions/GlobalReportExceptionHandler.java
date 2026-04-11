@@ -11,16 +11,22 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalReportExceptionHandler {
 
-    @ExceptionHandler(NotFoundReportException.class)
-    public ResponseEntity<ProblemDetail> handlerNotFoundReportException(NotFoundReportException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
+    private ResponseEntity<ProblemDetail> buildResponse(HttpStatus status, Exception exception) {
+        ProblemDetail response = ProblemDetail.forStatus(status);
+        response.setTitle(status.getReasonPhrase());
         response.setDetail(exception.getMessage());
         response.setProperty("date", LocalDateTime.now());
         response.setProperty("typeError", exception.getClass().getSimpleName());
+        return ResponseEntity.status(status).body(response);
+    }
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+    @ExceptionHandler(NotFoundReportException.class)
+    public ResponseEntity<ProblemDetail> handlerNotFoundReportException(NotFoundReportException exception) {
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
+    }
+
+    @ExceptionHandler(ErrorTryingCreateReport.class)
+    public ResponseEntity<ProblemDetail> handlerErrorTryingCreateReport(ErrorTryingCreateReport exception) {
+        return this.buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 }

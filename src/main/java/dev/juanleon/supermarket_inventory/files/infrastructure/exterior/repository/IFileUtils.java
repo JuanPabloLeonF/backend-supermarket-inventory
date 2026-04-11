@@ -9,7 +9,6 @@ import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.ErrorT
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -23,7 +22,7 @@ public interface IFileUtils {
 
     void saveFile(InputStream inputStream, Path pathUpload);
     String processAndSaveWebp(InputStream input, String originalName, String pathUpload);
-    Optional<File> findFile(String fileName, String pathUpload);
+    Optional<Path> findFile(String fileName, String pathUpload);
     InputStream convertHtmlToPdf(String processedHtml);
 
     default void validateContentType(String contentType, List<String> allowedTypes) {
@@ -32,9 +31,9 @@ public interface IFileUtils {
         }
     }
 
-    default void deleteFileByFile(File file) {
+    default void deleteFileByPath(Path path) {
         try {
-            Files.deleteIfExists(file.toPath());
+            Files.deleteIfExists(path);
         } catch (IOException exception) {
             throw new ErrorTryingDeleteFileException(exception.getMessage());
         }

@@ -7,4 +7,5 @@ public class FileConstants {
     public static final String WEBP = "webp";
     public static final String PDF = "pdf";
     public static final String TEMPLATE_REPORT_SALES = "report_sales";
+    public static final String SALES_REPORT_MODEL = "saleReportModel";
 }

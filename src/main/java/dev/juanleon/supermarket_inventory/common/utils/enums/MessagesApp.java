@@ -19,6 +19,8 @@ public enum MessagesApp {
     EMPLOYEE_NOT_CREATED_ON_DATABASE("Employee not created on database with data: %s , %s"),
 
     REPORT_NOT_FOUND_BY_ID("Report not found with id: %s"),
+    REPORT_NOT_CREATED_BY_ERROR("Report not create"),
+    REPORT_CREATED_SUCCESSFULLY("Report created successfully with id: %s"),
 
     FILE_ERROR_TRYING_DELETE("Error when trying to delete a file: %s"),
     FILE_ERROR_TRYING_SAVE("Error when trying to save a file: %s"),

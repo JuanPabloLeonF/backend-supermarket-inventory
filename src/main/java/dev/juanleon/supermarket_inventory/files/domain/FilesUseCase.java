@@ -3,7 +3,7 @@ package dev.juanleon.supermarket_inventory.files.domain;
 import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
-import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportDto;
+import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportModel;
 
 import static dev.juanleon.supermarket_inventory.files.domain.FileConstants.ALLOWED_IMAGE_EXTENSIONS;
 
@@ -18,10 +18,10 @@ public class FilesUseCase implements IFilesService {
     }
 
     @Override
-    public String createPdf(SaleReportDto saleReportDto, String templateName, String uploadPath) {
+    public String createPdf(SaleReportModel saleReportModel, String templateName) {
         return this.iFilesPersistence.createPdf(
-                saleReportDto,
-                uploadPath,
+                saleReportModel,
+                this.appConfigurationProperties.getPathUploadFilesPdfReportsSales(),
                 templateName
         );
     }

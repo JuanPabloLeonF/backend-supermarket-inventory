@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.reports.domain.models;
 
-import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.entities.EmployeeEntity;
+import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,7 +8,7 @@ import java.util.UUID;
 public class ReportModel {
 
     private UUID id;
-    private EmployeeEntity employee;
+    private EmployeeModel employee;
     private String reportType;
     private String period;
     private String filePath;
@@ -16,7 +16,7 @@ public class ReportModel {
 
     public ReportModel(){}
 
-    public ReportModel(UUID id, EmployeeEntity employee, String reportType, String period, String filePath, LocalDateTime generatedAt) {
+    public ReportModel(UUID id, EmployeeModel employee, String reportType, String period, String filePath, LocalDateTime generatedAt) {
         this.id = id;
         this.employee = employee;
         this.reportType = reportType;
@@ -33,11 +33,11 @@ public class ReportModel {
         this.id = id;
     }
 
-    public EmployeeEntity getEmployee() {
+    public EmployeeModel getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeEntity employee) {
+    public void setEmployee(EmployeeModel employee) {
         this.employee = employee;
     }
 
@@ -71,5 +71,17 @@ public class ReportModel {
 
     public void setGeneratedAt(LocalDateTime generatedAt) {
         this.generatedAt = generatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportModel{" +
+                "id=" + id +
+                ", employee=" + employee +
+                ", reportType='" + reportType + '\'' +
+                ", period='" + period + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", generatedAt=" + generatedAt +
+                '}';
     }
 }

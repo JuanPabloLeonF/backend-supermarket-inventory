@@ -3,6 +3,9 @@ package dev.juanleon.supermarket_inventory.reports.infrastructure.inputs.control
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.reports.application.commands.post.CreateSalesReportCommand;
+import dev.juanleon.supermarket_inventory.reports.application.dto.RequestCreateSales;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestGetByPeriodReport;
 import dev.juanleon.supermarket_inventory.reports.application.dto.ResponseReport;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getAll.GetAllReportQuery;
@@ -53,5 +56,16 @@ public class ReportRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseRequestDto> createSale(@RequestBody RequestCreateSales request) {
+        CreateSalesReportCommand command = new CreateSalesReportCommand(
+                request.getRequestReportDto(),
+                request.getRequestReportSalesData()
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
     }
 }
