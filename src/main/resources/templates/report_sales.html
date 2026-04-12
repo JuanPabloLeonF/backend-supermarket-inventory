@@ -3,81 +3,329 @@
 <head>
     <meta charset="UTF-8" />
     <style>
-        body { font-family: 'Arial', sans-serif; font-size: 12px; color: #333; margin: 20px; }
-        .header { text-align: center; border-bottom: 2px solid #444; margin-bottom: 20px; padding-bottom: 10px; }
-        .info-section { width: 100%; margin-bottom: 20px; }
-        .info-box { width: 48%; display: inline-block; vertical-align: top; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background-color: #354a5f; color: white; padding: 10px; text-align: left; }
-        td { border-bottom: 1px solid #ddd; padding: 10px; }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            color: #2c2c2a;
+            background: #f5f4f0;
+            padding: 24px;
+        }
 
-        .totals-container { margin-top: 20px; text-align: right; }
-        .totals-table { width: 35%; margin-left: 65%; }
-        .totals-table td { border: none; padding: 5px; }
-        .grand-total { font-size: 16px; font-weight: bold; color: #d32f2f; }
+        .receipt-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 0.5px solid #d3d1c7;
+            overflow: hidden;
+        }
 
-        .footer { position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 10px; color: #777; }
-        .label { font-weight: bold; }
+        /* HEADER */
+        .header {
+            background: #354a5f;
+            color: #ffffff;
+            padding: 28px 32px 22px;
+            position: relative;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .company-name {
+            font-size: 11px;
+            font-weight: 400;
+            color: #b5d4f4;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .receipt-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+        }
+        .receipt-badge {
+            background: rgba(255,255,255,0.12);
+            border: 0.5px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 8px 14px;
+            text-align: right;
+        }
+        .badge-label {
+            font-size: 10px;
+            color: #b5d4f4;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+        .badge-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+        .header-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 18px 0 0;
+        }
+
+        /* INFO SECTION */
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 22px 32px;
+            background: #f8f7f4;
+            border-bottom: 0.5px solid #d3d1c7;
+            gap: 24px;
+        }
+        .info-group {
+            flex: 1;
+        }
+        .info-group.right {
+            text-align: right;
+        }
+        .info-row {
+            margin-bottom: 8px;
+        }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-label {
+            font-size: 10px;
+            color: #888780;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            font-size: 13px;
+            color: #2c2c2a;
+            font-weight: 500;
+        }
+
+        /* PAYMENT TYPE BADGE */
+        .payment-badge {
+            display: inline-block;
+            background: #e1f5ee;
+            color: #0f6e56;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 0.5px solid #5dcaa5;
+        }
+
+        /* TABLE */
+        .table-wrapper {
+            padding: 24px 32px;
+        }
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #888780;
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead tr {
+            border-bottom: 1.5px solid #354a5f;
+        }
+        thead th {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #444441;
+            padding: 0 0 10px;
+            background: transparent;
+        }
+        thead th:not(:first-child) {
+            text-align: right;
+        }
+        tbody tr {
+            border-bottom: 0.5px solid #e8e7e2;
+        }
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        tbody td {
+            padding: 11px 0;
+            font-size: 12px;
+            color: #2c2c2a;
+            vertical-align: middle;
+        }
+        tbody td:not(:first-child) {
+            text-align: right;
+        }
+        .item-name {
+            font-weight: 500;
+            color: #2c2c2a;
+        }
+        .qty-pill {
+            display: inline-block;
+            background: #f1efe8;
+            color: #5f5e5a;
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            min-width: 28px;
+            text-align: center;
+        }
+        .price-value {
+            color: #444441;
+            font-weight: 400;
+        }
+        .subtotal-value {
+            font-weight: 500;
+            color: #2c2c2a;
+        }
+
+        /* TOTALS */
+        .totals-wrapper {
+            padding: 0 32px 28px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .totals-box {
+            min-width: 240px;
+            border-top: 0.5px solid #d3d1c7;
+            padding-top: 16px;
+        }
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 12px;
+            color: #5f5e5a;
+        }
+        .totals-row.total-final {
+            border-top: 1.5px solid #354a5f;
+            margin-top: 8px;
+            padding-top: 12px;
+        }
+        .totals-row.total-final .totals-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c2c2a;
+        }
+        .totals-row.total-final .totals-amount {
+            font-size: 18px;
+            font-weight: 500;
+            color: #354a5f;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #354a5f;
+            padding: 14px 32px;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 10.5px;
+            color: #b5d4f4;
+            letter-spacing: 0.03em;
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>COMPROBANTE DE VENTA</h1>
-    <p>Supermercado Inventory S.A.</p>
-</div>
+<div class="receipt-wrapper">
 
-<div class="info-section">
-    <div class="info-box">
-        <p><span class="label">CLIENTE:</span> <span th:text="${saleReportModel.customerName}">Juan Perez</span></p>
-        <p><span class="label">CÉDULA:</span> <span th:text="${saleReportModel.customerId}">123456789</span></p>
-        <p><span class="label">ATENDIDO POR:</span> <span th:text="${saleReportModel.employeeName}">Vendedor Estrella</span></p>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-top">
+            <div>
+                <p class="company-name">Supermercado Inventory S.A.</p>
+                <h1 class="receipt-title">Comprobante de Venta</h1>
+            </div>
+            <div class="receipt-badge">
+                <div class="badge-label">Fecha</div>
+                <div class="badge-value" th:text="${#temporals.format(saleReportModel.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2026-04-10 16:00:00</div>
+            </div>
+        </div>
+        <div class="header-divider"></div>
     </div>
-    <div class="info-box" style="text-align: right;">
-        <p><span class="label">FECHA:</span> <span th:text="${#temporals.format(saleReportModel.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2026-04-10 16:00:00</span></p>
-        <p><span class="label">TIPO DE PAGO:</span> <span th:text="${saleReportModel.paymentType}">EFECTIVO</span></p>
+
+    <!-- INFO SECTION -->
+    <div class="info-section">
+        <div class="info-group">
+            <div class="info-row">
+                <span class="info-label">Cliente</span>
+                <span class="info-value" th:text="${saleReportModel.customerName}">Juan Perez</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Cédula</span>
+                <span class="info-value" th:text="${saleReportModel.customerId}">123456789</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Atendido por</span>
+                <span class="info-value" th:text="${saleReportModel.employeeName}">Vendedor Estrella</span>
+            </div>
+        </div>
+        <div class="info-group right">
+            <div class="info-row">
+                <span class="info-label">Tipo de pago</span>
+                <span class="payment-badge" th:text="${saleReportModel.paymentType}">EFECTIVO</span>
+            </div>
+        </div>
     </div>
-</div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Descripción</th>
-        <th style="text-align: center;">Cant.</th>
-        <th style="text-align: right;">Precio Unit.</th>
-        <th style="text-align: right;">Subtotal</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${saleReportModel.items}">
-        <td th:text="${item.name}">Escoba Premium</td>
-        <td style="text-align: center;" th:text="${item.quantity}">2</td>
-        <td style="text-align: right;" th:text="${#numbers.formatCurrency(item.unitPrice)}">$ 10.00</td>
-        <td style="text-align: right;" th:text="${#numbers.formatCurrency(item.quantity * item.unitPrice)}">$ 20.00</td>
-    </tr>
-    </tbody>
-</table>
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <p class="section-label">Detalle de productos</p>
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align:left;">Descripción</th>
+                <th>Cant.</th>
+                <th>Precio Unit.</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${saleReportModel.items}">
+                <td><span class="item-name" th:text="${item.name}">Escoba Premium</span></td>
+                <td><span class="qty-pill" th:text="${item.quantity}">2</span></td>
+                <td><span class="price-value" th:text="${#numbers.formatCurrency(item.unitPrice)}">$ 10.00</span></td>
+                <td><span class="subtotal-value" th:text="${#numbers.formatCurrency(item.quantity * item.unitPrice)}">$ 20.00</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div class="totals-container">
-    <table class="totals-table">
-        <tr>
-            <td>Subtotal:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportModel.subtotal)}">$ 0.00</td>
-        </tr>
-        <tr>
-            <td>IVA:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportModel.taxAmount)}">$ 0.00</td>
-        </tr>
-        <tr class="grand-total">
-            <td>TOTAL:</td>
-            <td th:text="${#numbers.formatCurrency(saleReportModel.total)}">$ 0.00</td>
-        </tr>
-    </table>
-</div>
+    <!-- TOTALS -->
+    <div class="totals-wrapper">
+        <div class="totals-box">
+            <div class="totals-row">
+                <span class="totals-label">Subtotal</span>
+                <span class="totals-amount" th:text="${#numbers.formatCurrency(saleReportModel.subtotal)}">$ 0.00</span>
+            </div>
+            <div class="totals-row">
+                <span class="totals-label">IVA</span>
+                <span class="totals-amount" th:text="${#numbers.formatCurrency(saleReportModel.taxAmount)}">$ 0.00</span>
+            </div>
+            <div class="totals-row total-final">
+                <span class="totals-label">Total</span>
+                <span class="totals-amount" th:text="${#numbers.formatCurrency(saleReportModel.total)}">$ 0.00</span>
+            </div>
+        </div>
+    </div>
 
-<div class="footer">
-    <p>Gracias por su compra. Conserve este recibo para cualquier reclamo.</p>
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>Gracias por su compra. Conserve este recibo para cualquier reclamo.</p>
+    </div>
+
 </div>
 
 </body>

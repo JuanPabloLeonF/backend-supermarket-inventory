@@ -1,7 +1,7 @@
 package dev.juanleon.supermarket_inventory.reports.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.entities.EmployeeEntity;
+import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class ResponseReport {
     private UUID id;
-    private EmployeeEntity employee;
+    private ResponseEmployeeDto employee;
     private String reportType;
     private String period;
     private String filePath;

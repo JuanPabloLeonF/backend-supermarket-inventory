@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.reports.application.mappers;
 
+import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperEmployeeApplication;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestReportDto;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestReportSalesData;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestReportSalesItemDto;
@@ -13,7 +14,8 @@ import java.util.List;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {IMapperEmployeeApplication.class}
 )
 public interface IMapperReportApplication {
     ResponseReport toResponse(ReportModel reportModel);
