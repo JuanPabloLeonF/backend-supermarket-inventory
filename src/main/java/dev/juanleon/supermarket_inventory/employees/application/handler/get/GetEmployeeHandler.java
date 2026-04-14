@@ -9,7 +9,6 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,7 +22,6 @@ public class GetEmployeeHandler implements IGetEmployeeHandler {
     private final IMapperPaginationApp iMapperPaginationApp;
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseEmployeeDto> getAll(PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getAll(paginationRequest);
         return this.iMapperPaginationApp
@@ -34,28 +32,24 @@ public class GetEmployeeHandler implements IGetEmployeeHandler {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ResponseEmployeeDto getById(UUID id) {
         return this.iMapperEmployeeApplication
                 .toDto(this.iGetEmployeeService.getById(id));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseEmployeeDto> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByNameAndLastName(name, lastName, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseEmployeeDto> getByPosition(String position, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByPosition(position, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByHireDate(hireDate, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);

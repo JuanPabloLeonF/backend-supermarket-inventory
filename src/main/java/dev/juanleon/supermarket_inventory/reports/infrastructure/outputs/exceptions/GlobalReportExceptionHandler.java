@@ -22,7 +22,7 @@ public class GlobalReportExceptionHandler {
 
     @ExceptionHandler(NotFoundReportException.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundReportException(NotFoundReportException exception) {
-        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
+        return this.buildResponse(HttpStatus.NOT_FOUND, exception);
     }
 
     @ExceptionHandler(ErrorTryingCreateReport.class)

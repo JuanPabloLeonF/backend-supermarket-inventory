@@ -4,14 +4,17 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.reports.application.commands.delete.DeleteByIdReportCommand;
 import dev.juanleon.supermarket_inventory.reports.application.commands.post.CreateSalesReportCommand;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestCreateSales;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestGetByPeriodReport;
+import dev.juanleon.supermarket_inventory.reports.application.dto.RequestGetByYearReport;
 import dev.juanleon.supermarket_inventory.reports.application.dto.ResponseReport;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getAll.GetAllReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByIdReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByPeriodReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByYearReportQuery;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +46,7 @@ public class ReportRestController {
     }
 
     @GetMapping("/period")
-    public ResponseEntity<PagedResponse<ResponseReport>> getByPeriod(@RequestBody RequestGetByPeriodReport request) {
+    public ResponseEntity<PagedResponse<ResponseReport>> getByPeriod(@Valid @RequestBody RequestGetByPeriodReport request) {
         GetByPeriodReportQuery query = new GetByPeriodReportQuery(request.getPeriod(), request.getPaginationRequest());
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -51,8 +54,8 @@ public class ReportRestController {
     }
 
     @GetMapping("/year/{year}")
-    public ResponseEntity<PagedResponse<ResponseReport>> getByYear(@PathVariable("year") String year, @RequestBody PaginationRequest paginationRequest) {
-        GetByYearReportQuery query = new GetByYearReportQuery(year, paginationRequest);
+    public ResponseEntity<PagedResponse<ResponseReport>> getByYear(@Valid @RequestBody RequestGetByYearReport request) {
+        GetByYearReportQuery query = new GetByYearReportQuery(request.getYear(), request.getPaginationRequest());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
@@ -64,6 +67,14 @@ public class ReportRestController {
                 request.getRequestReportDto(),
                 request.getRequestReportSalesData()
         );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseRequestDto> deleteById(@PathVariable("id") UUID id) {
+        DeleteByIdReportCommand command = new DeleteByIdReportCommand(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

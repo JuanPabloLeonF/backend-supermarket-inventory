@@ -28,6 +28,8 @@ public class FilesAdapter implements IFilesPersistence {
     private final IFileUtils iFileUtils;
     private final TemplateEngine templateEngine;
 
+    //NO SE OLVIDE QUE ESTE METODO ES GENERICO POR LO TANTO
+    // CAMBIAR EL ARGUMENTO DE ENTRADA SalesReportModel por Generico
     @Override
     public String createPdf(SaleReportModel saleReportModel, String pathUpload, String templateName) {
         saleReportModel.setCreatedAt(LocalDateTime.now().withNano(0));
@@ -75,12 +77,12 @@ public class FilesAdapter implements IFilesPersistence {
     }
 
     @Override
-    public ResponseModel deleteFile(String urlImage, String pathUpload) {
-        return this.iFileUtils.findFile(urlImage, pathUpload)
+    public ResponseModel deleteFile(String urlFile, String pathUpload) {
+        return this.iFileUtils.findFile(urlFile, pathUpload)
                 .map(file -> {
                     this.iFileUtils.deleteFileByPath(file);
-                    return new ResponseModel(File_DELETED_SUCCESSFULLY_BY_URL.format(urlImage));
-                }).orElseThrow(() -> new NotFoundFileException(urlImage));
+                    return new ResponseModel(File_DELETED_SUCCESSFULLY_BY_URL.format(urlFile));
+                }).orElseThrow(() -> new NotFoundFileException(urlFile));
     }
 
     @Override

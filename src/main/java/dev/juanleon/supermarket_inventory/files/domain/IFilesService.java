@@ -7,6 +7,7 @@ import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportModel;
 public interface IFilesService {
     String createPdf(SaleReportModel saleReportModel, String templateName);
     String createImage(InputFileDto inputFileDto);
-    String updateFile(InputFileDto inputFileDto, String urlImage);
-    ResponseModel deleteFile(String urlImage);
+    String updateImg(InputFileDto inputFileDto, String urlImage);
+    ResponseModel deleteReportSales(String urlFile);
+    ResponseModel deleteImage(String urlFile);
 }

@@ -21,6 +21,7 @@ public enum MessagesApp {
     REPORT_NOT_FOUND_BY_ID("Report not found with id: %s"),
     REPORT_NOT_CREATED_BY_ERROR("Report not create"),
     REPORT_CREATED_SUCCESSFULLY("Report created successfully with id: %s"),
+    REPORT_DELETED_SUCCESSFULLY_BY_ID("Report deleted successfully by id: %s"),
 
     FILE_ERROR_TRYING_DELETE("Error when trying to delete a file: %s"),
     FILE_ERROR_TRYING_SAVE("Error when trying to save a file: %s"),

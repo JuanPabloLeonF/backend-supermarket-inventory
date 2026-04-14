@@ -9,7 +9,6 @@ import dev.juanleon.supermarket_inventory.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.reports.domain.services.get.IGetReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -22,27 +21,23 @@ public class GetReportHandler implements IGetReportHandler {
     private final IMapperPaginationApp iMapperPaginationApp;
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseReport> getAll(PaginationRequest paginationRequest) {
         PagedResponse<ReportModel> reportModelPagedResponse = this.iGetReportService.getAll(paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(reportModelPagedResponse, this.iMapperReportApplication::toResponse);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ResponseReport getById(UUID id) {
         return this.iMapperReportApplication.toResponse(this.iGetReportService.getById(id));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseReport> getByPeriod(String period, PaginationRequest paginationRequest) {
         PagedResponse<ReportModel> reportModelPagedResponse = this.iGetReportService.getByPeriod(period, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(reportModelPagedResponse, this.iMapperReportApplication::toResponse);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PagedResponse<ResponseReport> getByYear(String year, PaginationRequest paginationRequest) {
         PagedResponse<ReportModel> reportModelPagedResponse = this.iGetReportService.getByYear(year, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(reportModelPagedResponse, this.iMapperReportApplication::toResponse);

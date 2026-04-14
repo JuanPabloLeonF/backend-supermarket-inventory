@@ -33,13 +33,18 @@ public class FilesUseCase implements IFilesService {
     }
 
     @Override
-    public String updateFile(InputFileDto inputFileDto, String urlImage) {
+    public String updateImg(InputFileDto inputFileDto, String urlImage) {
         this.iFilesPersistence.validateContentType(inputFileDto.getContentType(), ALLOWED_IMAGE_EXTENSIONS);
         return this.iFilesPersistence.updateImg(inputFileDto, this.appConfigurationProperties.getPathUploadImagesEmployees(), urlImage);
     }
 
     @Override
-    public ResponseModel deleteFile(String urlImage) {
-        return this.iFilesPersistence.deleteFile(urlImage, this.appConfigurationProperties.getPathUploadImagesEmployees());
+    public ResponseModel deleteReportSales(String urlFile) {
+        return this.iFilesPersistence.deleteFile(urlFile, this.appConfigurationProperties.getPathUploadFilesPdfReportsSales());
+    }
+
+    @Override
+    public ResponseModel deleteImage(String urlFile) {
+        return this.iFilesPersistence.deleteFile(urlFile, this.appConfigurationProperties.getPathUploadImagesEmployees());
     }
 }

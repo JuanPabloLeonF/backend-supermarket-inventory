@@ -37,7 +37,7 @@ public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
     @Override
     public ResponseModel updateByIdImage(UUID id, InputFileDto inputFileDto) {
         String urlImg = this.iGetEmployeeService.getByIdUrlImage(id);
-        String urlImgUpdated = this.iFilesService.updateFile(inputFileDto, urlImg);
+        String urlImgUpdated = this.iFilesService.updateImg(inputFileDto, urlImg);
         String response = this.iUpdateEmployeePersistence.updateByIdImage(urlImgUpdated, id);
         return new ResponseModel(response);
     }

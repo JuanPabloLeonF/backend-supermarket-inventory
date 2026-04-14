@@ -37,4 +37,16 @@ public class ReportEntity {
     @CreationTimestamp
     @Column(name = "generated_at", nullable = false, updatable = false)
     private LocalDateTime generatedAt;
+
+    @Override
+    public String toString() {
+        return "ReportEntity{" +
+                "id=" + id +
+                ", employee=" + employee +
+                ", reportType='" + reportType + '\'' +
+                ", period='" + period + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", generatedAt=" + generatedAt +
+                '}';
+    }
 }

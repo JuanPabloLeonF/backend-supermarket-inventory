@@ -45,4 +45,19 @@ public class EmployeeEntity {
 
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
+
+    @Override
+    public String toString() {
+        return "EmployeeEntity{" +
+                "id=" + id +
+                ", userEntity=" + userEntity +
+                ", nationalId='" + nationalId + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", urlImg='" + urlImg + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                ", hireDate=" + hireDate +
+                '}';
+    }
 }

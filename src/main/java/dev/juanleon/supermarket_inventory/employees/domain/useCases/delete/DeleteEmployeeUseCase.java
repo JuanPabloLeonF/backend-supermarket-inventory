@@ -27,7 +27,7 @@ public class DeleteEmployeeUseCase implements IDeleteEmployeeService {
     public ResponseModel deleteEmployeeAndUser(UUID idEmployee, UUID idUser) {
         String urlImg = this.iDeleteEmployeePersistence.deleteEmployeeAndUser(idEmployee);
         String responseUser = this.iDeleteUserService.deleteById(idUser).message();
-        String message = this.iFilesService.deleteFile(urlImg).message();
+        String message = this.iFilesService.deleteImage(urlImg).message();
         return new ResponseModel(
                 FORMAT_STRING_MESSAGE.format(
                         FORMAT_STRING_MESSAGE.format(

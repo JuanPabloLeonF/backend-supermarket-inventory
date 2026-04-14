@@ -10,6 +10,6 @@ public interface IFilesPersistence {
     String createPdf(SaleReportModel saleReportModel, String pathUpload, String templateName);
     String createImage(InputFileDto inputFileDto, String pathUpload);
     String updateImg(InputFileDto inputFileDto, String pathUpload, String urlImage);
-    ResponseModel deleteFile(String urlImage, String pathUpload);
+    ResponseModel deleteFile(String urlFile, String pathUpload);
     void validateContentType(String contentType, List<String> allowedExtensions);
 }
