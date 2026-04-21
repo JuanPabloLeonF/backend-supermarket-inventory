@@ -9,41 +9,24 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionsHandler {
+public class GlobalExceptionsHandler extends BuildResponseExceptions {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ProblemDetail> handlerIllegalArgumentException(IllegalArgumentException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        response.setDetail(exception.getMessage());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
     }
 
     @ExceptionHandler(NotFoundTypeRequestHandlerMediator.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundTypeRequestHandlerMediator(NotFoundTypeRequestHandlerMediator exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        response.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        response.setDetail(exception.getMessage());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(response);
+        return this.buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
 
         Map<String, String> erros = new HashMap<>();
 
@@ -51,37 +34,17 @@ public class GlobalExceptionsHandler {
             erros.put(error.getField(), error.getDefaultMessage());
         });
 
-        response.setDetail(erros.toString());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception, erros);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ProblemDetail> handlerDataIntegrityViolationException(DataIntegrityViolationException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        response.setDetail(exception.getMessage());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ProblemDetail> handlerHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        response.setDetail(exception.getMessage());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
     }
 
 

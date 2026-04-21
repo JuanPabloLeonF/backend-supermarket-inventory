@@ -1,24 +1,15 @@
 package dev.juanleon.supermarket_inventory.files.infrastructure.exceptions;
 
+import dev.juanleon.supermarket_inventory.common.exception.BuildResponseExceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class GlobalFileExceptionHandler {
-
-    private ResponseEntity<ProblemDetail> buildResponse(HttpStatus status, Exception exception) {
-        ProblemDetail response = ProblemDetail.forStatus(status);
-        response.setTitle(status.getReasonPhrase());
-        response.setDetail(exception.getMessage());
-        response.setProperty("date", LocalDateTime.now());
-        response.setProperty("typeError", exception.getClass().getSimpleName());
-        return ResponseEntity.status(status).body(response);
-    }
+public class GlobalFileExceptionHandler extends BuildResponseExceptions {
 
     @ExceptionHandler(NotFoundFileException.class)
     public ResponseEntity<ProblemDetail> handlerNotFoudFileException(NotFoundFileException exception) {
