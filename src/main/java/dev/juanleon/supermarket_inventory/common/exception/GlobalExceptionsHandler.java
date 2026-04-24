@@ -1,5 +1,15 @@
 package dev.juanleon.supermarket_inventory.common.exception;
 
+import dev.juanleon.supermarket_inventory.cash_register.infrastructure.outputs.exceptions.NotFoundCashRegisterException;
+import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NoCreateEmployeeOnDatabaseException;
+import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
+import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.*;
+import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
+import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.EmailAlreadyExistsException;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoCreateUserOnDatabaseException;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
+import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -15,16 +25,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionsHandler extends BuildResponseExceptions {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ProblemDetail> handlerIllegalArgumentException(IllegalArgumentException exception) {
-        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
-    }
-
-    @ExceptionHandler(NotFoundTypeRequestHandlerMediator.class)
-    public ResponseEntity<ProblemDetail> handlerNotFoundTypeRequestHandlerMediator(NotFoundTypeRequestHandlerMediator exception) {
-        return this.buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
@@ -37,15 +37,43 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception, erros);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ProblemDetail> handlerDataIntegrityViolationException(DataIntegrityViolationException exception) {
+    //NOT FOUND 404
+    @ExceptionHandler({
+            NotFoundUserException.class,
+            NoUpdateUserByIdException.class,
+            NotFoundReportException.class,
+            NotFoundFileException.class,
+            NotFoundEmployeeException.class,
+            NotFoundCashRegisterException.class
+    })
+    public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
+        return this.buildResponse(HttpStatus.NOT_FOUND, exception);
+    }
+
+    //BAD REQUEST 400
+    @ExceptionHandler({
+            EmailAlreadyExistsException.class,
+            ErrorFileTypeNotAllowedException.class,
+            IllegalArgumentException.class,
+            DataIntegrityViolationException.class,
+            HttpMessageNotReadableException.class
+    })
+    public ResponseEntity<ProblemDetail> handlerBadRequestException(Exception exception) {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ProblemDetail> handlerHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
+    //INTERNAL SERVER ERROR 500
+    @ExceptionHandler({
+            NoCreateUserOnDatabaseException.class,
+            ErrorTryingCreateReport.class,
+            ErrorTryingSaveFileException.class,
+            ErrorTryingDeleteFileException.class,
+            ErrorCreatedDirectoriesException.class,
+            ErrorConvertingImageToWebpException.class,
+            NoCreateEmployeeOnDatabaseException.class,
+            NotFoundTypeRequestHandlerMediator.class
+    })
+    public ResponseEntity<ProblemDetail> handlerInternalServerErrorException(Exception exception) {
+        return this.buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
-
-
 }

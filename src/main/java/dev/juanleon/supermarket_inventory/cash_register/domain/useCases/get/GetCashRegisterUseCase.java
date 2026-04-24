@@ -5,15 +5,18 @@ import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.get.I
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 
 import java.util.UUID;
 
 public class GetCashRegisterUseCase implements IGetCashRegisterService {
 
     private final IGetCashRegisterPersistence iGetCashRegisterPersistence;
+    private final IGetEmployeeService iGetEmployeeService;
 
-    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence) {
+    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence, IGetEmployeeService iGetEmployeeService) {
         this.iGetCashRegisterPersistence = iGetCashRegisterPersistence;
+        this.iGetEmployeeService = iGetEmployeeService;
     }
 
     @Override
@@ -28,6 +31,7 @@ public class GetCashRegisterUseCase implements IGetCashRegisterService {
 
     @Override
     public PagedResponse<CashRegisterModel> getByEmployeeId(UUID employeeId, PaginationRequest paginationRequest) {
+        this.iGetEmployeeService.getById(employeeId);
         return this.iGetCashRegisterPersistence.getByEmployeeId(employeeId, paginationRequest);
     }
 }

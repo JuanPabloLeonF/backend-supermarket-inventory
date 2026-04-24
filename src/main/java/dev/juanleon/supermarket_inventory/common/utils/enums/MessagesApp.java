@@ -31,6 +31,8 @@ public enum MessagesApp {
     FAILURE_ERROR_CREATING_DIRECTORIES("Failure when creating directories: %s" ),
     ERROR_FILE_TYPE_NOT_ALLOWED_EXCEPTION("Error file type not allowed: %s"),
 
+    CASH_REGISTER_NOT_FOUND_BY_ID("CashRegister not found with id: %s"),
+
 
     FORMAT_STRING_MESSAGE("%s %s"),
 

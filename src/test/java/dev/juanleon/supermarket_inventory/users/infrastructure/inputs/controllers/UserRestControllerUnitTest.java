@@ -11,7 +11,6 @@ import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAl
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByLastNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByNameUserQuery;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.GlobalUserExceptionHandler;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
