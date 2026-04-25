@@ -24,6 +24,6 @@ public class PostEmployeeHandler implements IPostEmployeeHandler {
     public ResponseRequestDto registerEmployeeAndUser(RequestRegisterEmployeeDto requestRegisterEmployeeDto) {
         EmployeeModel employeeModel = this.iMapperEmployeeApplication.toModel(requestRegisterEmployeeDto);
         ResponseModel responseModel = this.iPostEmployeeService.registerEmployeeAndUser(employeeModel, requestRegisterEmployeeDto.getInputFileDto());
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

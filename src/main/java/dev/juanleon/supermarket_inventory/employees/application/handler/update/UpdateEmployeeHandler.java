@@ -27,13 +27,13 @@ public class UpdateEmployeeHandler implements IUpdateEmployeeHandler {
     public ResponseRequestDto updateByIdEmployeeAndUser(RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser) {
         EmployeeModel employeeModel = this.iMapperEmployeeApplication.toModel(requestUpdateEmployeeAndUser);
         ResponseModel responseModel = this.iUpdateEmployeeService.updateByIdEmployeeAndUser(employeeModel);
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 
     @Override
     @Transactional
     public ResponseRequestDto updateByIdImage(InputFileDto inputFileDto, UUID id) {
         ResponseModel responseModel = this.iUpdateEmployeeService.updateByIdImage(id, inputFileDto);
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

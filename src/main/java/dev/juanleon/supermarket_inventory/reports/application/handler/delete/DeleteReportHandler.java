@@ -21,6 +21,6 @@ public class DeleteReportHandler implements IDeleteReportHandler {
     @Transactional
     public ResponseRequestDto deleteById(UUID id) {
         ResponseModel responseModel = this.iDeleteReportService.deleteById(id);
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

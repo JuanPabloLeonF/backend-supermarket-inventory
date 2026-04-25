@@ -79,7 +79,7 @@ class UpdateUserHandlerTest {
         when(this.iUpdateUserService.updateById(this.userModel))
                 .thenReturn(this.responseModel);
 
-        when(this.iMapperResponseApp.toResponseRequestDto(this.responseModel))
+        when(this.iMapperResponseApp.toResponse(this.responseModel))
                 .thenReturn(this.responseRequestDto);
 
         ResponseRequestDto response = this.updateUserHandler.updateById(this.requestUpdateUserDto);
@@ -90,7 +90,7 @@ class UpdateUserHandlerTest {
 
         verify(this.iMapperUserApplication).toModel(this.requestUpdateUserDto);
         verify(this.iUpdateUserService).updateById(this.userModel);
-        verify(this.iMapperResponseApp).toResponseRequestDto(this.responseModel);
+        verify(this.iMapperResponseApp).toResponse(this.responseModel);
     }
 
 }

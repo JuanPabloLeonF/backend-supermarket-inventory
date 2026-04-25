@@ -31,6 +31,6 @@ public class PostReportHandler implements IPostReportHandler {
                 modelData,
                 requestReportDto.getEmployeeId()
         );
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

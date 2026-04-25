@@ -80,7 +80,7 @@ class PostUserHandlerTest {
 
         when(this.iMapperUserApplication.toModel(this.requestUserDto)).thenReturn(this.userModel);
         when(this.iPostUserService.create(this.userModel)).thenReturn(this.responseModel);
-        when(this.iMapperResponseApp.toResponseRequestDto(this.responseModel))
+        when(this.iMapperResponseApp.toResponse(this.responseModel))
                 .thenReturn(this.responseRequestDto);
 
         ResponseRequestDto response = this.postUserHandler.create(this.requestUserDto);
@@ -90,6 +90,6 @@ class PostUserHandlerTest {
 
         verify(this.iMapperUserApplication).toModel(this.requestUserDto);
         verify(this.iPostUserService).create(this.userModel);
-        verify(this.iMapperResponseApp).toResponseRequestDto(this.responseModel);
+        verify(this.iMapperResponseApp).toResponse(this.responseModel);
     }
 }

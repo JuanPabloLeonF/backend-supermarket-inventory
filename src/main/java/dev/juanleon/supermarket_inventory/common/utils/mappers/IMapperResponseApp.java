@@ -14,5 +14,5 @@ import org.mapstruct.NullValueCheckStrategy;
 )
 public interface IMapperResponseApp {
     @Mapping(target = "date", source = "dateTime")
-    public ResponseRequestDto toResponseRequestDto(ResponseModel responseModel);
+    ResponseRequestDto toResponse(ResponseModel responseModel);
 }

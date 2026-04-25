@@ -21,6 +21,6 @@ public class DeleteEmployeeHandler implements IDeleteEmployeeHandler {
     @Transactional
     public ResponseRequestDto deleteEmployeeAndUser(UUID idEmployee, UUID idUser) {
         ResponseModel responseModel = this.iDeleteEmployeeService.deleteEmployeeAndUser(idEmployee, idUser);
-        return this.iMapperResponseApp.toResponseRequestDto(responseModel);
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

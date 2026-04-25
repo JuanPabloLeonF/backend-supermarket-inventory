@@ -18,6 +18,6 @@ public class DeleteUserHandler implements IDeleteUserHandler{
     @Override
     public ResponseRequestDto deleteById(UUID id) {
         return this.iMapperResponseApp
-                .toResponseRequestDto(this.iDeleteUserService.deleteById(id));
+                .toResponse(this.iDeleteUserService.deleteById(id));
     }
 }

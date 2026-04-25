@@ -32,6 +32,7 @@ public enum MessagesApp {
     ERROR_FILE_TYPE_NOT_ALLOWED_EXCEPTION("Error file type not allowed: %s"),
 
     CASH_REGISTER_NOT_FOUND_BY_ID("CashRegister not found with id: %s"),
+    CASH_REGISTER_CREATED_SUCCESSFULLY("CashRegister created successfully with id: %s"),
 
 
     FORMAT_STRING_MESSAGE("%s %s"),
