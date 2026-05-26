@@ -7,14 +7,11 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.reports.application.commands.delete.DeleteByIdReportCommand;
 import dev.juanleon.supermarket_inventory.reports.application.commands.post.CreateSalesReportCommand;
 import dev.juanleon.supermarket_inventory.reports.application.dto.RequestCreateSales;
-import dev.juanleon.supermarket_inventory.reports.application.dto.RequestGetByPeriodReport;
-import dev.juanleon.supermarket_inventory.reports.application.dto.RequestGetByYearReport;
 import dev.juanleon.supermarket_inventory.reports.application.dto.ResponseReport;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getAll.GetAllReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByIdReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByPeriodReportQuery;
 import dev.juanleon.supermarket_inventory.reports.application.queries.getBy.GetByYearReportQuery;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,16 +43,24 @@ public class ReportRestController {
     }
 
     @GetMapping("/period")
-    public ResponseEntity<PagedResponse<ResponseReport>> getByPeriod(@Valid @RequestBody RequestGetByPeriodReport request) {
-        GetByPeriodReportQuery query = new GetByPeriodReportQuery(request.getPeriod(), request.getPaginationRequest());
+    public ResponseEntity<PagedResponse<ResponseReport>> getByPeriod(
+            @RequestParam(defaultValue = "enero") String period,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetByPeriodReportQuery query = new GetByPeriodReportQuery(period, page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
     }
 
     @GetMapping("/year/{year}")
-    public ResponseEntity<PagedResponse<ResponseReport>> getByYear(@Valid @RequestBody RequestGetByYearReport request) {
-        GetByYearReportQuery query = new GetByYearReportQuery(request.getYear(), request.getPaginationRequest());
+    public ResponseEntity<PagedResponse<ResponseReport>> getByYear(
+            @RequestParam(defaultValue = "2026") String year,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetByYearReportQuery query = new GetByYearReportQuery(year, page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));

@@ -17,30 +17,81 @@ public class EmployeeModel {
     private BigDecimal salary;
     private LocalDate hireDate;
 
-    public EmployeeModel() {
+    private EmployeeModel(EmployeeModelBuilder builder) {
+        this.id = builder.id;
+        this.userModel = builder.userModel;
+        this.nationalId = builder.nationalId;
+        this.phone = builder.phone;
+        this.address = builder.address;
+        this.urlImg = builder.urlImg;
+        this.position = builder.position;
+        this.salary = builder.salary;
+        this.hireDate = builder.hireDate;
     }
 
-    public EmployeeModel(UUID id, UserModel userModel, String nationalId, String phone, String address, String urlImg, String position, BigDecimal salary, LocalDate hireDate) {
-        this.id = id;
-        this.userModel = userModel;
-        this.nationalId = nationalId;
-        this.phone = phone;
-        this.address = address;
-        this.urlImg = urlImg;
-        this.position = position;
-        this.salary = salary;
-        this.hireDate = hireDate;
+    public static EmployeeModelBuilder builder() {
+        return new EmployeeModelBuilder();
     }
 
-    public EmployeeModel(UserModel userModel, String nationalId, String phone, String address, String position, String urlImg, BigDecimal salary, LocalDate hireDate) {
-        this.userModel = userModel;
-        this.nationalId = nationalId;
-        this.phone = phone;
-        this.address = address;
-        this.position = position;
-        this.urlImg = urlImg;
-        this.salary = salary;
-        this.hireDate = hireDate;
+    public static class EmployeeModelBuilder {
+        public UUID id;
+        public UserModel userModel;
+        public String nationalId;
+        public String phone;
+        public String address;
+        public String urlImg;
+        public String position;
+        public BigDecimal salary;
+        public LocalDate hireDate;
+
+        public EmployeeModelBuilder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public EmployeeModelBuilder userModel(UserModel userModel) {
+            this.userModel = userModel;
+            return this;
+        }
+
+        public EmployeeModelBuilder nationalId(String nationalId) {
+            this.nationalId = nationalId;
+            return this;
+        }
+
+        public EmployeeModelBuilder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public EmployeeModelBuilder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public EmployeeModelBuilder urlImg(String urlImg) {
+            this.urlImg = urlImg;
+            return this;
+        }
+
+        public EmployeeModelBuilder position(String position) {
+            this.position = position;
+            return this;
+        }
+
+        public EmployeeModelBuilder salary(BigDecimal salary) {
+            this.salary = salary;
+            return this;
+        }
+
+        public EmployeeModelBuilder hireDate(LocalDate hireDate) {
+            this.hireDate = hireDate;
+            return this;
+        }
+
+        public EmployeeModel build() {
+            return new EmployeeModel(this);
+        }
     }
 
     public UUID getId() {

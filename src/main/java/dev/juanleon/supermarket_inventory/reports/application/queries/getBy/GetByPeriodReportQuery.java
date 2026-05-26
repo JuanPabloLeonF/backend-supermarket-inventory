@@ -7,5 +7,6 @@ import dev.juanleon.supermarket_inventory.reports.application.dto.ResponseReport
 
 public record GetByPeriodReportQuery(
         String period,
-        PaginationRequest paginationRequest
+        Integer page,
+        Integer size
 ) implements IRequest<PagedResponse<ResponseReport>> {}

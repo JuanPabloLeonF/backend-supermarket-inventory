@@ -2,7 +2,6 @@ package dev.juanleon.supermarket_inventory.employees.infrastructure.inputs.contr
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
-import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.employees.application.commands.delete.DeleteByIdEmployeeAndUserCommand;
 import dev.juanleon.supermarket_inventory.employees.application.commands.post.RegisterEmployeeAndUserCommand;
@@ -32,15 +31,18 @@ public class EmployeeRestController {
     private final Mediator mediator;
 
     @GetMapping
-    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getAll(@Valid @RequestBody PaginationRequest request) {
-        GetAllEmployeeQuery query = new GetAllEmployeeQuery(request);
+    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetAllEmployeeQuery query = new GetAllEmployeeQuery(page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseEmployeeDto> getById(@PathVariable("id")UUID id) {
+    public ResponseEntity<ResponseEmployeeDto> getById(@PathVariable("id") UUID id) {
         GetByIdEmployeeQuery query = new GetByIdEmployeeQuery(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -48,28 +50,42 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/nameandlastname")
-    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByNameAndLastName(@Valid @RequestBody RequestNameAndLastName request) {
+    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByNameAndLastName(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String lastName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         GetByNameAndLastNameEmployeeQuery query = new GetByNameAndLastNameEmployeeQuery(
-                request.getName(),
-                request.getLastName(),
-                request.getPaginationRequest()
+                name,
+                lastName,
+                page,
+                size
         );
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
     }
 
-    @GetMapping("/position/{position}")
-    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByPosition(@PathVariable("position") String position, @RequestBody PaginationRequest request) {
-        GetByPositionQuery query = new GetByPositionQuery(position, request);
+    @GetMapping("/position")
+    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByPosition(
+            @RequestParam(defaultValue = "") String position,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetByPositionQuery query = new GetByPositionQuery(position, page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
     }
 
-    @GetMapping("/hiredate/{hireDate}")
-    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByHireDate(@PathVariable("hireDate") LocalDateTime hireDate, @RequestBody PaginationRequest request) {
-        GetByHireDateEmployeeQuery query = new GetByHireDateEmployeeQuery(hireDate, request);
+    @GetMapping("/hiredate")
+    public ResponseEntity<PagedResponse<ResponseEmployeeDto>> getByHireDate(
+            @RequestParam(defaultValue = "") LocalDateTime hireDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetByHireDateEmployeeQuery query = new GetByHireDateEmployeeQuery(hireDate, page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
@@ -83,7 +99,7 @@ public class EmployeeRestController {
                 .body(this.mediator.dispatch(command));
     }
 
-    @PutMapping
+    @PutMapping("/updateById")
     public ResponseEntity<ResponseRequestDto> updateByIdEmployeeAndUser(@Valid @RequestBody RequestUpdateEmployeeAndUser requestUpdateEmployeeAndUser) {
         UpdateByIdEmployeeAndUserCommand command = new UpdateByIdEmployeeAndUserCommand(requestUpdateEmployeeAndUser);
         return ResponseEntity
@@ -99,9 +115,12 @@ public class EmployeeRestController {
                 .body(this.mediator.dispatch(command));
     }
 
-    @DeleteMapping
-    public ResponseEntity<ResponseRequestDto> deleteByIdEmployeeAndUser(@Valid @RequestBody RequestDeleteEmployeeAndUser request) {
-        DeleteByIdEmployeeAndUserCommand command = new DeleteByIdEmployeeAndUserCommand(request.getIdEmployee(), request.getIdUser());
+    @DeleteMapping("/{idEmployee}/subid/{idUser}")
+    public ResponseEntity<ResponseRequestDto> deleteByIdEmployeeAndUser(
+            @PathVariable("idEmployee") UUID idEmployee,
+            @PathVariable("idUser") UUID idUser
+    ) {
+        DeleteByIdEmployeeAndUserCommand command = new DeleteByIdEmployeeAndUserCommand(idEmployee, idUser);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

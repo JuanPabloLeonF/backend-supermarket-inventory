@@ -3,13 +3,11 @@ package dev.juanleon.supermarket_inventory.cash_register.infrastructure.inputs.c
 import dev.juanleon.supermarket_inventory.cash_register.application.commands.post.PostCashRegisterCommand;
 import dev.juanleon.supermarket_inventory.cash_register.application.dto.CashRegisterRequest;
 import dev.juanleon.supermarket_inventory.cash_register.application.dto.CashRegisterResponse;
-import dev.juanleon.supermarket_inventory.cash_register.application.dto.RequestEmployeeId;
 import dev.juanleon.supermarket_inventory.cash_register.application.queries.getAll.GetAllCashRegisterQuery;
 import dev.juanleon.supermarket_inventory.cash_register.application.queries.getBy.GetByEmployeeIdCashRegisterQuery;
 import dev.juanleon.supermarket_inventory.cash_register.application.queries.getBy.GetByIdCashRegisterQuery;
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
-import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,11 @@ public class CashRegisterRestController {
     private final Mediator mediator;
 
     @GetMapping
-    public ResponseEntity<PagedResponse<CashRegisterResponse>> getAll(@RequestBody PaginationRequest request) {
-        GetAllCashRegisterQuery query = new GetAllCashRegisterQuery(request);
+    public ResponseEntity<PagedResponse<CashRegisterResponse>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        GetAllCashRegisterQuery query = new GetAllCashRegisterQuery(page, size);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
@@ -42,11 +43,16 @@ public class CashRegisterRestController {
                 .body(this.mediator.dispatch(query));
     }
 
-    @GetMapping("/employeeId")
-    public ResponseEntity<PagedResponse<CashRegisterResponse>> getByEmployeeId(@Valid @RequestBody RequestEmployeeId request) {
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<PagedResponse<CashRegisterResponse>> getByEmployeeId(
+            @PathVariable("employeeId") UUID employeeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         GetByEmployeeIdCashRegisterQuery query = new GetByEmployeeIdCashRegisterQuery(
-                request.getEmployeeId(),
-                request.getPaginationRequest()
+                employeeId,
+                page,
+                size
         );
         return ResponseEntity
                 .status(HttpStatus.OK)

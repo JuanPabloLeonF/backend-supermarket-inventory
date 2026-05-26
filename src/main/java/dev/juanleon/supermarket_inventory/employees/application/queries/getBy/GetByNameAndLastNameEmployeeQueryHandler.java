@@ -2,6 +2,7 @@ package dev.juanleon.supermarket_inventory.employees.application.queries.getBy;
 
 import dev.juanleon.supermarket_inventory.common.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.employees.application.dto.responses.ResponseEmployeeDto;
 import dev.juanleon.supermarket_inventory.employees.application.handler.get.IGetEmployeeHandler;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,17 @@ public class GetByNameAndLastNameEmployeeQueryHandler implements IRequestHandler
 
     @Override
     public PagedResponse<ResponseEmployeeDto> handle(GetByNameAndLastNameEmployeeQuery request) {
-        return this.iGetEmployeeHandler.getByNameAndLastName(request.name(), request.lastName(), request.paginationRequest());
+
+        PaginationRequest data = PaginationRequest.builder()
+                .page(request.page())
+                .size(request.size())
+                .build();
+
+        return this.iGetEmployeeHandler.getByNameAndLastName(
+                request.name(),
+                request.lastName(),
+                data
+        );
     }
 
     @Override

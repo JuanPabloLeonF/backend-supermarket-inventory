@@ -2,6 +2,7 @@ package dev.juanleon.supermarket_inventory.reports.application.queries.getBy;
 
 import dev.juanleon.supermarket_inventory.common.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.reports.application.dto.ResponseReport;
 import dev.juanleon.supermarket_inventory.reports.application.handler.get.IGetReportHandler;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,11 @@ public class GetByPeriodReportQueryHandler implements IRequestHandler<GetByPerio
 
     @Override
     public PagedResponse<ResponseReport> handle(GetByPeriodReportQuery request) {
-        return this.iGetReportHandler.getByPeriod(request.period(), request.paginationRequest());
+        PaginationRequest data = PaginationRequest.builder()
+                .page(request.page())
+                .size(request.size())
+                .build();
+        return this.iGetReportHandler.getByPeriod(request.period(), data);
     }
 
     @Override

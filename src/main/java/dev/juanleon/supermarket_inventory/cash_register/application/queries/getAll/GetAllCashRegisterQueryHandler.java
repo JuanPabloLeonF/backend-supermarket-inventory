@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.cash_register.application.dto.CashRegi
 import dev.juanleon.supermarket_inventory.cash_register.application.handler.get.IGetCashRegisterHandler;
 import dev.juanleon.supermarket_inventory.common.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,11 @@ public class GetAllCashRegisterQueryHandler implements IRequestHandler<GetAllCas
 
     @Override
     public PagedResponse<CashRegisterResponse> handle(GetAllCashRegisterQuery request) {
-        return this.iGetCashRegisterHandler.getAll(request.paginationRequest());
+        PaginationRequest data = PaginationRequest.builder()
+                .page(request.page())
+                .size(request.size())
+                .build();
+        return this.iGetCashRegisterHandler.getAll(data);
     }
 
     @Override

@@ -15,29 +15,81 @@ public class UserModel {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public UserModel() {}
-
-    public UserModel(String name, String lastName, String email, String password, String rol, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.rol = rol;
-        this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    private UserModel(UserModelBuilder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.rol = builder.rol;
+        this.isActive = builder.isActive;
+        this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
     }
 
-    public UserModel(UUID id, String name, String lastName, String email, String password, String rol, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.rol = rol;
-        this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public static UserModelBuilder builder() {
+        return new UserModelBuilder();
+    }
+
+    public static class UserModelBuilder {
+        public UUID id;
+        public String name;
+        public String lastName;
+        public String email;
+        public String password;
+        public String rol;
+        public Boolean isActive;
+        public LocalDateTime createdAt;
+        public LocalDateTime updatedAt;
+
+        public UserModelBuilder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserModelBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserModelBuilder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserModelBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserModelBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserModelBuilder rol(String rol) {
+            this.rol = rol;
+            return this;
+        }
+
+        public UserModelBuilder isActive(Boolean isActive) {
+            this.isActive = isActive;
+            return this;
+        }
+
+        public UserModelBuilder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public UserModelBuilder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public UserModel build() {
+            return new UserModel(this);
+        }
     }
 
     public UUID getId() {
