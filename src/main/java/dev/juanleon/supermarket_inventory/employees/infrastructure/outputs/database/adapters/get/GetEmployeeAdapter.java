@@ -14,7 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Repository
@@ -54,7 +54,7 @@ public class GetEmployeeAdapter implements IGetEmployeePersistence {
     }
 
     @Override
-    public PagedResponse<EmployeeModel> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
+    public PagedResponse<EmployeeModel> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<EmployeeEntity> entityPage = iEmployeeRepository.findByHireDateGreaterThanEqual(hireDate, pageable);
         return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);

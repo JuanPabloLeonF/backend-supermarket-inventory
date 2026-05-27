@@ -33,7 +33,7 @@ public enum MessagesApp {
 
     CASH_REGISTER_NOT_FOUND_BY_ID("CashRegister not found with id: %s"),
     CASH_REGISTER_CREATED_SUCCESSFULLY("CashRegister created successfully with id: %s"),
-
+    CASH_REGISTER_DELETED_SUCCESSFULLY_BY_ID("CashRegister deleted successfully by id: %s"),
 
     FORMAT_STRING_MESSAGE("%s %s"),
 

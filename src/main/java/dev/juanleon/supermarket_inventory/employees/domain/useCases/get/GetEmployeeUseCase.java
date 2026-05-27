@@ -6,7 +6,7 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.get.IGetEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class GetEmployeeUseCase implements IGetEmployeeService {
@@ -38,7 +38,7 @@ public class GetEmployeeUseCase implements IGetEmployeeService {
     }
 
     @Override
-    public PagedResponse<EmployeeModel> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
+    public PagedResponse<EmployeeModel> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
         return this.iGetEmployeePersistence.getByHireDate(hireDate, paginationRequest);
     }
 

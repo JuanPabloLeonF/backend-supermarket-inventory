@@ -10,7 +10,7 @@ import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmpl
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -50,7 +50,7 @@ public class GetEmployeeHandler implements IGetEmployeeHandler {
     }
 
     @Override
-    public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDateTime hireDate, PaginationRequest paginationRequest) {
+    public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByHireDate(hireDate, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
     }

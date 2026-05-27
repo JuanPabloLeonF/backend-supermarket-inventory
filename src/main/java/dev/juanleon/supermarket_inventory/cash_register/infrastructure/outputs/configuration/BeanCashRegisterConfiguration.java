@@ -1,9 +1,12 @@
 package dev.juanleon.supermarket_inventory.cash_register.infrastructure.outputs.configuration;
 
+import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.delete.IDeleteCashRegisterPersistence;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.get.IGetCashRegisterPersistence;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.post.IPostCashRegisterPersistence;
+import dev.juanleon.supermarket_inventory.cash_register.domain.services.delete.IDeleteCashRegisterService;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.post.IPostCashRegisterService;
+import dev.juanleon.supermarket_inventory.cash_register.domain.useCases.delete.DeleteCashRegisterUseCase;
 import dev.juanleon.supermarket_inventory.cash_register.domain.useCases.get.GetCashRegisterUseCase;
 import dev.juanleon.supermarket_inventory.cash_register.domain.useCases.post.PostCashRegisterUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
@@ -12,6 +15,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanCashRegisterConfiguration {
+
+    @Bean
+    public IDeleteCashRegisterService iDeleteCashRegisterService(
+            IDeleteCashRegisterPersistence iDeleteCashRegisterPersistence
+    ) {
+        return new DeleteCashRegisterUseCase(iDeleteCashRegisterPersistence);
+    }
 
     @Bean
     public IGetCashRegisterService iGetCashRegisterService(

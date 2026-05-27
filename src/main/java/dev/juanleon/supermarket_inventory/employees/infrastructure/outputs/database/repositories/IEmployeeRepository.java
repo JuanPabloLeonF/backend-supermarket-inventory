@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,5 +30,5 @@ public interface IEmployeeRepository extends JpaRepository<EmployeeEntity, UUID>
     Page<EmployeeEntity> findByPosition(String position, Pageable pageable);
 
     @EntityGraph(attributePaths = {"userEntity"})
-    Page<EmployeeEntity> findByHireDateGreaterThanEqual(LocalDateTime startDate, Pageable pageable);
+    Page<EmployeeEntity> findByHireDateGreaterThanEqual(LocalDate localDate, Pageable pageable);
 }

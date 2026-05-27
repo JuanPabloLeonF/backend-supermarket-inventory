@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.cash_register.infrastructure.inputs.controllers;
 
+import dev.juanleon.supermarket_inventory.cash_register.application.commands.delete.DeleteCashRegisterCommand;
 import dev.juanleon.supermarket_inventory.cash_register.application.commands.post.PostCashRegisterCommand;
 import dev.juanleon.supermarket_inventory.cash_register.application.dto.CashRegisterRequest;
 import dev.juanleon.supermarket_inventory.cash_register.application.dto.CashRegisterResponse;
@@ -62,6 +63,14 @@ public class CashRegisterRestController {
     @PostMapping
     public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody CashRegisterRequest request) {
         PostCashRegisterCommand command = new PostCashRegisterCommand(request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseRequestDto> deleteById(@PathVariable("id") UUID id) {
+        DeleteCashRegisterCommand command = new DeleteCashRegisterCommand(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));
