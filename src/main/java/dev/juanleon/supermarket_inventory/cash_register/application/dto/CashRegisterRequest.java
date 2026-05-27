@@ -1,8 +1,6 @@
 package dev.juanleon.supermarket_inventory.cash_register.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,9 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 public class CashRegisterRequest {
 
-    @Valid
-    @NotNull(message = "employee data is required")
-    private EmployeeModel employee;
+    @NotNull(message = "employeeId is required")
+    private UUID employeeId;
 
     @NotNull(message = "openingTime date is required")
     @JsonFormat(pattern = "yyyy-MM-dd")

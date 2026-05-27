@@ -60,7 +60,7 @@ public class CashRegisterRestController {
                 .body(this.mediator.dispatch(query));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody CashRegisterRequest request) {
         PostCashRegisterCommand command = new PostCashRegisterCommand(request);
         return ResponseEntity

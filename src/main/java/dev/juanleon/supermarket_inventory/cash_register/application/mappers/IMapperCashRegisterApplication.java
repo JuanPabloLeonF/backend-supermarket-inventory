@@ -17,6 +17,7 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface IMapperCashRegisterApplication {
     CashRegisterResponse toResponse(CashRegisterModel cashRegisterModel);
 
+    @Mapping(target = "employee", ignore = true)
     @Mapping(target = "id", ignore = true)
     CashRegisterModel toModel(CashRegisterRequest cashRegisterRequest);
 }
