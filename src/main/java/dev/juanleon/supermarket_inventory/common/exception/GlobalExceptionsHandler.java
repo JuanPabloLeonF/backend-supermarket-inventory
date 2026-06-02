@@ -6,6 +6,7 @@ import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.excep
 import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.*;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;
+import dev.juanleon.supermarket_inventory.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.EmailAlreadyExistsException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoCreateUserOnDatabaseException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
@@ -44,7 +45,8 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             NotFoundReportException.class,
             NotFoundFileException.class,
             NotFoundEmployeeException.class,
-            NotFoundCashRegisterException.class
+            NotFoundCashRegisterException.class,
+            NotFoundSalesException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);

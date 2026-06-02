@@ -7,6 +7,8 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 
+import java.util.UUID;
+
 public class PostCashRegisterUseCase implements IPostCashRegisterService {
 
     private final IPostCashRegisterPersistence iPostCashRegisterPersistence;
@@ -18,8 +20,8 @@ public class PostCashRegisterUseCase implements IPostCashRegisterService {
     }
 
     @Override
-    public ResponseModel create(CashRegisterModel cashRegisterModel) {
-        EmployeeModel employeeModel = this.iGetEmployeeService.getById(cashRegisterModel.getEmployee().getId());
+    public ResponseModel create(CashRegisterModel cashRegisterModel, UUID employeeId) {
+        EmployeeModel employeeModel = this.iGetEmployeeService.getById(employeeId);
         cashRegisterModel.setEmployee(employeeModel);
         String response = this.iPostCashRegisterPersistence.create(cashRegisterModel);
         return new ResponseModel(response);

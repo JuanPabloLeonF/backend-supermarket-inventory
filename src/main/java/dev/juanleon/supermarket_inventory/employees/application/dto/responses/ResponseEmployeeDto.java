@@ -24,6 +24,6 @@ public class ResponseEmployeeDto {
     private String urlImg;
     private String position;
     private BigDecimal salary;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime hireDate;
 }

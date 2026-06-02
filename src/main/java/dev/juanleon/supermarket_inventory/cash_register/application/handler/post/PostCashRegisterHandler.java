@@ -9,6 +9,7 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,10 @@ public class PostCashRegisterHandler implements IPostCashRegisterHandler {
     private final IMapperResponseApp iMapperResponseApp;
 
     @Override
+    @Transactional
     public ResponseRequestDto create(CashRegisterRequest cashRegisterRequest) {
         CashRegisterModel model = this.iMapperCashRegisterApplication.toModel(cashRegisterRequest);
-        ResponseModel responseModel = this.iPostCashRegisterService.create(model);
+        ResponseModel responseModel = this.iPostCashRegisterService.create(model, cashRegisterRequest.getEmployeeId());
         return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

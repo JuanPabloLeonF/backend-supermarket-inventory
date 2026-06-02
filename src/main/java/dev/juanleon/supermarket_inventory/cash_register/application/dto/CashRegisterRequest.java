@@ -21,11 +21,11 @@ public class CashRegisterRequest {
     private UUID employeeId;
 
     @NotNull(message = "openingTime date is required")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime openingTime;
 
     @NotNull(message = "closingTime date is required")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime closingTime;
 
     @NotNull(message = "initialAmount is required")

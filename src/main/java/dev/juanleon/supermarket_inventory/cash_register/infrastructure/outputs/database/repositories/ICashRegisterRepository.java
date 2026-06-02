@@ -14,14 +14,14 @@ public interface ICashRegisterRepository extends JpaRepository<CashRegisterEntit
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"employee"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
     Page<CashRegisterEntity> findAll(@NonNull Pageable pageable);
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"employee"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
     Optional<CashRegisterEntity> findById(@NonNull UUID id);
 
-    @EntityGraph(attributePaths = {"employee"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
     Page<CashRegisterEntity> findByEmployee_Id(UUID id, Pageable pageable);
 }
