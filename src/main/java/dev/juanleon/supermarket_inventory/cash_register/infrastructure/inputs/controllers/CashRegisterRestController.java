@@ -44,7 +44,7 @@ public class CashRegisterRestController {
                 .body(this.mediator.dispatch(query));
     }
 
-    @GetMapping("/{employeeId}")
+    @GetMapping("/employee-id/{employeeId}")
     public ResponseEntity<PagedResponse<CashRegisterResponse>> getByEmployeeId(
             @PathVariable("employeeId") UUID employeeId,
             @RequestParam(defaultValue = "0") int page,
