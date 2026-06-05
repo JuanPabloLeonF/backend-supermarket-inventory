@@ -11,6 +11,7 @@ import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exception
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoCreateUserOnDatabaseException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -66,6 +67,7 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
 
     //INTERNAL SERVER ERROR 500
     @ExceptionHandler({
+            DataAccessException.class,
             NoCreateUserOnDatabaseException.class,
             ErrorTryingCreateReport.class,
             ErrorTryingSaveFileException.class,

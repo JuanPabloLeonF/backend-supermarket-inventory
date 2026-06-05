@@ -36,6 +36,7 @@ public enum MessagesApp {
     CASH_REGISTER_DELETED_SUCCESSFULLY_BY_ID("CashRegister deleted successfully by id: %s"),
 
     SALES_NOT_FOUND_BY_DATA("Sales not found with data: %s"),
+    SALES_CREATED_SUCCESSFULLY("Sales created successfully with id: %s"),
 
     FORMAT_STRING_MESSAGE("%s %s"),
 

@@ -2,10 +2,14 @@ package dev.juanleon.supermarket_inventory.sales.infrastructure.inputs.controlle
 
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.sales.application.commands.post.CreateSalesCommand;
+import dev.juanleon.supermarket_inventory.sales.application.dto.SalesRequestDTO;
 import dev.juanleon.supermarket_inventory.sales.application.dto.SalesResponseDTO;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getAll.*;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getBy.GetByIdSalesQuery;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getBy.GetByNumberSalesQuery;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import lombok.RequiredArgsConstructor;
@@ -117,5 +121,13 @@ public class SalesRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody SalesRequestDTO salesRequestDTO) {
+        CreateSalesCommand command = new CreateSalesCommand(salesRequestDTO);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.mediator.dispatch(command));
     }
 }
