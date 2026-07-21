@@ -18,6 +18,11 @@ public enum MessagesApp {
     EMPLOYEE_NOT_FOUND_BY_ID("Employee not found with id: %s"),
     EMPLOYEE_NOT_CREATED_ON_DATABASE("Employee not created on database with data: %s , %s"),
 
+    CATEGORIES_DELETED_SUCCESSFULLY_BY_ID("Category deleted successfully by id: %s"),
+    CATEGORIES_UPDATE_SUCCESSFULLY_BY_ID("Category updated successfully with id: %s"),
+    CATEGORIES_NOT_FOUND_BY_ID("Category not found with id: %s"),
+    CATEGORIES_CREATED_SUCCESSFULLY("Category created successfully with id: %s"),
+
     REPORT_NOT_FOUND_BY_ID("Report not found with id: %s"),
     REPORT_NOT_CREATED_BY_ERROR("Report not create"),
     REPORT_CREATED_SUCCESSFULLY("Report created successfully with id: %s"),
