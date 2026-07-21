@@ -1,6 +1,7 @@
 package dev.juanleon.supermarket_inventory.common.exception;
 
 import dev.juanleon.supermarket_inventory.cash_register.infrastructure.outputs.exceptions.NotFoundCashRegisterException;
+import dev.juanleon.supermarket_inventory.categories.infrastructure.outputs.exceptions.NotFoundCategoriesException;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NoCreateEmployeeOnDatabaseException;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
 import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.*;
@@ -47,7 +48,8 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             NotFoundFileException.class,
             NotFoundEmployeeException.class,
             NotFoundCashRegisterException.class,
-            NotFoundSalesException.class
+            NotFoundSalesException.class,
+            NotFoundCategoriesException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);

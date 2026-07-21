@@ -16,9 +16,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GetCategoriesHandler implements IGetCategoriesHandler {
 
-    private IGetCategoriesServices iGetCategoriesServices;
-    private IMapperCategoriesApplication iMapperCategoriesApplication;
-    private IMapperPaginationApp iMapperPaginationApp;
+    private final IGetCategoriesServices iGetCategoriesServices;
+    private final IMapperCategoriesApplication iMapperCategoriesApplication;
+    private final IMapperPaginationApp iMapperPaginationApp;
 
     @Override
     public ResponseCategoriesDto getById(UUID id) {

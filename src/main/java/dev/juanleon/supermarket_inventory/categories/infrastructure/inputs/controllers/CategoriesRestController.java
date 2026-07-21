@@ -59,15 +59,15 @@ public class CategoriesRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseRequestDto> create(@Valid RequestCategoriesDto request) {
+    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody RequestCategoriesDto request) {
         CreateCategoriesCommand command = new CreateCategoriesCommand(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(this.mediator.dispatch(command));
     }
 
-    @PostMapping("/updateById")
-    public ResponseEntity<ResponseRequestDto> updateById(@Valid RequestUpdateCategoriesDto request) {
+    @PutMapping("/updateById")
+    public ResponseEntity<ResponseRequestDto> updateById(@Valid @RequestBody RequestUpdateCategoriesDto request) {
         UpdateByIdCategoriesCommand command = new UpdateByIdCategoriesCommand(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
