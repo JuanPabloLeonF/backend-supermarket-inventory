@@ -27,4 +27,15 @@ public class BuildResponseExceptions {
         response.setProperty("typeError", exception.getClass().getSimpleName());
         return ResponseEntity.status(status).body(response);
     }
+
+    protected ResponseEntity<ProblemDetail> buildResponse(String detail, Exception exception) {
+
+        ProblemDetail response = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        response.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        response.setDetail(detail);
+        response.setProperty("date", LocalDateTime.now());
+        response.setProperty("typeError", exception.getClass().getSimpleName());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }

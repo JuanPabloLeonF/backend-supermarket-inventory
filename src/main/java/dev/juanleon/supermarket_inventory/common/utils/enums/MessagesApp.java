@@ -18,6 +18,8 @@ public enum MessagesApp {
     EMPLOYEE_NOT_FOUND_BY_ID("Employee not found with id: %s"),
     EMPLOYEE_NOT_CREATED_ON_DATABASE("Employee not created on database with data: %s , %s"),
 
+    PRODUCT_NOT_FOUND_BY_ID("Product not found with id: %s"),
+
     CATEGORIES_DELETED_SUCCESSFULLY_BY_ID("Category deleted successfully by id: %s"),
     CATEGORIES_UPDATE_SUCCESSFULLY_BY_ID("Category updated successfully with id: %s"),
     CATEGORIES_NOT_FOUND_BY_ID("Category not found with id: %s"),
@@ -44,6 +46,8 @@ public enum MessagesApp {
     SALES_CREATED_SUCCESSFULLY("Sales created successfully with id: %s"),
 
     FORMAT_STRING_MESSAGE("%s %s"),
+
+    INVALID_ENUM_VALUE("Invalid value '%s' for field '%s'. Allowed values: %s"),
 
     BAD_REQUEST_VALIDATED_PAGINATION_NUMBER("Page number must be greater than or equal to 0"),
     BAD_REQUEST_VALIDATED_PAGINATION_SIZE("Page size must be greater than 0");

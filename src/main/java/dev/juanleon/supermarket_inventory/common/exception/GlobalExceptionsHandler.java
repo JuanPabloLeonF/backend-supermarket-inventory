@@ -5,6 +5,7 @@ import dev.juanleon.supermarket_inventory.categories.infrastructure.outputs.exce
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NoCreateEmployeeOnDatabaseException;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
 import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.*;
+import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;
 import dev.juanleon.supermarket_inventory.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
@@ -21,9 +22,13 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tools.jackson.databind.exc.InvalidFormatException;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.INVALID_ENUM_VALUE;
 
 @RestControllerAdvice
 public class GlobalExceptionsHandler extends BuildResponseExceptions {
@@ -40,6 +45,30 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception, erros);
     }
 
+    // VALID ENUMS 404
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ProblemDetail> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException exception) {
+
+        if (exception.getCause() instanceof InvalidFormatException invalidFormatException
+                && invalidFormatException.getTargetType().isEnum()) {
+
+            String field = invalidFormatException.getPath().getFirst().getPropertyName();
+
+            Object[] values = invalidFormatException.getTargetType().getEnumConstants();
+
+            return this.buildResponse(
+                    INVALID_ENUM_VALUE.format(
+                            invalidFormatException.getValue(),
+                            field,
+                            Arrays.toString(values)
+                    ),
+                    exception);
+        }
+
+        return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
+    }
+
     //NOT FOUND 404
     @ExceptionHandler({
             NotFoundUserException.class,
@@ -49,7 +78,8 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             NotFoundEmployeeException.class,
             NotFoundCashRegisterException.class,
             NotFoundSalesException.class,
-            NotFoundCategoriesException.class
+            NotFoundCategoriesException.class,
+            NotFoundProductException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);
@@ -60,8 +90,7 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             EmailAlreadyExistsException.class,
             ErrorFileTypeNotAllowedException.class,
             IllegalArgumentException.class,
-            DataIntegrityViolationException.class,
-            HttpMessageNotReadableException.class
+            DataIntegrityViolationException.class
     })
     public ResponseEntity<ProblemDetail> handlerBadRequestException(Exception exception) {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception);
