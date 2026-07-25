@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -35,12 +36,12 @@ public class RequestProductDto {
     @NotNull(message = "Price sale is required")
     @Positive(message = "Price sale must be greater than 0")
     @Digits(integer = 12, fraction = 2, message = "priceSale has invalid format (max 12 integers and 2 decimals)")
-    private Double priceSale;
+    private BigDecimal priceSale;
 
     @NotNull(message = "Price purchase is required")
     @Positive(message = "Price purchase must be greater than 0")
     @Digits(integer = 12, fraction = 2, message = "pricePurchase has invalid format (max 12 integers and 2 decimals)")
-    private Double pricePurchase;
+    private BigDecimal pricePurchase;
 
     @NotNull(message = "Stock is required")
     @PositiveOrZero(message = "Stock cannot be negative")

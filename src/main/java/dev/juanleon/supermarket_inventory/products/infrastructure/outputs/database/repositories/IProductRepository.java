@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,10 +40,10 @@ public interface IProductRepository extends JpaRepository<ProductEntity, UUID> {
     Page<ProductEntity> findByActive(Boolean active, Pageable pageable);
 
     @EntityGraph(attributePaths = {"categoriesEntity"})
-    Page<ProductEntity> findByPriceSale(Double priceSale, Pageable pageable);
+    Page<ProductEntity> findByPriceSale(BigDecimal priceSale, Pageable pageable);
 
     @EntityGraph(attributePaths = {"categoriesEntity"})
-    Page<ProductEntity> findByPricePurchase(Double pricePurchase, Pageable pageable);
+    Page<ProductEntity> findByPricePurchase(BigDecimal pricePurchase, Pageable pageable);
 
     @EntityGraph(attributePaths = {"categoriesEntity"})
     Page<ProductEntity> findByUnitMeasurement(String unitMeasurement, Pageable pageable);

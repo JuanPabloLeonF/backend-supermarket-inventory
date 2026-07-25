@@ -10,6 +10,7 @@ import dev.juanleon.supermarket_inventory.products.domain.services.get.IGetProdu
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -82,7 +83,7 @@ public class GetProductsHandler implements IGetProductsHandler {
     }
 
     @Override
-    public PagedResponse<ResponseProductDto> getByPriceSale(PaginationRequest paginationRequest, Double priceSale) {
+    public PagedResponse<ResponseProductDto> getByPriceSale(PaginationRequest paginationRequest, BigDecimal priceSale) {
         PagedResponse<ProductModel> productModelPagedResponse = this.iGetProductsServices.getByPriceSale(paginationRequest, priceSale);
         return this.iMapperPaginationApp
                 .pageResponseToPageResponseTypeResponse(
@@ -92,7 +93,7 @@ public class GetProductsHandler implements IGetProductsHandler {
     }
 
     @Override
-    public PagedResponse<ResponseProductDto> getByPricePurchase(PaginationRequest paginationRequest, Double pricePurchase) {
+    public PagedResponse<ResponseProductDto> getByPricePurchase(PaginationRequest paginationRequest, BigDecimal pricePurchase) {
         PagedResponse<ProductModel> productModelPagedResponse = this.iGetProductsServices.getByPricePurchase(paginationRequest, pricePurchase);
         return this.iMapperPaginationApp
                 .pageResponseToPageResponseTypeResponse(

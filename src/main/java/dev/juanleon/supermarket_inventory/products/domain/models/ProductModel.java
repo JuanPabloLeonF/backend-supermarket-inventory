@@ -2,6 +2,7 @@ package dev.juanleon.supermarket_inventory.products.domain.models;
 
 import dev.juanleon.supermarket_inventory.categories.domain.models.CategoriesModel;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -13,8 +14,8 @@ public class ProductModel {
     private String name;
     private String description;
     private String unitMeasurement;
-    private Double priceSale;
-    private Double pricePurchase;
+    private BigDecimal priceSale;
+    private BigDecimal pricePurchase;
     private Integer stock;
     private Boolean active;
     private LocalDate createdAt;
@@ -46,8 +47,8 @@ public class ProductModel {
         public String name;
         public String description;
         public String unitMeasurement;
-        public Double priceSale;
-        public Double pricePurchase;
+        public BigDecimal priceSale;
+        public BigDecimal pricePurchase;
         public Integer stock;
         public Boolean active;
         public LocalDate createdAt;
@@ -83,12 +84,12 @@ public class ProductModel {
             return this;
         }
 
-        public ProductsModelBuilder priceSale(Double priceSale) {
+        public ProductsModelBuilder priceSale(BigDecimal priceSale) {
             this.priceSale = priceSale;
             return this;
         }
 
-        public ProductsModelBuilder pricePurchase(Double pricePurchase) {
+        public ProductsModelBuilder pricePurchase(BigDecimal pricePurchase) {
             this.pricePurchase = pricePurchase;
             return this;
         }
@@ -166,19 +167,19 @@ public class ProductModel {
         this.unitMeasurement = unitMeasurement;
     }
 
-    public Double getPriceSale() {
+    public BigDecimal getPriceSale() {
         return priceSale;
     }
 
-    public void setPriceSale(Double priceSale) {
+    public void setPriceSale(BigDecimal priceSale) {
         this.priceSale = priceSale;
     }
 
-    public Double getPricePurchase() {
+    public BigDecimal getPricePurchase() {
         return pricePurchase;
     }
 
-    public void setPricePurchase(Double pricePurchase) {
+    public void setPricePurchase(BigDecimal pricePurchase) {
         this.pricePurchase = pricePurchase;
     }
 

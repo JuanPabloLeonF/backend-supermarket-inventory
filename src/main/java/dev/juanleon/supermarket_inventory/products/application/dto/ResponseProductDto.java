@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -22,8 +23,8 @@ public class ResponseProductDto {
     private String name;
     private String description;
     private String unitMeasurement;
-    private Double priceSale;
-    private Double pricePurchase;
+    private BigDecimal priceSale;
+    private BigDecimal pricePurchase;
     private Integer stock;
     private Boolean active;
     @JsonFormat(pattern = "yyyy-MM-dd")

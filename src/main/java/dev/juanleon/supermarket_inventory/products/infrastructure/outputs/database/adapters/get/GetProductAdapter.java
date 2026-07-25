@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -75,14 +76,14 @@ public class GetProductAdapter implements IGetProductsPersistence {
     }
 
     @Override
-    public PagedResponse<ProductModel> getByPriceSale(PaginationRequest paginationRequest, Double priceSale) {
+    public PagedResponse<ProductModel> getByPriceSale(PaginationRequest paginationRequest, BigDecimal priceSale) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<ProductEntity> pageEntities = this.iProductRepository.findByPriceSale(priceSale, pageable);
         return this.iMapperPaginationApp.pagetoPagedResponse(pageEntities, this.iMapperProductInfrastructure::toModel);
     }
 
     @Override
-    public PagedResponse<ProductModel> getByPricePurchase(PaginationRequest paginationRequest, Double pricePurchase) {
+    public PagedResponse<ProductModel> getByPricePurchase(PaginationRequest paginationRequest, BigDecimal pricePurchase) {
         Pageable pageable = this.iMapperPaginationApp.toPageable(paginationRequest);
         Page<ProductEntity> pageEntities = this.iProductRepository.findByPricePurchase(pricePurchase, pageable);
         return this.iMapperPaginationApp.pagetoPagedResponse(pageEntities, this.iMapperProductInfrastructure::toModel);

@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.categories.infrastructure.outputs.data
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -37,10 +38,10 @@ public class ProductEntity {
     private String unitMeasurement;
 
     @Column(nullable = false, name = "price_sale")
-    private Double priceSale;
+    private BigDecimal priceSale;
 
     @Column(nullable = false, name = "price_purchase")
-    private Double pricePurchase;
+    private BigDecimal pricePurchase;
 
     @Column(nullable = false)
     private Integer stock;

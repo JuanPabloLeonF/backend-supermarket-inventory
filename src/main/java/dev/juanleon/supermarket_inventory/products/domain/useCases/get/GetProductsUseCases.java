@@ -6,6 +6,7 @@ import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.get.IGetProductsPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.services.get.IGetProductsServices;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -53,12 +54,12 @@ public class GetProductsUseCases implements IGetProductsServices {
     }
 
     @Override
-    public PagedResponse<ProductModel> getByPriceSale(PaginationRequest paginationRequest, Double priceSale) {
+    public PagedResponse<ProductModel> getByPriceSale(PaginationRequest paginationRequest, BigDecimal priceSale) {
         return this.iGetProductsPersistence.getByPriceSale(paginationRequest, priceSale);
     }
 
     @Override
-    public PagedResponse<ProductModel> getByPricePurchase(PaginationRequest paginationRequest, Double pricePurchase) {
+    public PagedResponse<ProductModel> getByPricePurchase(PaginationRequest paginationRequest, BigDecimal pricePurchase) {
         return this.iGetProductsPersistence.getByPricePurchase(paginationRequest, pricePurchase);
     }
 
