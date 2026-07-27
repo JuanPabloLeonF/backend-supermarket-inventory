@@ -3,10 +3,10 @@ spring:
 
   # DATABASE
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/db_supermarket_inventory}
-    driverClassName: org.postgresql.Driver
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: ${DB_URL}
+    driver-class-name: ${DRIVER_CLASS_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   # JPA
   jpa:
@@ -14,12 +14,12 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: ${DATABASE_PLATFORM}
     properties:
       hibernate:
         format_sql: true
 
 # APPLICATION
 app:
-  path-upload-images-employees: ${UPLOAD_PATH_EMPLOYEE:uploads/employees}
-  path-upload-files-pdf-reports-sales: ${UPLOAD_PATH_FILES_PDF_REPORTS_SALES:uploads/reports/sales}
+  path-upload-images-employees: ${UPLOAD_PATH_EMPLOYEE}
+  path-upload-files-pdf-reports-sales: ${UPLOAD_PATH_FILES_PDF_REPORTS_SALES}

@@ -1,17 +1,19 @@
 # API
 spring:
+  config:
+    import: optional:file:./env.properties
   application:
-    name: ${APP_NAME:supermarket-inventory}
+    name: ${APP_NAME}
 
 # PROFILE
   profiles:
-    active: dev
+    active: ${PROFILE}
 
 # API
 server:
-  port: ${APP_PORT_DEV:2000}
+  port: ${APP_PORT}
   servlet:
-    context-path: /api/v1
+    context-path: ${CONTEXT_PATH}
 
 # SWAGGER OPEN API
 springdoc:
