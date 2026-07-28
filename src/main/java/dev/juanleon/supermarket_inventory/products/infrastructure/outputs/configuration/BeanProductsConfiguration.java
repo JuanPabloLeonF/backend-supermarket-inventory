@@ -1,12 +1,18 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.configuration;
 
 import dev.juanleon.supermarket_inventory.categories.domain.services.get.IGetCategoriesServices;
+import dev.juanleon.supermarket_inventory.products.domain.persistence.delete.IDeleteProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.get.IGetProductsPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
+import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
+import dev.juanleon.supermarket_inventory.products.domain.services.delete.IDeleteProductService;
 import dev.juanleon.supermarket_inventory.products.domain.services.get.IGetProductsServices;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
+import dev.juanleon.supermarket_inventory.products.domain.services.update.IUpdateProductService;
+import dev.juanleon.supermarket_inventory.products.domain.useCases.delete.DeleteProductUseCase;
 import dev.juanleon.supermarket_inventory.products.domain.useCases.get.GetProductsUseCases;
 import dev.juanleon.supermarket_inventory.products.domain.useCases.post.PostProductUseCase;
+import dev.juanleon.supermarket_inventory.products.domain.useCases.update.UpdateProductUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,5 +30,18 @@ public class BeanProductsConfiguration {
             IGetCategoriesServices iGetCategoriesServices
     ) {
         return new PostProductUseCase(iPostProductPersistence, iGetCategoriesServices);
+    }
+
+    @Bean
+    public IUpdateProductService iUpdateProductService(
+            IUpdateProductPersistence iUpdateProductPersistence,
+            IGetCategoriesServices iGetCategoriesServices
+    ) {
+        return new UpdateProductUseCase(iUpdateProductPersistence, iGetCategoriesServices);
+    }
+
+    @Bean
+    public IDeleteProductService iDeleteProductService(IDeleteProductPersistence iDeleteProductPersistence) {
+        return new DeleteProductUseCase(iDeleteProductPersistence);
     }
 }

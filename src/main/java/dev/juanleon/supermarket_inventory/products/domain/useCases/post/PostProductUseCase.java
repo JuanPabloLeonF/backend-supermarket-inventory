@@ -7,6 +7,7 @@ import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class PostProductUseCase implements IPostProductService {
@@ -23,6 +24,9 @@ public class PostProductUseCase implements IPostProductService {
     public ResponseModel create(ProductModel productModel, UUID idCategories) {
         CategoriesModel categoriesModel = this.iGetCategoriesServices.getById(idCategories);
         productModel.setCategoriesModel(categoriesModel);
+        LocalDate localDate = LocalDate.now();
+        productModel.setCreatedAt(localDate);
+        productModel.setUpdatedAt(localDate);
         String message = this.iPostProductPersistence.create(productModel);
         return new ResponseModel(message);
     }

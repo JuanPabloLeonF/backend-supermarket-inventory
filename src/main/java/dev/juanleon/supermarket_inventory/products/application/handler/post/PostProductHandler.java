@@ -9,6 +9,7 @@ import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class PostProductHandler implements IPostProductHandler {
     private final IMapperResponseApp iMapperResponseApp;
 
     @Override
+    @Transactional
     public ResponseRequestDto create(RequestProductDto requestProductDto) {
         ProductModel productModel = this.iMapperProductsApplication.toModel(requestProductDto);
         ResponseModel responseModel = this.iPostProductService.create(productModel, requestProductDto.getIdCategories());

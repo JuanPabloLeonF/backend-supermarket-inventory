@@ -3,8 +3,13 @@ package dev.juanleon.supermarket_inventory.products.infrastructure.inputs.contro
 import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.products.application.commands.delete.DeleteByIdProductCommand;
 import dev.juanleon.supermarket_inventory.products.application.commands.post.CreateProductCommand;
+import dev.juanleon.supermarket_inventory.products.application.commands.update.UpdateActivateProductCommand;
+import dev.juanleon.supermarket_inventory.products.application.commands.update.UpdateProductCommand;
 import dev.juanleon.supermarket_inventory.products.application.dto.RequestProductDto;
+import dev.juanleon.supermarket_inventory.products.application.dto.RequestProductUpdateActivateDto;
+import dev.juanleon.supermarket_inventory.products.application.dto.RequestProductUpdateDto;
 import dev.juanleon.supermarket_inventory.products.application.dto.ResponseProductDto;
 import dev.juanleon.supermarket_inventory.products.application.queries.getAll.GetAllByActiveProductsQuery;
 import dev.juanleon.supermarket_inventory.products.application.queries.getAll.GetAllByCategoriesProductsQuery;
@@ -186,6 +191,30 @@ public class ProductResController {
     @PostMapping("/create")
     public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody RequestProductDto request) {
         CreateProductCommand command = new CreateProductCommand(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseRequestDto> update(@Valid @RequestBody RequestProductUpdateDto request) {
+        UpdateProductCommand command = new UpdateProductCommand(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @PatchMapping("/updateactivate")
+    public ResponseEntity<ResponseRequestDto> updateActivate(@Valid @RequestBody RequestProductUpdateActivateDto request) {
+        UpdateActivateProductCommand command = new UpdateActivateProductCommand(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(this.mediator.dispatch(command));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseRequestDto> deleteById(@PathVariable("id") UUID id) {
+        DeleteByIdProductCommand command = new DeleteByIdProductCommand(id);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(this.mediator.dispatch(command));
