@@ -4,12 +4,15 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.update.IUpdateEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.repositories.IEmployeeRepository;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
+import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
 import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -17,6 +20,7 @@ import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.
 public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
 
     private final IEmployeeRepository iEmployeeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public String updateById(EmployeeModel employeeModel) {
@@ -37,6 +41,10 @@ public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
     public String updateByIdImage(String urlImg, UUID id) {
         return this.iEmployeeRepository.findById(id)
                 .map(entity -> {
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
+                            entity.getUrlImg(),
+                            PATH_UPLOAD_IMAGES_PRODUCTS
+                    ));
                     entity.setUrlImg(urlImg);
                     entity.getUserEntity().setUpdatedAt(LocalDateTime.now());
                     this.iEmployeeRepository.save(entity);

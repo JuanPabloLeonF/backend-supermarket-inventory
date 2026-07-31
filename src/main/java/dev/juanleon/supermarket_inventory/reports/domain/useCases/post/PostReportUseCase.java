@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.reports.domain.useCases.post;
 
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.reports.domain.models.ReportModel;
@@ -12,6 +11,7 @@ import dev.juanleon.supermarket_inventory.reports.domain.services.post.IPostRepo
 
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_SALES;
 import static dev.juanleon.supermarket_inventory.files.domain.FileConstants.TEMPLATE_REPORT_SALES;
 
 public class PostReportUseCase implements IPostReportService {
@@ -19,13 +19,11 @@ public class PostReportUseCase implements IPostReportService {
     private final IPostReportPersistence iPostReportPersistence;
     private final IPortEmployeeReportsGet iPortEmployeeReportsGet;
     private final IPortFilesReports iPortFilesReports;
-    private final AppConfigurationProperties appConfigurationProperties;
 
-    public PostReportUseCase(IPostReportPersistence iPostReportPersistence, IPortEmployeeReportsGet iPortEmployeeReportsGet, IPortFilesReports iPortFilesReports, AppConfigurationProperties appConfigurationProperties) {
+    public PostReportUseCase(IPostReportPersistence iPostReportPersistence, IPortEmployeeReportsGet iPortEmployeeReportsGet, IPortFilesReports iPortFilesReports) {
         this.iPostReportPersistence = iPostReportPersistence;
         this.iPortEmployeeReportsGet = iPortEmployeeReportsGet;
         this.iPortFilesReports = iPortFilesReports;
-        this.appConfigurationProperties = appConfigurationProperties;
     }
 
     @Override
@@ -37,7 +35,7 @@ public class PostReportUseCase implements IPostReportService {
         String urlFile = this.iPortFilesReports.createPdf(
                     saleReportModel,
                     TEMPLATE_REPORT_SALES,
-                    this.appConfigurationProperties.getPathUploadFilesPdfReportsSales()
+                    PATH_UPLOAD_FILES_PDF_SALES
             );
         reportModel.setFilePath(urlFile);
         return this.iPostReportPersistence.create(reportModel);

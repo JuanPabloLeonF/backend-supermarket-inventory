@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.adapters.update;
 
-import dev.juanleon.supermarket_inventory.products.domain.events.UpdateUrlImgProductEvent;
+import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.entities.ProductEntity;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
 import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.PRODUCT_UPDATE_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -57,12 +58,12 @@ public class UpdateProductAdapter implements IUpdateProductPersistence {
     }
 
     @Override
-    public String updateUrlImg(UUID productId, String urlImg, String uploadImg) {
+    public String updateUrlImg(UUID productId, String urlImg) {
         return this.iProductRepository.findById(productId)
                 .map(product -> {
-                    this.applicationEventPublisher.publishEvent(new UpdateUrlImgProductEvent(
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
                             product.getUrlImg(),
-                            uploadImg
+                            PATH_UPLOAD_IMAGES_PRODUCTS
                     ));
                     product.setUrlImg(urlImg);
                     product.setUpdatedAt(LocalDate.now());

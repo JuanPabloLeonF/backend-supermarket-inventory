@@ -1,8 +1,5 @@
 package dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.configuration;
 
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
-import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
-import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.delete.IDeleteReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.get.IGetReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.post.IPostReportPersistence;
@@ -29,27 +26,17 @@ public class BeanReportConfiguration {
     public IPostReportService iPostReportService(
             IPostReportPersistence iPostReportPersistence,
             IPortEmployeeReportsGet iPortEmployeeReportsGet,
-            IPortFilesReports iPortFilesReports,
-            AppConfigurationProperties appConfigurationProperties
+            IPortFilesReports iPortFilesReports
     ) {
         return new PostReportUseCase(
                 iPostReportPersistence,
                 iPortEmployeeReportsGet,
-                iPortFilesReports,
-                appConfigurationProperties
+                iPortFilesReports
         );
     }
 
     @Bean
-    public IDeleteReportService iDeleteReportService(
-            IDeleteReportPersistence iDeleteReportPersistence,
-            IPortFilesReports iPortFilesReports,
-            AppConfigurationProperties appConfigurationProperties
-    ) {
-        return new DeleteReportUseCases(
-                iDeleteReportPersistence,
-                iPortFilesReports,
-                appConfigurationProperties
-        );
+    public IDeleteReportService iDeleteReportService(IDeleteReportPersistence iDeleteReportPersistence) {
+        return new DeleteReportUseCases(iDeleteReportPersistence);
     }
 }

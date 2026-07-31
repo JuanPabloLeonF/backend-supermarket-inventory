@@ -1,8 +1,8 @@
 package dev.juanleon.supermarket_inventory.files.infrastructure.listeners;
 
 import dev.juanleon.supermarket_inventory.files.domain.events.FileCreatedEvent;
+import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.files.infrastructure.exterior.repository.IFileUtils;
-import dev.juanleon.supermarket_inventory.products.domain.events.UpdateUrlImgProductEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,9 +24,9 @@ public class TransactionalFilesResourcesHandler {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handlerFileUpdated(UpdateUrlImgProductEvent event) {
-        log.info("Transaccion exitosa detectada. limpiando archivo antiguo en commit: {}", event.urlImgOld());
-        this.iFilesUtils.findFile(event.urlImgOld(), event.uploadUrl())
+    public void handlerFileDeleted(FileDeletedEvent event) {
+        log.info("Transaccion exitosa detectada. limpiando archivo en commit: {}", event.urlFile());
+        this.iFilesUtils.findFile(event.urlFile(), event.pathUpload())
                 .ifPresent(this.iFilesUtils::deleteFileByPath);
     }
 }

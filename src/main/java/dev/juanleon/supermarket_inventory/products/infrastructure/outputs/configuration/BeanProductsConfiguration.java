@@ -1,7 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.configuration;
 
 import dev.juanleon.supermarket_inventory.categories.domain.services.get.IGetCategoriesServices;
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.delete.IDeleteProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.get.IGetProductsPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
@@ -31,14 +30,12 @@ public class BeanProductsConfiguration {
     public IPostProductService iPostProductService(
             IPostProductPersistence iPostProductPersistence,
             IPortCategoriesProductsGet iPortCategoriesProductsGet,
-            IPortFilesProducts iPortFilesProducts,
-            AppConfigurationProperties appConfigurationProperties
+            IPortFilesProducts iPortFilesProducts
     ) {
         return new PostProductUseCase(
                 iPostProductPersistence,
                 iPortCategoriesProductsGet,
-                iPortFilesProducts,
-                appConfigurationProperties
+                iPortFilesProducts
         );
     }
 
@@ -46,14 +43,12 @@ public class BeanProductsConfiguration {
     public IUpdateProductService iUpdateProductService(
             IUpdateProductPersistence iUpdateProductPersistence,
             IGetCategoriesServices iGetCategoriesServices,
-            IPortFilesProducts iPortFilesProducts,
-            AppConfigurationProperties appConfigurationProperties
+            IPortFilesProducts iPortFilesProducts
     ) {
         return new UpdateProductUseCase(
                 iUpdateProductPersistence,
                 iGetCategoriesServices,
-                iPortFilesProducts,
-                appConfigurationProperties
+                iPortFilesProducts
         );
     }
 

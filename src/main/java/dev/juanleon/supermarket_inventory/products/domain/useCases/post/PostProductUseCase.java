@@ -1,7 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.domain.useCases.post;
 
 import dev.juanleon.supermarket_inventory.categories.domain.models.CategoriesModel;
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
@@ -13,18 +12,18 @@ import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostPro
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+
 public class PostProductUseCase implements IPostProductService {
 
     private final IPostProductPersistence iPostProductPersistence;
     private final IPortCategoriesProductsGet iPortCategoriesProductsGet;
     private final IPortFilesProducts iPortFilesProducts;
-    private final AppConfigurationProperties appConfigurationProperties;
 
-    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, IPortCategoriesProductsGet iPortCategoriesProductsGet, IPortFilesProducts iPortFilesProducts, AppConfigurationProperties appConfigurationProperties) {
+    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, IPortCategoriesProductsGet iPortCategoriesProductsGet, IPortFilesProducts iPortFilesProducts) {
         this.iPostProductPersistence = iPostProductPersistence;
         this.iPortCategoriesProductsGet = iPortCategoriesProductsGet;
         this.iPortFilesProducts = iPortFilesProducts;
-        this.appConfigurationProperties = appConfigurationProperties;
     }
 
     @Override
@@ -33,10 +32,7 @@ public class PostProductUseCase implements IPostProductService {
         CategoriesModel categoriesModel = this.iPortCategoriesProductsGet.getByIdCategoriesForProducts(idCategories);
         productModel.setCategoriesModel(categoriesModel);
 
-        String urlImg = this.iPortFilesProducts.createImage(
-                inputFileDto,
-                this.appConfigurationProperties.getPathUploadImagesProducts()
-        );
+        String urlImg = this.iPortFilesProducts.createImage(inputFileDto, PATH_UPLOAD_IMAGES_PRODUCTS);
 
         productModel.setUrlImg(urlImg);
         productModel.setActive(true);

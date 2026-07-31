@@ -1,16 +1,10 @@
 package dev.juanleon.supermarket_inventory.common.configuration;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+public final class AppConfigurationProperties {
 
-@Getter
-@Setter
-@Configuration
-@ConfigurationProperties(prefix = "app")
-public class AppConfigurationProperties {
-    private String pathUploadImagesEmployees;
-    private String pathUploadFilesPdfReportsSales;
-    private String pathUploadImagesProducts;
+    private AppConfigurationProperties(){}
+
+    public final static String PATH_UPLOAD_IMAGES_EMPLOYEES = "uploads/employees";
+    public final static String PATH_UPLOAD_IMAGES_PRODUCTS = "uploads/products";
+    public final static String PATH_UPLOAD_FILES_PDF_SALES = "uploads/reports/sales";
 }

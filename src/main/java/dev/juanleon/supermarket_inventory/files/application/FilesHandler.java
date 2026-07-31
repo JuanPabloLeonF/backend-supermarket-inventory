@@ -31,11 +31,6 @@ public class FilesHandler implements
     }
 
     @Override
-    public String updateImg(InputFileDto inputFileDto, String urlImage, String uploadUrl) {
-        return this.iFilesService.updateImg(inputFileDto, urlImage, uploadUrl);
-    }
-
-    @Override
     public ResponseModel deleteReportSales(String urlFile, String uploadUrl) {
         return this.iFilesService.deleteReportSales(urlFile, uploadUrl);
     }
