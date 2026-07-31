@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.application.handler.update;
 
+import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
@@ -37,6 +38,13 @@ public class UpdateProductHandler implements IUpdateProductHandler {
     @Transactional
     public ResponseRequestDto updateActive(UUID productId, Boolean active) {
         ResponseModel responseModel = this.iUpdateProductService.updateActive(productId, active);
+        return this.iMapperResponseApp.toResponse(responseModel);
+    }
+
+    @Override
+    @Transactional
+    public ResponseRequestDto updateUrlImg(UUID productId, InputFileDto inputFileDto) {
+        ResponseModel responseModel = this.iUpdateProductService.updateUrlImg(productId, inputFileDto);
         return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

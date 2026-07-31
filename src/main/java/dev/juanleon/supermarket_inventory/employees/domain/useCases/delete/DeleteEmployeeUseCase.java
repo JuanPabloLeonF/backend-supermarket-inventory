@@ -1,10 +1,11 @@
 package dev.juanleon.supermarket_inventory.employees.domain.useCases.delete;
 
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
-import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
+import dev.juanleon.supermarket_inventory.employees.domain.ports.IPortFilesEmployee;
+import dev.juanleon.supermarket_inventory.employees.domain.ports.IPortUserEmployeeDelete;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.delete.IDeleteEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.services.delete.IDeleteEmployeeService;
-import dev.juanleon.supermarket_inventory.users.domain.services.delete.IDeleteUserService;
 
 import java.util.UUID;
 
@@ -14,20 +15,26 @@ import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.
 public class DeleteEmployeeUseCase implements IDeleteEmployeeService {
 
     private final IDeleteEmployeePersistence iDeleteEmployeePersistence;
-    private final IDeleteUserService iDeleteUserService;
-    private final IFilesService iFilesService;
+    private final IPortUserEmployeeDelete iPortUserEmployeeDelete;
+    private final IPortFilesEmployee iPortFilesEmployee;
+    private final AppConfigurationProperties appConfigurationProperties;
 
-    public DeleteEmployeeUseCase(IDeleteEmployeePersistence iDeleteEmployeePersistence, IDeleteUserService iDeleteUserService, IFilesService iFilesService) {
+
+    public DeleteEmployeeUseCase(IDeleteEmployeePersistence iDeleteEmployeePersistence, IPortUserEmployeeDelete iPortUserEmployeeDelete, IPortFilesEmployee iPortFilesEmployee, AppConfigurationProperties appConfigurationProperties) {
         this.iDeleteEmployeePersistence = iDeleteEmployeePersistence;
-        this.iDeleteUserService = iDeleteUserService;
-        this.iFilesService = iFilesService;
+        this.iPortUserEmployeeDelete = iPortUserEmployeeDelete;
+        this.iPortFilesEmployee = iPortFilesEmployee;
+        this.appConfigurationProperties = appConfigurationProperties;
     }
 
     @Override
     public ResponseModel deleteEmployeeAndUser(UUID idEmployee, UUID idUser) {
         String urlImg = this.iDeleteEmployeePersistence.deleteEmployeeAndUser(idEmployee);
-        String responseUser = this.iDeleteUserService.deleteById(idUser).message();
-        String message = this.iFilesService.deleteImage(urlImg).message();
+        String responseUser = this.iPortUserEmployeeDelete.deleteByIdForEmployee(idUser).message();
+        String message = this.iPortFilesEmployee.deleteImage(
+                urlImg,
+                this.appConfigurationProperties.getPathUploadImagesEmployees()
+        ).message();
         return new ResponseModel(
                 FORMAT_STRING_MESSAGE.format(
                         FORMAT_STRING_MESSAGE.format(

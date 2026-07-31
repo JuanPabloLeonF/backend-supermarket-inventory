@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -49,4 +50,7 @@ public class RequestProductDto {
 
     @NotNull(message = "Active is required")
     private Boolean active;
+
+    @NotNull(message = "Image is required")
+    private MultipartFile imgFile;
 }

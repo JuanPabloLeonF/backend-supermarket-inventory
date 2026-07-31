@@ -2,21 +2,21 @@ package dev.juanleon.supermarket_inventory.cash_register.domain.useCases.get;
 
 import dev.juanleon.supermarket_inventory.cash_register.domain.models.CashRegisterModel;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.get.IGetCashRegisterPersistence;
+import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IPortEmployeeCashRegisterGet;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
-import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 
 import java.util.UUID;
 
 public class GetCashRegisterUseCase implements IGetCashRegisterService {
 
     private final IGetCashRegisterPersistence iGetCashRegisterPersistence;
-    private final IGetEmployeeService iGetEmployeeService;
+    private final IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet;
 
-    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence, IGetEmployeeService iGetEmployeeService) {
+    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence, IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet) {
         this.iGetCashRegisterPersistence = iGetCashRegisterPersistence;
-        this.iGetEmployeeService = iGetEmployeeService;
+        this.iPortEmployeeCashRegisterGet = iPortEmployeeCashRegisterGet;
     }
 
     @Override
@@ -31,7 +31,9 @@ public class GetCashRegisterUseCase implements IGetCashRegisterService {
 
     @Override
     public PagedResponse<CashRegisterModel> getByEmployeeId(UUID employeeId, PaginationRequest paginationRequest) {
-        this.iGetEmployeeService.getById(employeeId);
-        return this.iGetCashRegisterPersistence.getByEmployeeId(employeeId, paginationRequest);
+        return this.iGetCashRegisterPersistence.getByEmployeeId(
+                this.iPortEmployeeCashRegisterGet.getByIdForEmployee(employeeId).getId(),
+                paginationRequest
+        );
     }
 }

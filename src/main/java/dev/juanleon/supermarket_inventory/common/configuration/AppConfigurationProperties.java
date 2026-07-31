@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfigurationProperties {
     private String pathUploadImagesEmployees;
     private String pathUploadFilesPdfReportsSales;
+    private String pathUploadImagesProducts;
 }

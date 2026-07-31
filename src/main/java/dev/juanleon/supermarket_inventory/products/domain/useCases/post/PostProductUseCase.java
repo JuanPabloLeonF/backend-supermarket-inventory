@@ -1,10 +1,13 @@
 package dev.juanleon.supermarket_inventory.products.domain.useCases.post;
 
 import dev.juanleon.supermarket_inventory.categories.domain.models.CategoriesModel;
-import dev.juanleon.supermarket_inventory.categories.domain.services.get.IGetCategoriesServices;
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
+import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
+import dev.juanleon.supermarket_inventory.products.domain.ports.IPortCategoriesProductsGet;
+import dev.juanleon.supermarket_inventory.products.domain.ports.IPortFilesProducts;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
 
 import java.time.LocalDate;
@@ -13,17 +16,30 @@ import java.util.UUID;
 public class PostProductUseCase implements IPostProductService {
 
     private final IPostProductPersistence iPostProductPersistence;
-    private final IGetCategoriesServices iGetCategoriesServices;
+    private final IPortCategoriesProductsGet iPortCategoriesProductsGet;
+    private final IPortFilesProducts iPortFilesProducts;
+    private final AppConfigurationProperties appConfigurationProperties;
 
-    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, IGetCategoriesServices iGetCategoriesServices) {
+    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, IPortCategoriesProductsGet iPortCategoriesProductsGet, IPortFilesProducts iPortFilesProducts, AppConfigurationProperties appConfigurationProperties) {
         this.iPostProductPersistence = iPostProductPersistence;
-        this.iGetCategoriesServices = iGetCategoriesServices;
+        this.iPortCategoriesProductsGet = iPortCategoriesProductsGet;
+        this.iPortFilesProducts = iPortFilesProducts;
+        this.appConfigurationProperties = appConfigurationProperties;
     }
 
     @Override
-    public ResponseModel create(ProductModel productModel, UUID idCategories) {
-        CategoriesModel categoriesModel = this.iGetCategoriesServices.getById(idCategories);
+    public ResponseModel create(ProductModel productModel, UUID idCategories, InputFileDto inputFileDto) {
+
+        CategoriesModel categoriesModel = this.iPortCategoriesProductsGet.getByIdCategoriesForProducts(idCategories);
         productModel.setCategoriesModel(categoriesModel);
+
+        String urlImg = this.iPortFilesProducts.createImage(
+                inputFileDto,
+                this.appConfigurationProperties.getPathUploadImagesProducts()
+        );
+
+        productModel.setUrlImg(urlImg);
+        productModel.setActive(true);
         LocalDate localDate = LocalDate.now();
         productModel.setCreatedAt(localDate);
         productModel.setUpdatedAt(localDate);

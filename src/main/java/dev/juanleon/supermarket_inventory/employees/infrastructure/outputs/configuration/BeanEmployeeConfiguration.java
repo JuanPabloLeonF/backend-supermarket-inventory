@@ -1,5 +1,7 @@
 package dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.configuration;
 
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
+import dev.juanleon.supermarket_inventory.employees.domain.ports.*;
 import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.delete.IDeleteEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.get.IGetEmployeePersistence;
@@ -13,9 +15,6 @@ import dev.juanleon.supermarket_inventory.employees.domain.useCases.delete.Delet
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.get.GetEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.post.PostEmployeeUseCase;
 import dev.juanleon.supermarket_inventory.employees.domain.useCases.update.UpdateEmployeeUseCase;
-import dev.juanleon.supermarket_inventory.users.domain.services.delete.IDeleteUserService;
-import dev.juanleon.supermarket_inventory.users.domain.services.get.IGetUserService;
-import dev.juanleon.supermarket_inventory.users.domain.services.post.IPostUserService;
 import dev.juanleon.supermarket_inventory.users.domain.services.update.IUpdateUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,22 +30,31 @@ public class BeanEmployeeConfiguration {
     @Bean
     public IPostEmployeeService iPostEmployeeService (
             IPostEmployeePersistence iPostEmployeePersistence,
-            IPostUserService iPostUserService,
-            IGetUserService iGetUserService,
-            IFilesService iFilesService
+            IPortUserEmployeePost iPortUserEmployeePost,
+            IPortUserEmployeeGet iPortUserEmployeeGet,
+            IPortFilesEmployee iPortFilesEmployee,
+            AppConfigurationProperties appConfigurationProperties
     ) {
-        return new PostEmployeeUseCase(iPostEmployeePersistence, iPostUserService, iGetUserService, iFilesService);
+        return new PostEmployeeUseCase(
+                iPostEmployeePersistence,
+                iPortUserEmployeePost,
+                iPortUserEmployeeGet,
+                iPortFilesEmployee,
+                appConfigurationProperties
+        );
     }
 
     @Bean
     public IDeleteEmployeeService iDeleteEmployeeService(
             IDeleteEmployeePersistence iDeleteEmployeePersistence,
-            IDeleteUserService iDeleteUserService,
-            IFilesService iFilesService
+            IPortUserEmployeeDelete iPortUserEmployeeDelete,
+            IPortFilesEmployee iPortFilesEmployee,
+            AppConfigurationProperties appConfigurationProperties
     ) {
         return new DeleteEmployeeUseCase(iDeleteEmployeePersistence,
-                iDeleteUserService,
-                iFilesService
+                iPortUserEmployeeDelete,
+                iPortFilesEmployee,
+                appConfigurationProperties
         );
     }
 
@@ -54,14 +62,16 @@ public class BeanEmployeeConfiguration {
     public IUpdateEmployeeService iUpdateEmployeeService(
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
             IGetEmployeeService iGetEmployeeService,
-            IUpdateUserService iUpdateUserService,
-            IFilesService iFilesService
+            IPortUserEmployeeUpdate iPortUserEmployeeUpdate,
+            IPortFilesEmployee iPortFilesEmployee,
+            AppConfigurationProperties appConfigurationProperties
     ) {
         return new UpdateEmployeeUseCase(
                 iUpdateEmployeePersistence,
                 iGetEmployeeService,
-                iUpdateUserService,
-                iFilesService
+                iPortUserEmployeeUpdate,
+                iPortFilesEmployee,
+                appConfigurationProperties
         );
     }
 }

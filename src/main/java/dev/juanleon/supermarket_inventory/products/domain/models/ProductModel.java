@@ -20,6 +20,7 @@ public class ProductModel {
     private Boolean active;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    private String urlImg;
 
     private ProductModel(ProductsModelBuilder builder) {
         this.id = builder.id;
@@ -34,6 +35,7 @@ public class ProductModel {
         this.active = builder.active;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
+        this.urlImg = builder.urlImg;
     }
 
     public static ProductsModelBuilder builder() {
@@ -53,6 +55,7 @@ public class ProductModel {
         public Boolean active;
         public LocalDate createdAt;
         public LocalDate updatedAt;
+        public String urlImg;
 
         public ProductsModelBuilder id(UUID id) {
             this.id = id;
@@ -111,6 +114,11 @@ public class ProductModel {
 
         public ProductsModelBuilder updatedAt(LocalDate updatedAt) {
             this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public ProductsModelBuilder urlImg(String urlImg) {
+            this.urlImg = urlImg;
             return this;
         }
 
@@ -215,6 +223,14 @@ public class ProductModel {
         this.updatedAt = updatedAt;
     }
 
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
     @Override
     public String toString() {
         return "ProductModel{" +
@@ -230,6 +246,7 @@ public class ProductModel {
                 ", active=" + active +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", urlImg=" + urlImg +
                 '}';
     }
 }

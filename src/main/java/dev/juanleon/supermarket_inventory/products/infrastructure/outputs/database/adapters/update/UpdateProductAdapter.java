@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.adapters.update;
 
+import dev.juanleon.supermarket_inventory.products.domain.events.UpdateUrlImgProductEvent;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.entities.ProductEntity;
@@ -7,6 +8,7 @@ import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.databa
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.repositories.IProductRepository;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -19,6 +21,7 @@ import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.
 public class UpdateProductAdapter implements IUpdateProductPersistence {
 
     private final IProductRepository iProductRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final IMapperProductInfrastructure iMapperProductInfrastructure;
 
     @Override
@@ -36,18 +39,33 @@ public class UpdateProductAdapter implements IUpdateProductPersistence {
                     product.setPriceSale(entity.getPriceSale());
                     product.setPricePurchase(entity.getPricePurchase());
                     product.setStock(entity.getStock());
-                    product.setUpdatedAt(entity.getUpdatedAt());
+                    product.setUpdatedAt(LocalDate.now());
                     this.iProductRepository.save(product);
                     return PRODUCT_UPDATE_SUCCESSFULLY_BY_ID.format(product.getId());
                 }).orElseThrow(() -> new NotFoundProductException(productId));
     }
 
     @Override
-    public String updateActive(UUID productId, Boolean active, LocalDate localDate) {
+    public String updateActive(UUID productId, Boolean active) {
         return this.iProductRepository.findById(productId)
                 .map(product -> {
                     product.setActive(active);
-                    product.setUpdatedAt(localDate);
+                    product.setUpdatedAt(LocalDate.now());
+                    this.iProductRepository.save(product);
+                    return PRODUCT_UPDATE_SUCCESSFULLY_BY_ID.format(product.getId());
+                }).orElseThrow(() -> new NotFoundProductException(productId));
+    }
+
+    @Override
+    public String updateUrlImg(UUID productId, String urlImg, String uploadImg) {
+        return this.iProductRepository.findById(productId)
+                .map(product -> {
+                    this.applicationEventPublisher.publishEvent(new UpdateUrlImgProductEvent(
+                            product.getUrlImg(),
+                            uploadImg
+                    ));
+                    product.setUrlImg(urlImg);
+                    product.setUpdatedAt(LocalDate.now());
                     this.iProductRepository.save(product);
                     return PRODUCT_UPDATE_SUCCESSFULLY_BY_ID.format(product.getId());
                 }).orElseThrow(() -> new NotFoundProductException(productId));

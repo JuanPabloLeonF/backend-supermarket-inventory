@@ -1,10 +1,13 @@
 package dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.configuration;
 
+import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.delete.IDeleteReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.get.IGetReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.post.IPostReportPersistence;
+import dev.juanleon.supermarket_inventory.reports.domain.ports.IPortEmployeeReportsGet;
+import dev.juanleon.supermarket_inventory.reports.domain.ports.IPortFilesReports;
 import dev.juanleon.supermarket_inventory.reports.domain.services.delete.IDeleteReportService;
 import dev.juanleon.supermarket_inventory.reports.domain.services.get.IGetReportService;
 import dev.juanleon.supermarket_inventory.reports.domain.services.post.IPostReportService;
@@ -25,24 +28,28 @@ public class BeanReportConfiguration {
     @Bean
     public IPostReportService iPostReportService(
             IPostReportPersistence iPostReportPersistence,
-            IGetEmployeeService iGetEmployeeService,
-            IFilesService iFilesService
+            IPortEmployeeReportsGet iPortEmployeeReportsGet,
+            IPortFilesReports iPortFilesReports,
+            AppConfigurationProperties appConfigurationProperties
     ) {
         return new PostReportUseCase(
                 iPostReportPersistence,
-                iGetEmployeeService,
-                iFilesService
+                iPortEmployeeReportsGet,
+                iPortFilesReports,
+                appConfigurationProperties
         );
     }
 
     @Bean
     public IDeleteReportService iDeleteReportService(
             IDeleteReportPersistence iDeleteReportPersistence,
-            IFilesService iFilesService
+            IPortFilesReports iPortFilesReports,
+            AppConfigurationProperties appConfigurationProperties
     ) {
         return new DeleteReportUseCases(
                 iDeleteReportPersistence,
-                iFilesService
+                iPortFilesReports,
+                appConfigurationProperties
         );
     }
 }

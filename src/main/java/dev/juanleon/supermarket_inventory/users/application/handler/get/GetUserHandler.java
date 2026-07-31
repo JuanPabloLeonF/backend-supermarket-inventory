@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.application.handler.get;
 
+import dev.juanleon.supermarket_inventory.employees.domain.ports.IPortUserEmployeeGet;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserApplication;
 import dev.juanleon.supermarket_inventory.users.domain.services.get.IGetUserService;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GetUserHandler implements IGetUserHandler {
+public class GetUserHandler implements IGetUserHandler, IPortUserEmployeeGet {
 
     private final IGetUserService iGetUserService;
     private final IMapperUserApplication iMapperUserApplication;
@@ -38,5 +39,10 @@ public class GetUserHandler implements IGetUserHandler {
     public List<ResponseUserDto> getByLastName(String lastName) {
         return this.iMapperUserApplication
                 .toDtoList(this.iGetUserService.getByLastName(lastName));
+    }
+
+    @Override
+    public void checkEmailIfExist(String email) {
+        this.iGetUserService.checkEmailIfExist(email);
     }
 }

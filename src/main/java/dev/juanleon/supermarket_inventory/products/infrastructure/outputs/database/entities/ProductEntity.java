@@ -55,6 +55,9 @@ public class ProductEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDate updatedAt;
 
+    @Column(name = "url_img", nullable = false)
+    private String urlImg;
+
     @Override
     public String toString() {
         return "ProductEntity{" +
@@ -70,6 +73,7 @@ public class ProductEntity {
                 ", active=" + active +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", urlImg=" + urlImg +
                 '}';
     }
 }

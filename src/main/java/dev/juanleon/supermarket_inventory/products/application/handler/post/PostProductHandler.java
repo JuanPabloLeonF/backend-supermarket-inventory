@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
 import dev.juanleon.supermarket_inventory.products.application.dto.RequestProductDto;
+import dev.juanleon.supermarket_inventory.products.application.dto.RequestProductFileDto;
 import dev.juanleon.supermarket_inventory.products.application.mappers.IMapperProductsApplication;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
@@ -21,9 +22,13 @@ public class PostProductHandler implements IPostProductHandler {
 
     @Override
     @Transactional
-    public ResponseRequestDto create(RequestProductDto requestProductDto) {
-        ProductModel productModel = this.iMapperProductsApplication.toModel(requestProductDto);
-        ResponseModel responseModel = this.iPostProductService.create(productModel, requestProductDto.getIdCategories());
+    public ResponseRequestDto create(RequestProductFileDto requestProductFileDto) {
+        ProductModel productModel = this.iMapperProductsApplication.toModel(requestProductFileDto);
+        ResponseModel responseModel = this.iPostProductService.create(
+                productModel,
+                requestProductFileDto.getIdCategories(),
+                requestProductFileDto.getInputFileDto()
+        );
         return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

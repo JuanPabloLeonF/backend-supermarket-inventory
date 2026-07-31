@@ -7,6 +7,7 @@ import dev.juanleon.supermarket_inventory.categories.domain.services.get.IGetCat
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperPaginationApp;
+import dev.juanleon.supermarket_inventory.products.domain.ports.IPortCategoriesProductsGet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GetCategoriesHandler implements IGetCategoriesHandler {
+public class GetCategoriesHandler implements
+        IGetCategoriesHandler,
+        IPortCategoriesProductsGet
+{
 
     private final IGetCategoriesServices iGetCategoriesServices;
     private final IMapperCategoriesApplication iMapperCategoriesApplication;
@@ -41,5 +45,10 @@ public class GetCategoriesHandler implements IGetCategoriesHandler {
                 categoriesModelPagedResponse,
                 this.iMapperCategoriesApplication::toDto
         );
+    }
+
+    @Override
+    public CategoriesModel getByIdCategoriesForProducts(UUID id) {
+        return this.iGetCategoriesServices.getById(id);
     }
 }

@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.files.infrastructure.exterior.adapter;
 
+import dev.juanleon.supermarket_inventory.files.domain.events.FileCreatedEvent;
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.files.domain.IFilesPersistence;
@@ -7,6 +8,7 @@ import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.NotFou
 import dev.juanleon.supermarket_inventory.files.infrastructure.exterior.repository.IFileUtils;
 import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -27,6 +29,7 @@ public class FilesAdapter implements IFilesPersistence {
 
     private final IFileUtils iFileUtils;
     private final TemplateEngine templateEngine;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     //NO SE OLVIDE QUE ESTE METODO ES GENERICO POR LO TANTO
     // CAMBIAR EL ARGUMENTO DE ENTRADA SalesReportModel por Generico
@@ -50,11 +53,15 @@ public class FilesAdapter implements IFilesPersistence {
 
     @Override
     public String createImage(InputFileDto inputFileDto, String pathUpload) {
-        return this.iFileUtils.processAndSaveWebp(
+        String urlImg = this.iFileUtils.processAndSaveWebp(
                 inputFileDto.getInputStream(),
                 inputFileDto.getOriginalName(),
                 pathUpload
         );
+        
+        this.applicationEventPublisher.publishEvent(new FileCreatedEvent(urlImg, pathUpload));
+
+        return urlImg;
     }
 
     @Override
@@ -70,6 +77,8 @@ public class FilesAdapter implements IFilesPersistence {
                     );
 
                     this.iFileUtils.deleteFileByPath(path);
+
+                    this.applicationEventPublisher.publishEvent(new FileCreatedEvent(newUrlImg, pathUpload));
 
                     return newUrlImg;
 
