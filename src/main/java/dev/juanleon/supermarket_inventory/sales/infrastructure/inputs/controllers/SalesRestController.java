@@ -4,8 +4,8 @@ import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.sales.application.commands.post.CreateSalesCommand;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesRequestDTO;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesResponseDTO;
+import dev.juanleon.supermarket_inventory.sales.application.dto.ResponseSalesDto;
+import dev.juanleon.supermarket_inventory.sales.application.dto.RequestSalesDto;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getAll.*;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getBy.GetByIdSalesQuery;
 import dev.juanleon.supermarket_inventory.sales.application.queries.getBy.GetByNumberSalesQuery;
@@ -32,7 +32,7 @@ public class SalesRestController {
     private final Mediator mediator;
 
     @GetMapping
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAll(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -43,7 +43,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAllByEmployeeId(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAllByEmployeeId(
             @PathVariable("employeeId") UUID employeeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -55,7 +55,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAllByDateSale(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAllByDateSale(
             @RequestParam
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
             LocalDateTime dateSale,
@@ -69,7 +69,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/method-payment")
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAllByMethodPayment(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAllByMethodPayment(
             @RequestParam String methodPayment,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -81,7 +81,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAllByStatus(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAllByStatus(
             @RequestParam String status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -93,7 +93,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/discount")
-    public ResponseEntity<PagedResponse<SalesResponseDTO>> getAllByDiscount(
+    public ResponseEntity<PagedResponse<ResponseSalesDto>> getAllByDiscount(
             @RequestParam
             @DecimalMin(value = "0.00", inclusive = true)
             @Digits(integer = 10, fraction = 2)
@@ -108,7 +108,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<SalesResponseDTO> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<ResponseSalesDto> getById(@PathVariable("id") UUID id) {
         GetByIdSalesQuery query = new GetByIdSalesQuery(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -116,7 +116,7 @@ public class SalesRestController {
     }
 
     @GetMapping("/number-sale/{numberSale}")
-    public ResponseEntity<SalesResponseDTO> getByNumberSale(@PathVariable("numberSale") UUID numberSale) {
+    public ResponseEntity<ResponseSalesDto> getByNumberSale(@PathVariable("numberSale") UUID numberSale) {
         GetByNumberSalesQuery query = new GetByNumberSalesQuery(numberSale);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -124,8 +124,8 @@ public class SalesRestController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody SalesRequestDTO salesRequestDTO) {
-        CreateSalesCommand command = new CreateSalesCommand(salesRequestDTO);
+    public ResponseEntity<ResponseRequestDto> create(@Valid @RequestBody RequestSalesDto requestSalesDto) {
+        CreateSalesCommand command = new CreateSalesCommand(requestSalesDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

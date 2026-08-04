@@ -1,25 +1,29 @@
 package dev.juanleon.supermarket_inventory.sales.application.mappers;
 
 import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperEmployeeApplication;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesRequestDTO;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesResponseDTO;
+import dev.juanleon.supermarket_inventory.sales.application.dto.RequestSalesDto;
+import dev.juanleon.supermarket_inventory.sales.application.dto.ResponseSalesDto;
 import dev.juanleon.supermarket_inventory.sales.domain.models.SalesModel;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {IMapperEmployeeApplication.class}
+        uses = {IMapperEmployeeApplication.class, IMapperSalesDetailsApplication.class}
 )
 public interface IMapperSalesApplication {
 
-    @Mapping(target = "employeeModel", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    SalesModel toModel(SalesRequestDTO salesRequestDTO);
+    @Mappings(value = {
+            @Mapping(target = "employeeModel", ignore = true),
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "salesDetailsModelList", source = "requestSalesDetailsDtoList"),
+            @Mapping(target = "salesDetailsModelList", source = "requestSalesDetailsDtoList"),
+    })
+    SalesModel toModel(RequestSalesDto requestSalesDto);
 
-    @Mapping(target = "employee", source = "employeeModel")
-    SalesResponseDTO toResponse(SalesModel salesModel);
+    @Mappings(value = {
+            @Mapping(target = "employee", source = "employeeModel"),
+            @Mapping(target = "responseSalesDetailsDtoList", source = "salesDetailsModelList")
+    })
+    ResponseSalesDto toResponse(SalesModel salesModel);
 }

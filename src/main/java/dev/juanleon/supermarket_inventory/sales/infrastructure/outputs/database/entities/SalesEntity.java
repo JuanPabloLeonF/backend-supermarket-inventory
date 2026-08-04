@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,25 +21,42 @@ public class SalesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false, referencedColumnName = "id")
     private EmployeeEntity employee;
+
     @Column(name = "number_sale", unique = true, nullable = false)
     private UUID numberSale;
+
     @Column(name = "date_sale", nullable = false)
     private LocalDateTime dateSale;
+
     @Column(name = "sub_total", nullable = false)
     private BigDecimal subTotal;
+
     @Column(nullable = false)
     private BigDecimal discount;
+
     @Column(nullable = false)
     private BigDecimal iva;
+
     @Column(nullable = false)
     private BigDecimal total;
+
     @Column(name = "method_payment", nullable = false)
     private String methodPayment;
+
     @Column(nullable = false)
     private String status;
+
+    @OneToMany(
+            mappedBy = "salesEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<SalesDetailsEntity> salesDetailsEntityList;
 
     @Override
     public String toString() {
@@ -53,6 +71,7 @@ public class SalesEntity {
                 ", total=" + total +
                 ", methodPayment='" + methodPayment + '\'' +
                 ", status='" + status + '\'' +
+                ", salesDetailsEntityList=" + salesDetailsEntityList +
                 '}';
     }
 }

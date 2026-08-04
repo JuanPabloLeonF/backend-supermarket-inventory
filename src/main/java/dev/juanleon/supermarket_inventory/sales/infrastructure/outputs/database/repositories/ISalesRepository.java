@@ -16,29 +16,29 @@ public interface ISalesRepository extends JpaRepository<SalesEntity, UUID> {
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Page<SalesEntity> findAll(@NonNull Pageable pageable);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Page<SalesEntity> findByEmployee_Id(UUID id, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity",  "salesDetailsModelList"})
     Page<SalesEntity> findByDateSaleGreaterThanEqual(LocalDateTime dateSale, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Page<SalesEntity> findByMethodPayment(String methodPayment, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Page<SalesEntity> findByStatus(String status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Page<SalesEntity> findByDiscountGreaterThanEqual(BigDecimal discount, Pageable pageable);
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Optional<SalesEntity> findById(@NonNull UUID id);
 
-    @EntityGraph(attributePaths = {"employee", "employee.userEntity"})
+    @EntityGraph(attributePaths = {"employee", "employee.userEntity", "salesDetailsModelList"})
     Optional<SalesEntity> findByNumberSale(UUID numberSale);
 }

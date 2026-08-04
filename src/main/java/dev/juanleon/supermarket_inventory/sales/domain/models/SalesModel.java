@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class SalesModel {
@@ -17,6 +18,7 @@ public class SalesModel {
     private BigDecimal total;
     private String methodPayment;
     private String status;
+    private List<SalesDetailsModel> salesDetailsModelList;
 
     private SalesModel(SalesModelBuilder builder) {
         this.id = builder.id;
@@ -29,6 +31,7 @@ public class SalesModel {
         this.total = builder.total;
         this.methodPayment = builder.methodPayment;
         this.status = builder.status;
+        this.salesDetailsModelList = builder.salesDetailsModelList;
     }
 
     public static SalesModelBuilder builder() {
@@ -46,6 +49,7 @@ public class SalesModel {
         public BigDecimal total;
         public String methodPayment;
         public String status;
+        public List<SalesDetailsModel> salesDetailsModelList;
 
         public SalesModelBuilder id(UUID id) {
             this.id = id;
@@ -94,6 +98,11 @@ public class SalesModel {
 
         public SalesModelBuilder status(String status) {
             this.status = status;
+            return this;
+        }
+
+        public SalesModelBuilder salesDetailsModelList(List<SalesDetailsModel> salesDetailsModelList) {
+            this.salesDetailsModelList = salesDetailsModelList;
             return this;
         }
 
@@ -182,6 +191,14 @@ public class SalesModel {
         this.status = status;
     }
 
+    public List<SalesDetailsModel> getSalesDetailsModelList() {
+        return salesDetailsModelList;
+    }
+
+    public void setSalesDetailsModelList(List<SalesDetailsModel> salesDetailsModelList) {
+        this.salesDetailsModelList = salesDetailsModelList;
+    }
+
     @Override
     public String toString() {
         return "SalesModel{" +
@@ -195,6 +212,7 @@ public class SalesModel {
                 ", total=" + total +
                 ", methodPayment='" + methodPayment + '\'' +
                 ", status='" + status + '\'' +
+                ", salesDetailsModelList=" + salesDetailsModelList +
                 '}';
     }
 }

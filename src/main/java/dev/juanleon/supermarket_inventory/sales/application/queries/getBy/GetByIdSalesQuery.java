@@ -1,8 +1,8 @@
 package dev.juanleon.supermarket_inventory.sales.application.queries.getBy;
 
 import dev.juanleon.supermarket_inventory.common.mediator.IRequest;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesResponseDTO;
+import dev.juanleon.supermarket_inventory.sales.application.dto.ResponseSalesDto;
 
 import java.util.UUID;
 
-public record GetByIdSalesQuery(UUID id) implements IRequest<SalesResponseDTO> { }
+public record GetByIdSalesQuery(UUID id) implements IRequest<ResponseSalesDto> { }

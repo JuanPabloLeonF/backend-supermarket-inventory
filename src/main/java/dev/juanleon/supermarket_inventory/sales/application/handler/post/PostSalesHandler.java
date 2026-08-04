@@ -2,7 +2,7 @@ package dev.juanleon.supermarket_inventory.sales.application.handler.post;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
-import dev.juanleon.supermarket_inventory.sales.application.dto.SalesRequestDTO;
+import dev.juanleon.supermarket_inventory.sales.application.dto.RequestSalesDto;
 import dev.juanleon.supermarket_inventory.sales.application.mappers.IMapperSalesApplication;
 import dev.juanleon.supermarket_inventory.sales.domain.models.SalesModel;
 import dev.juanleon.supermarket_inventory.sales.domain.services.post.IPostSalesServices;
@@ -22,8 +22,8 @@ public class PostSalesHandler implements IPostSalesHandler {
 
     @Override
     @Transactional
-    public ResponseRequestDto create(SalesRequestDTO salesRequestDTO, UUID employeeId) {
-        SalesModel salesModel = this.iMapperSalesApplication.toModel(salesRequestDTO);
+    public ResponseRequestDto create(RequestSalesDto requestSalesDto, UUID employeeId) {
+        SalesModel salesModel = this.iMapperSalesApplication.toModel(requestSalesDto);
         return this.iMapperResponseApp.toResponse(this.iPostSalesServices.create(salesModel, employeeId));
     }
 }

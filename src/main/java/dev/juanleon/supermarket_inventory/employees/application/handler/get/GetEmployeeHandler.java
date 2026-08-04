@@ -9,7 +9,6 @@ import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperE
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
 import dev.juanleon.supermarket_inventory.reports.domain.ports.IPortEmployeeReportsGet;
-import dev.juanleon.supermarket_inventory.sales.domain.ports.IPortsEmployeeSalesGet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +20,7 @@ import java.util.UUID;
 public class GetEmployeeHandler implements
         IGetEmployeeHandler,
         IPortEmployeeCashRegisterGet,
-        IPortEmployeeReportsGet,
-        IPortsEmployeeSalesGet
+        IPortEmployeeReportsGet
 {
 
     private final IGetEmployeeService iGetEmployeeService;
@@ -61,11 +59,6 @@ public class GetEmployeeHandler implements
     public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByHireDate(hireDate, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
-    }
-
-    @Override
-    public EmployeeModel getByIdEmployeeForSales(UUID id) {
-        return this.iGetEmployeeService.getById(id);
     }
 
     @Override

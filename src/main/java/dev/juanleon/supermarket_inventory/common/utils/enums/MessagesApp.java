@@ -48,6 +48,8 @@ public enum MessagesApp {
     SALES_NOT_FOUND_BY_DATA("Sales not found with data: %s"),
     SALES_CREATED_SUCCESSFULLY("Sales created successfully with id: %s"),
 
+    SALES_DETAILS_NOT_FOUND_BY_DATA("Sales Details not found with data: %s"),
+
     FORMAT_STRING_MESSAGE("%s %s"),
 
     INVALID_ENUM_VALUE("Invalid value '%s' for field '%s'. Allowed values: %s"),

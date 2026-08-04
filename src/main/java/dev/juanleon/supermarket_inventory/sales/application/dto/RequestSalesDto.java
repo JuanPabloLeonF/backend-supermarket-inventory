@@ -1,6 +1,7 @@
 package dev.juanleon.supermarket_inventory.sales.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +10,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SalesRequestDTO {
+public class RequestSalesDto {
 
     @NotNull(message = "employeeId is required")
     private UUID employeeId;
@@ -54,4 +56,8 @@ public class SalesRequestDTO {
     @NotBlank(message = "status is required")
     @Size(min = 5, max = 300, message = "status must be between 5 and 500 characters")
     private String status;
+
+    @Valid
+    @NotNull(message = "requestSalesDetailsDto is required")
+    private List<RequestSalesDetailsDto> requestSalesDetailsDtoList;
 }

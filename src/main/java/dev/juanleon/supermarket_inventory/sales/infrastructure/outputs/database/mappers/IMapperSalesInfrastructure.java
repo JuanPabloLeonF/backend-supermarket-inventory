@@ -8,11 +8,19 @@ import org.mapstruct.*;
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {IMapperEmployeeInfrastructure.class}
+        uses = {IMapperEmployeeInfrastructure.class, IMapperSalesDetailsInfrastructure.class}
 )
 public interface IMapperSalesInfrastructure {
-    @Mapping(target = "employee", source = "employeeModel")
+
+    @Mappings(value = {
+            @Mapping(target = "employee", source = "employeeModel"),
+            @Mapping(target = "salesDetailsEntityList", source = "salesDetailsModelList")
+    })
     SalesEntity toEntity(SalesModel salesModel);
-    @Mapping(target = "employeeModel", source = "employee")
+
+    @Mappings(value = {
+            @Mapping(target = "employeeModel", source = "employee"),
+            @Mapping(target = "salesDetailsModelList", source = "salesDetailsEntityList")
+    })
     SalesModel toModel(SalesEntity salesEntity);
 }

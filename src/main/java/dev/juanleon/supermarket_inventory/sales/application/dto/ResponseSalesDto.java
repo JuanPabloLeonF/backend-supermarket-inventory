@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SalesResponseDTO {
+public class ResponseSalesDto {
     private UUID id;
     private ResponseEmployeeDto employee;
     private UUID numberSale;
@@ -27,4 +28,5 @@ public class SalesResponseDTO {
     private BigDecimal total;
     private String methodPayment;
     private String status;
+    private List<ResponseSalesDetailsDto> responseSalesDetailsDtoList;
 }
