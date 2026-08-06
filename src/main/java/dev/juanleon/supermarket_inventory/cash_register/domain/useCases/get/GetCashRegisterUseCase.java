@@ -2,7 +2,7 @@ package dev.juanleon.supermarket_inventory.cash_register.domain.useCases.get;
 
 import dev.juanleon.supermarket_inventory.cash_register.domain.models.CashRegisterModel;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.get.IGetCashRegisterPersistence;
-import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IPortEmployeeCashRegisterGet;
+import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IEmployeeProviderCashRegister;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
@@ -12,12 +12,13 @@ import java.util.UUID;
 public class GetCashRegisterUseCase implements IGetCashRegisterService {
 
     private final IGetCashRegisterPersistence iGetCashRegisterPersistence;
-    private final IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet;
+    private final IEmployeeProviderCashRegister iEmployeeProviderCashRegister;
 
-    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence, IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet) {
+    public GetCashRegisterUseCase(IGetCashRegisterPersistence iGetCashRegisterPersistence, IEmployeeProviderCashRegister iEmployeeProviderCashRegister) {
         this.iGetCashRegisterPersistence = iGetCashRegisterPersistence;
-        this.iPortEmployeeCashRegisterGet = iPortEmployeeCashRegisterGet;
+        this.iEmployeeProviderCashRegister = iEmployeeProviderCashRegister;
     }
+
 
     @Override
     public CashRegisterModel getById(UUID id) {
@@ -32,7 +33,7 @@ public class GetCashRegisterUseCase implements IGetCashRegisterService {
     @Override
     public PagedResponse<CashRegisterModel> getByEmployeeId(UUID employeeId, PaginationRequest paginationRequest) {
         return this.iGetCashRegisterPersistence.getByEmployeeId(
-                this.iPortEmployeeCashRegisterGet.getByIdForEmployee(employeeId).getId(),
+                this.iEmployeeProviderCashRegister.getEmployeeById(employeeId).getId(),
                 paginationRequest
         );
     }

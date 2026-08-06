@@ -2,7 +2,7 @@ package dev.juanleon.supermarket_inventory.sales.infrastructure.outputs.configur
 
 import dev.juanleon.supermarket_inventory.sales.domain.persistence.get.IGetSalesPersistence;
 import dev.juanleon.supermarket_inventory.sales.domain.persistence.post.IPostSalesPersistence;
-import dev.juanleon.supermarket_inventory.sales.domain.ports.IEmployeeProvider;
+import dev.juanleon.supermarket_inventory.sales.domain.ports.IEmployeeProviderSales;
 import dev.juanleon.supermarket_inventory.sales.domain.services.get.IGetSalesServices;
 import dev.juanleon.supermarket_inventory.sales.domain.services.post.IPostSalesServices;
 import dev.juanleon.supermarket_inventory.sales.domain.useCases.get.GetSalesUseCases;
@@ -23,8 +23,8 @@ public class BeanSalesConfiguration {
     @Bean
     public IPostSalesServices iPostSalesServices(
             IPostSalesPersistence iPostSalesPersistence,
-            IEmployeeProvider iEmployeeProvider
+            IEmployeeProviderSales iEmployeeProviderSales
     ) {
-        return new PostSalesUseCases(iPostSalesPersistence, iEmployeeProvider);
+        return new PostSalesUseCases(iPostSalesPersistence, iEmployeeProviderSales);
     }
 }

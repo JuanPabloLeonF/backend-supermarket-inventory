@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.employees.application.handler.get;
 
-import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IPortEmployeeCashRegisterGet;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.common.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperPaginationApp;
@@ -8,7 +7,6 @@ import dev.juanleon.supermarket_inventory.employees.application.dto.responses.Re
 import dev.juanleon.supermarket_inventory.employees.application.mappers.IMapperEmployeeApplication;
 import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.services.get.IGetEmployeeService;
-import dev.juanleon.supermarket_inventory.reports.domain.ports.IPortEmployeeReportsGet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GetEmployeeHandler implements
-        IGetEmployeeHandler,
-        IPortEmployeeCashRegisterGet,
-        IPortEmployeeReportsGet
-{
+public class GetEmployeeHandler implements IGetEmployeeHandler {
 
     private final IGetEmployeeService iGetEmployeeService;
     private final IMapperEmployeeApplication iMapperEmployeeApplication;
@@ -59,15 +53,5 @@ public class GetEmployeeHandler implements
     public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
         PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByHireDate(hireDate, paginationRequest);
         return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
-    }
-
-    @Override
-    public EmployeeModel getByIdForReports(UUID id) {
-        return this.iGetEmployeeService.getById(id);
-    }
-
-    @Override
-    public EmployeeModel getByIdForEmployee(UUID id) {
-        return this.iGetEmployeeService.getById(id);
     }
 }

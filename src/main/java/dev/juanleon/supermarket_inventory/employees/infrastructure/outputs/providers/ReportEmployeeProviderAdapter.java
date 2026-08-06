@@ -4,7 +4,7 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.mappers.IMapperEmployeeInfrastructure;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.repositories.IEmployeeRepository;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;
-import dev.juanleon.supermarket_inventory.sales.domain.ports.IEmployeeProviderSales;
+import dev.juanleon.supermarket_inventory.reports.domain.ports.IEmployeeProviderReport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class SalesEmployeeProviderAdapter implements IEmployeeProviderSales {
+public class ReportEmployeeProviderAdapter implements IEmployeeProviderReport {
 
     private final IEmployeeRepository iEmployeeRepository;
     private final IMapperEmployeeInfrastructure iMapperEmployeeInfrastructure;

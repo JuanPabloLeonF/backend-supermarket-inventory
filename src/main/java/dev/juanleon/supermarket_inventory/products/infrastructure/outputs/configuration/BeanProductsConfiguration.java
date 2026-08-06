@@ -5,7 +5,7 @@ import dev.juanleon.supermarket_inventory.products.domain.persistence.delete.IDe
 import dev.juanleon.supermarket_inventory.products.domain.persistence.get.IGetProductsPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
-import dev.juanleon.supermarket_inventory.products.domain.ports.IPortCategoriesProductsGet;
+import dev.juanleon.supermarket_inventory.products.domain.ports.ICategoriesProviderProduct;
 import dev.juanleon.supermarket_inventory.products.domain.ports.IPortFilesProducts;
 import dev.juanleon.supermarket_inventory.products.domain.services.delete.IDeleteProductService;
 import dev.juanleon.supermarket_inventory.products.domain.services.get.IGetProductsServices;
@@ -29,12 +29,12 @@ public class BeanProductsConfiguration {
     @Bean
     public IPostProductService iPostProductService(
             IPostProductPersistence iPostProductPersistence,
-            IPortCategoriesProductsGet iPortCategoriesProductsGet,
+            ICategoriesProviderProduct iCategoriesProviderProduct,
             IPortFilesProducts iPortFilesProducts
     ) {
         return new PostProductUseCase(
                 iPostProductPersistence,
-                iPortCategoriesProductsGet,
+                iCategoriesProviderProduct,
                 iPortFilesProducts
         );
     }

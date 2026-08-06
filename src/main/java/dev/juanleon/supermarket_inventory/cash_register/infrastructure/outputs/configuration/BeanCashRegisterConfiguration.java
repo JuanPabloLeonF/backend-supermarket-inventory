@@ -3,7 +3,7 @@ package dev.juanleon.supermarket_inventory.cash_register.infrastructure.outputs.
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.delete.IDeleteCashRegisterPersistence;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.get.IGetCashRegisterPersistence;
 import dev.juanleon.supermarket_inventory.cash_register.domain.persistence.post.IPostCashRegisterPersistence;
-import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IPortEmployeeCashRegisterGet;
+import dev.juanleon.supermarket_inventory.cash_register.domain.ports.IEmployeeProviderCashRegister;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.delete.IDeleteCashRegisterService;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.cash_register.domain.services.post.IPostCashRegisterService;
@@ -26,22 +26,22 @@ public class BeanCashRegisterConfiguration {
     @Bean
     public IGetCashRegisterService iGetCashRegisterService(
             IGetCashRegisterPersistence iGetCashRegisterPersistence,
-            IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet
+            IEmployeeProviderCashRegister iEmployeeProviderCashRegister
     ) {
         return new GetCashRegisterUseCase(
                 iGetCashRegisterPersistence,
-                iPortEmployeeCashRegisterGet
+                iEmployeeProviderCashRegister
         );
     }
 
     @Bean
     public IPostCashRegisterService iPostCashRegisterService(
             IPostCashRegisterPersistence iPostCashRegisterPersistence,
-            IPortEmployeeCashRegisterGet iPortEmployeeCashRegisterGet
+            IEmployeeProviderCashRegister iEmployeeProviderCashRegister
     ) {
         return new PostCashRegisterUseCase(
                 iPostCashRegisterPersistence,
-                iPortEmployeeCashRegisterGet
+                iEmployeeProviderCashRegister
         );
     }
 }

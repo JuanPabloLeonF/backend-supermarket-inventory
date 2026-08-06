@@ -2,7 +2,7 @@ package dev.juanleon.supermarket_inventory.files.application;
 
 import dev.juanleon.supermarket_inventory.common.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
-import dev.juanleon.supermarket_inventory.employees.domain.ports.IPortFilesEmployee;
+import dev.juanleon.supermarket_inventory.employees.domain.ports.IFilesProviderEmployee;
 import dev.juanleon.supermarket_inventory.files.domain.IFilesService;
 import dev.juanleon.supermarket_inventory.products.domain.ports.IPortFilesProducts;
 import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportModel;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FilesHandler implements
-        IPortFilesEmployee,
+        IFilesProviderEmployee,
         IPortFilesReports,
         IPortFilesProducts
 {

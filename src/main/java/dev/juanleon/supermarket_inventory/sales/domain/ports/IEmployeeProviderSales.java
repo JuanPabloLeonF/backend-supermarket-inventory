@@ -4,6 +4,6 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 
 import java.util.UUID;
 
-public interface IEmployeeProvider {
+public interface IEmployeeProviderSales {
     EmployeeModel getEmployeeById(UUID id);
 }

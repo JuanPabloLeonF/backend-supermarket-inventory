@@ -1,7 +1,5 @@
 package dev.juanleon.supermarket_inventory.users.application.handler.post;
 
-import dev.juanleon.supermarket_inventory.common.utils.mappers.IMapperResponseApp;
-import dev.juanleon.supermarket_inventory.employees.domain.ports.IPortUserEmployeePost;
 import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserApplication;
@@ -13,11 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PostUserHandler implements IPostUserHandler, IPortUserEmployeePost {
+public class PostUserHandler implements IPostUserHandler {
 
     private final IPostUserService iPostUserService;
     private final IMapperUserApplication iMapperUserApplication;
-    private final IMapperResponseApp iMapperResponseApp;
 
 
     @Override
@@ -26,11 +23,5 @@ public class PostUserHandler implements IPostUserHandler, IPortUserEmployeePost 
         UserModel userModel = this.iMapperUserApplication.toModel(requestUserDto);
         UserModel userModelCreated = this.iPostUserService.create(userModel);
         return this.iMapperUserApplication.toDto(userModelCreated);
-    }
-
-    @Override
-    @Transactional
-    public UserModel create(UserModel userModel) {
-        return this.iPostUserService.create(userModel);
     }
 }

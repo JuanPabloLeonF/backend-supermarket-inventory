@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.configuration;
 
-import dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties;
 import dev.juanleon.supermarket_inventory.employees.domain.ports.*;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.delete.IDeleteEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.get.IGetEmployeePersistence;
@@ -28,38 +27,37 @@ public class BeanEmployeeConfiguration {
     @Bean
     public IPostEmployeeService iPostEmployeeService (
             IPostEmployeePersistence iPostEmployeePersistence,
-            IPortUserEmployeePost iPortUserEmployeePost,
-            IPortUserEmployeeGet iPortUserEmployeeGet,
-            IPortFilesEmployee iPortFilesEmployee
+            IUserProviderEmployee iUserProviderEmployee,
+            IFilesProviderEmployee iFilesProviderEmployee
     ) {
         return new PostEmployeeUseCase(
                 iPostEmployeePersistence,
-                iPortUserEmployeePost,
-                iPortUserEmployeeGet,
-                iPortFilesEmployee
+                iUserProviderEmployee,
+                iFilesProviderEmployee
         );
     }
 
     @Bean
     public IDeleteEmployeeService iDeleteEmployeeService(
             IDeleteEmployeePersistence iDeleteEmployeePersistence,
-            IPortUserEmployeeDelete iPortUserEmployeeDelete
+            IUserProviderEmployee iUserProviderEmployee
     ) {
-        return new DeleteEmployeeUseCase(iDeleteEmployeePersistence,
-                iPortUserEmployeeDelete
+        return new DeleteEmployeeUseCase(
+                iDeleteEmployeePersistence,
+                iUserProviderEmployee
         );
     }
 
     @Bean
     public IUpdateEmployeeService iUpdateEmployeeService(
             IUpdateEmployeePersistence iUpdateEmployeePersistence,
-            IPortUserEmployeeUpdate iPortUserEmployeeUpdate,
-            IPortFilesEmployee iPortFilesEmployee
+            IUserProviderEmployee iUserProviderEmployee,
+            IFilesProviderEmployee iFilesProviderEmployee
     ) {
         return new UpdateEmployeeUseCase(
                 iUpdateEmployeePersistence,
-                iPortUserEmployeeUpdate,
-                iPortFilesEmployee
+                iUserProviderEmployee,
+                iFilesProviderEmployee
         );
     }
 }

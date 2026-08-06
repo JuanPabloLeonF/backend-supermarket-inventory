@@ -4,6 +4,6 @@ import dev.juanleon.supermarket_inventory.categories.domain.models.CategoriesMod
 
 import java.util.UUID;
 
-public interface IPortCategoriesProductsGet {
-    CategoriesModel getByIdCategoriesForProducts(UUID id);
+public interface ICategoriesProviderProduct {
+    CategoriesModel getCategoryById(UUID id);
 }
