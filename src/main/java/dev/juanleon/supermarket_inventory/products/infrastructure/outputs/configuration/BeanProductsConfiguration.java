@@ -6,7 +6,7 @@ import dev.juanleon.supermarket_inventory.products.domain.persistence.get.IGetPr
 import dev.juanleon.supermarket_inventory.products.domain.persistence.post.IPostProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
 import dev.juanleon.supermarket_inventory.products.domain.ports.ICategoriesProviderProduct;
-import dev.juanleon.supermarket_inventory.products.domain.ports.IPortFilesProducts;
+import dev.juanleon.supermarket_inventory.products.domain.ports.IFilesProviderProduct;
 import dev.juanleon.supermarket_inventory.products.domain.services.delete.IDeleteProductService;
 import dev.juanleon.supermarket_inventory.products.domain.services.get.IGetProductsServices;
 import dev.juanleon.supermarket_inventory.products.domain.services.post.IPostProductService;
@@ -30,12 +30,12 @@ public class BeanProductsConfiguration {
     public IPostProductService iPostProductService(
             IPostProductPersistence iPostProductPersistence,
             ICategoriesProviderProduct iCategoriesProviderProduct,
-            IPortFilesProducts iPortFilesProducts
+            IFilesProviderProduct iFilesProviderProduct
     ) {
         return new PostProductUseCase(
                 iPostProductPersistence,
                 iCategoriesProviderProduct,
-                iPortFilesProducts
+                iFilesProviderProduct
         );
     }
 
@@ -43,12 +43,12 @@ public class BeanProductsConfiguration {
     public IUpdateProductService iUpdateProductService(
             IUpdateProductPersistence iUpdateProductPersistence,
             IGetCategoriesServices iGetCategoriesServices,
-            IPortFilesProducts iPortFilesProducts
+            IFilesProviderProduct iFilesProviderProduct
     ) {
         return new UpdateProductUseCase(
                 iUpdateProductPersistence,
                 iGetCategoriesServices,
-                iPortFilesProducts
+                iFilesProviderProduct
         );
     }
 

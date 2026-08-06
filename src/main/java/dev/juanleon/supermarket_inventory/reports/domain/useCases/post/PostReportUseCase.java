@@ -6,7 +6,7 @@ import dev.juanleon.supermarket_inventory.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.reports.domain.models.SaleReportModel;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.post.IPostReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.domain.ports.IEmployeeProviderReport;
-import dev.juanleon.supermarket_inventory.reports.domain.ports.IPortFilesReports;
+import dev.juanleon.supermarket_inventory.reports.domain.ports.IFilesProviderReport;
 import dev.juanleon.supermarket_inventory.reports.domain.services.post.IPostReportService;
 
 import java.util.UUID;
@@ -18,12 +18,12 @@ public class PostReportUseCase implements IPostReportService {
 
     private final IPostReportPersistence iPostReportPersistence;
     private final IEmployeeProviderReport iEmployeeProviderReport;
-    private final IPortFilesReports iPortFilesReports;
+    private final IFilesProviderReport iFilesProviderReport;
 
-    public PostReportUseCase(IPostReportPersistence iPostReportPersistence, IEmployeeProviderReport iEmployeeProviderReport, IPortFilesReports iPortFilesReports) {
+    public PostReportUseCase(IPostReportPersistence iPostReportPersistence, IEmployeeProviderReport iEmployeeProviderReport, IFilesProviderReport iFilesProviderReport) {
         this.iPostReportPersistence = iPostReportPersistence;
         this.iEmployeeProviderReport = iEmployeeProviderReport;
-        this.iPortFilesReports = iPortFilesReports;
+        this.iFilesProviderReport = iFilesProviderReport;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PostReportUseCase implements IPostReportService {
         EmployeeModel employeeFound = this.iEmployeeProviderReport.getEmployeeById(employeeId);
 
         reportModel.setEmployee(employeeFound);
-        String urlFile = this.iPortFilesReports.createPdf(
+        String urlFile = this.iFilesProviderReport.createPdf(
                     saleReportModel,
                     TEMPLATE_REPORT_SALES,
                     PATH_UPLOAD_FILES_PDF_SALES

@@ -17,7 +17,6 @@ public interface IMapperSalesApplication {
             @Mapping(target = "employeeModel", ignore = true),
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "salesDetailsModelList", source = "requestSalesDetailsDtoList"),
-            @Mapping(target = "salesDetailsModelList", source = "requestSalesDetailsDtoList"),
     })
     SalesModel toModel(RequestSalesDto requestSalesDto);
 
