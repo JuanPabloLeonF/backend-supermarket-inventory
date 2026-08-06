@@ -1,8 +1,11 @@
-package dev.juanleon.supermarket_inventory.files.domain;
+package dev.juanleon.supermarket_inventory.files.utils;
 
 import java.util.List;
 
-public class FileConstants {
+public final class FileConstants {
+
+    private FileConstants(){}
+
     public static final List<String> ALLOWED_IMAGE_EXTENSIONS = List.of("image/jpg", "image/jpeg", "image/png", "image/webp");
     public static final String WEBP = "webp";
     public static final String PDF = "pdf";

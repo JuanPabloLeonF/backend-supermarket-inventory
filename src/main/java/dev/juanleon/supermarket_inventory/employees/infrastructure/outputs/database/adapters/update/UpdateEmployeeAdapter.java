@@ -4,7 +4,7 @@ import dev.juanleon.supermarket_inventory.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.employees.domain.persistence.update.IUpdateEmployeePersistence;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.database.repositories.IEmployeeRepository;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
-import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
+import dev.juanleon.supermarket_inventory.files.events.FileDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;

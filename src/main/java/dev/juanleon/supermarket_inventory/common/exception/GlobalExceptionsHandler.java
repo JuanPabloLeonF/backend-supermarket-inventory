@@ -4,7 +4,7 @@ import dev.juanleon.supermarket_inventory.cash_register.infrastructure.outputs.e
 import dev.juanleon.supermarket_inventory.categories.infrastructure.outputs.exceptions.NotFoundCategoriesException;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NoCreateEmployeeOnDatabaseException;
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
-import dev.juanleon.supermarket_inventory.files.infrastructure.exceptions.*;
+import dev.juanleon.supermarket_inventory.files.exceptions.*;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;

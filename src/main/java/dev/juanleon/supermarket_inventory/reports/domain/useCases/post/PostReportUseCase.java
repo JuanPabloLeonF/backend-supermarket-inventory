@@ -12,7 +12,7 @@ import dev.juanleon.supermarket_inventory.reports.domain.services.post.IPostRepo
 import java.util.UUID;
 
 import static dev.juanleon.supermarket_inventory.common.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_SALES;
-import static dev.juanleon.supermarket_inventory.files.domain.FileConstants.TEMPLATE_REPORT_SALES;
+import static dev.juanleon.supermarket_inventory.files.utils.FileConstants.TEMPLATE_REPORT_SALES;
 
 public class PostReportUseCase implements IPostReportService {
 

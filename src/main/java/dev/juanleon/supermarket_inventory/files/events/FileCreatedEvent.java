@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.files.domain.events;
+package dev.juanleon.supermarket_inventory.files.events;
 
 public record FileCreatedEvent(
         String urlFile,

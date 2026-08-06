@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.database.adapters.delete;
 
-import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
+import dev.juanleon.supermarket_inventory.files.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.reports.domain.persistence.delete.IDeleteReportPersistence;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.database.repositories.IReportRepository;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;

@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.adapters.delete;
 
-import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
+import dev.juanleon.supermarket_inventory.files.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.delete.IDeleteProductPersistence;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.repositories.IProductRepository;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;

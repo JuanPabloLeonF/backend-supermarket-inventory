@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.adapters.update;
 
-import dev.juanleon.supermarket_inventory.files.domain.events.FileDeletedEvent;
+import dev.juanleon.supermarket_inventory.files.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.products.domain.persistence.update.IUpdateProductPersistence;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.database.entities.ProductEntity;
