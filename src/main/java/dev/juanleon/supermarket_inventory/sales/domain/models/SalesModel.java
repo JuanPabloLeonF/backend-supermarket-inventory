@@ -17,7 +17,6 @@ public class SalesModel {
     private BigDecimal iva;
     private BigDecimal total;
     private String methodPayment;
-    private String status;
     private List<SalesDetailsModel> salesDetailsModelList;
 
     private SalesModel(SalesModelBuilder builder) {
@@ -30,7 +29,6 @@ public class SalesModel {
         this.iva = builder.iva;
         this.total = builder.total;
         this.methodPayment = builder.methodPayment;
-        this.status = builder.status;
         this.salesDetailsModelList = builder.salesDetailsModelList;
     }
 
@@ -183,14 +181,6 @@ public class SalesModel {
         this.methodPayment = methodPayment;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public List<SalesDetailsModel> getSalesDetailsModelList() {
         return salesDetailsModelList;
     }
@@ -211,7 +201,6 @@ public class SalesModel {
                 ", iva=" + iva +
                 ", total=" + total +
                 ", methodPayment='" + methodPayment + '\'' +
-                ", status='" + status + '\'' +
                 ", salesDetailsModelList=" + salesDetailsModelList +
                 '}';
     }

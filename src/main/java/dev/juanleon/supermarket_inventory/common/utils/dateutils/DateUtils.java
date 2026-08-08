@@ -13,4 +13,8 @@ public class DateUtils {
     public static LocalDateTime convertLocalDateToLocalDateTime(LocalDate localDate) {
         return localDate.atStartOfDay();
     }
+
+    public static LocalDateTime dateTimeNow() {
+        return LocalDateTime.now();
+    }
 }

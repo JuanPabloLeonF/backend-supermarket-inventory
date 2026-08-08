@@ -22,11 +22,6 @@ public class RequestSalesDetailsDto {
     @NotNull(message = "quantity is required")
     private Integer quantity;
 
-    @NotNull(message = "priceUnit is required")
-    @PositiveOrZero(message = "priceUnit must be zero or positive")
-    @Digits(integer = 12, fraction = 2, message = "priceUnit has invalid format (max 12 integers and 2 decimals)")
-    private BigDecimal priceUnit;
-
     @NotNull(message = "discount is required")
     @PositiveOrZero(message = "discount must be zero or positive")
     @Digits(integer = 12, fraction = 2, message = "discount has invalid format (max 12 integers and 2 decimals)")

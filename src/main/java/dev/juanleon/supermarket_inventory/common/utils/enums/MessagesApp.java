@@ -22,6 +22,9 @@ public enum MessagesApp {
     PRODUCT_DELETED_SUCCESSFULLY_BY_ID("Product deleted successfully by id: %s"),
     PRODUCT_CREATED_SUCCESSFULLY("Product created successfully with id: %s"),
     PRODUCT_UPDATE_SUCCESSFULLY_BY_ID("Product updated successfully with id: %s"),
+    PRODUCTS_CONTAINS_DUPLICATE("The application contains duplicate products: %s"),
+    PRODUCTS_FOLLOWING_NOT_EXIST_("The following products do not exist: %s"),
+    PRODUCTS_FOLLOWING_ARE_INACTIVES("The following products are inactive"),
 
     CATEGORIES_DELETED_SUCCESSFULLY_BY_ID("Category deleted successfully by id: %s"),
     CATEGORIES_UPDATE_SUCCESSFULLY_BY_ID("Category updated successfully with id: %s"),

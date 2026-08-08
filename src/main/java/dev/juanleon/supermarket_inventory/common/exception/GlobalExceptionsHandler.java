@@ -6,6 +6,9 @@ import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.excep
 import dev.juanleon.supermarket_inventory.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
 import dev.juanleon.supermarket_inventory.files.exceptions.*;
 import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.NotFoundProductException;
+import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.ProductsContainsDuplicateException;
+import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.ProductsFollowingAreInactivesException;
+import dev.juanleon.supermarket_inventory.products.infrastructure.outputs.exceptions.ProductsFollowingNotExistException;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.reports.infrastructure.outputs.exceptions.NotFoundReportException;
 import dev.juanleon.supermarket_inventory.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
@@ -79,7 +82,10 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             NotFoundCashRegisterException.class,
             NotFoundSalesException.class,
             NotFoundCategoriesException.class,
-            NotFoundProductException.class
+            NotFoundProductException.class,
+            ProductsContainsDuplicateException.class,
+            ProductsFollowingAreInactivesException.class,
+            ProductsFollowingNotExistException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);

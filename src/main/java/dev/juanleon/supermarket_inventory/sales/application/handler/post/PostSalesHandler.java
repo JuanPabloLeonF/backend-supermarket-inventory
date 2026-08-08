@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class PostSalesHandler implements IPostSalesHandler {
@@ -22,8 +20,11 @@ public class PostSalesHandler implements IPostSalesHandler {
 
     @Override
     @Transactional
-    public ResponseRequestDto create(RequestSalesDto requestSalesDto, UUID employeeId) {
+    public ResponseRequestDto create(RequestSalesDto requestSalesDto) {
         SalesModel salesModel = this.iMapperSalesApplication.toModel(requestSalesDto);
-        return this.iMapperResponseApp.toResponse(this.iPostSalesServices.create(salesModel, employeeId));
+        return this.iMapperResponseApp.toResponse(this.iPostSalesServices.create(
+                salesModel,
+                requestSalesDto.getEmployeeId()
+        ));
     }
 }

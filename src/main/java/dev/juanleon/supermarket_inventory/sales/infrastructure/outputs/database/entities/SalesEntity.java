@@ -47,9 +47,6 @@ public class SalesEntity {
     @Column(name = "method_payment", nullable = false)
     private String methodPayment;
 
-    @Column(nullable = false)
-    private String status;
-
     @OneToMany(
             mappedBy = "salesEntity",
             cascade = CascadeType.ALL,
@@ -70,7 +67,6 @@ public class SalesEntity {
                 ", iva=" + iva +
                 ", total=" + total +
                 ", methodPayment='" + methodPayment + '\'' +
-                ", status='" + status + '\'' +
                 ", salesDetailsEntityList=" + salesDetailsEntityList +
                 '}';
     }

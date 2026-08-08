@@ -14,10 +14,7 @@ public class CreateSalesCommandHandler implements IRequestHandler<CreateSalesCom
 
     @Override
     public ResponseRequestDto handle(CreateSalesCommand request) {
-        return this.iPostSalesHandler.create(
-                request.requestSalesDto(),
-                request.requestSalesDto().getEmployeeId()
-        );
+        return this.iPostSalesHandler.create(request.requestSalesDto());
     }
 
     @Override

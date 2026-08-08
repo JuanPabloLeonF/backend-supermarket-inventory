@@ -20,8 +20,10 @@ public interface IMapperSalesDetailsApplication {
     @Mappings(value = {
             @Mapping(target = "salesModel", ignore = true),
             @Mapping(target = "productModel", ignore = true),
+            @Mapping(target = "total", ignore = true),
+            @Mapping(target = "priceUnit", ignore = true),
             @Mapping(target = "id", ignore = true),
-            @Mapping(target = "total", ignore = true)
+            @Mapping(target = "productModel.id", source = "idProduct")
     })
     SalesDetailsModel toModel(RequestSalesDetailsDto requestSalesDetailsDto);
 
