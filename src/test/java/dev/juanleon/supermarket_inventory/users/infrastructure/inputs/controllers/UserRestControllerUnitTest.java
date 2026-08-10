@@ -1,17 +1,17 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.inputs.controllers;
 
-import dev.juanleon.supermarket_inventory.common.exception.GlobalExceptionsHandler;
-import dev.juanleon.supermarket_inventory.common.mediator.Mediator;
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
-import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.share.exception.GlobalExceptionsHandler;
+import dev.juanleon.supermarket_inventory.share.mediator.Mediator;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
 import dev.juanleon.supermarket_inventory.users.application.commands.post.CreateUserCommand;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
-import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.requets.RequestUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.queries.getAll.GetAllUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByIdUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByLastNameUserQuery;
 import dev.juanleon.supermarket_inventory.users.application.queries.getBy.GetByNameUserQuery;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
+import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

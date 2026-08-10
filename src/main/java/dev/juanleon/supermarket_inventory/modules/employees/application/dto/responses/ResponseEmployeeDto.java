@@ -1,0 +1,28 @@
+package dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ResponseEmployeeDto {
+    private UUID id;
+    private ResponseUserDto responseUserDto;
+    private String nationalId;
+    private String phone;
+    private String address;
+    private String urlImg;
+    private String position;
+    private BigDecimal salary;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime hireDate;
+}

@@ -1,0 +1,48 @@
+package dev.juanleon.supermarket_inventory.modules.products.domain.useCases.update;
+
+import dev.juanleon.supermarket_inventory.modules.categories.domain.models.CategoriesModel;
+import dev.juanleon.supermarket_inventory.modules.categories.domain.services.get.IGetCategoriesServices;
+import dev.juanleon.supermarket_inventory.share.utils.dto.InputFileDto;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
+import dev.juanleon.supermarket_inventory.modules.products.domain.models.ProductModel;
+import dev.juanleon.supermarket_inventory.modules.products.domain.persistence.update.IUpdateProductPersistence;
+import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProduct;
+import dev.juanleon.supermarket_inventory.modules.products.domain.services.update.IUpdateProductService;
+
+import java.util.UUID;
+
+import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+
+public class UpdateProductUseCase implements IUpdateProductService {
+
+    private final IUpdateProductPersistence iUpdateProductPersistence;
+    private final IGetCategoriesServices iGetCategoriesServices;
+    private final IFilesProviderProduct iFilesProviderProduct;
+
+    public UpdateProductUseCase(IUpdateProductPersistence iUpdateProductPersistence, IGetCategoriesServices iGetCategoriesServices, IFilesProviderProduct iFilesProviderProduct) {
+        this.iUpdateProductPersistence = iUpdateProductPersistence;
+        this.iGetCategoriesServices = iGetCategoriesServices;
+        this.iFilesProviderProduct = iFilesProviderProduct;
+    }
+
+    @Override
+    public ResponseModel update(UUID productId, ProductModel productModel, UUID categoryId) {
+        CategoriesModel categoriesModel = this.iGetCategoriesServices.getById(categoryId);
+        productModel.setCategoriesModel(categoriesModel);
+        String response = this.iUpdateProductPersistence.update(productId, productModel);
+        return new ResponseModel(response);
+    }
+
+    @Override
+    public ResponseModel updateActive(UUID productId, Boolean active) {
+        String response = this.iUpdateProductPersistence.updateActive(productId, active);
+        return new ResponseModel(response);
+    }
+
+    @Override
+    public ResponseModel updateUrlImg(UUID productId, InputFileDto inputFileDto) {
+        String urlImgUpdate = this.iFilesProviderProduct.createImage(inputFileDto, PATH_UPLOAD_IMAGES_PRODUCTS);
+        String response = this.iUpdateProductPersistence.updateUrlImg(productId, urlImgUpdate);
+        return new ResponseModel(response);
+    }
+}

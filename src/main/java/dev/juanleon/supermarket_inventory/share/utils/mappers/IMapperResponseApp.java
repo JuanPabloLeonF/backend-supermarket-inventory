@@ -1,0 +1,18 @@
+package dev.juanleon.supermarket_inventory.share.utils.mappers;
+
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.NullValueCheckStrategy;
+
+@Mapper(
+        componentModel = ComponentModel.SPRING,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
+public interface IMapperResponseApp {
+    @Mapping(target = "date", source = "dateTime")
+    ResponseRequestDto toResponse(ResponseModel responseModel);
+}

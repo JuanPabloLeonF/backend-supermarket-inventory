@@ -1,10 +1,10 @@
 package dev.juanleon.supermarket_inventory.users.application.handler.get;
 
-import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
-import dev.juanleon.supermarket_inventory.users.application.mappers.IMapperUserApplication;
-import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.mappers.IMapperUserApplication;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.services.get.IGetUserService;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

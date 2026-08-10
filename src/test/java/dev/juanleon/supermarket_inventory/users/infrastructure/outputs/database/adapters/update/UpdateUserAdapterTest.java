@@ -1,9 +1,9 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.adapters.update;
 
-import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.entities.UserEntity;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.UserModel;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.entities.UserEntity;
 import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.repositories.IUserRepository;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NoUpdateUserByIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_NOT_FOUND_BY_ID;
-import static dev.juanleon.supermarket_inventory.common.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
+import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_NOT_FOUND_BY_ID;
+import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

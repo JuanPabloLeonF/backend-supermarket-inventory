@@ -1,8 +1,8 @@
 package dev.juanleon.supermarket_inventory.users.application.queries.getBy;
 
-import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.handler.get.IGetUserHandler;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

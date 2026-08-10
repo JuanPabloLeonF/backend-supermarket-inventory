@@ -1,0 +1,57 @@
+package dev.juanleon.supermarket_inventory.modules.employees.application.handler.get;
+
+import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperPaginationApp;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseEmployeeDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.mappers.IMapperEmployeeApplication;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.EmployeeModel;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.services.get.IGetEmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class GetEmployeeHandler implements IGetEmployeeHandler {
+
+    private final IGetEmployeeService iGetEmployeeService;
+    private final IMapperEmployeeApplication iMapperEmployeeApplication;
+    private final IMapperPaginationApp iMapperPaginationApp;
+
+    @Override
+    public PagedResponse<ResponseEmployeeDto> getAll(PaginationRequest paginationRequest) {
+        PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getAll(paginationRequest);
+        return this.iMapperPaginationApp
+                .pageResponseToPageResponseTypeResponse(
+                        employeeModelPagedResponse,
+                        this.iMapperEmployeeApplication::toDto
+                );
+    }
+
+    @Override
+    public ResponseEmployeeDto getById(UUID id) {
+        return this.iMapperEmployeeApplication
+                .toDto(this.iGetEmployeeService.getById(id));
+    }
+
+    @Override
+    public PagedResponse<ResponseEmployeeDto> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest) {
+        PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByNameAndLastName(name, lastName, paginationRequest);
+        return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
+    }
+
+    @Override
+    public PagedResponse<ResponseEmployeeDto> getByPosition(String position, PaginationRequest paginationRequest) {
+        PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByPosition(position, paginationRequest);
+        return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
+    }
+
+    @Override
+    public PagedResponse<ResponseEmployeeDto> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest) {
+        PagedResponse<EmployeeModel> employeeModelPagedResponse = this.iGetEmployeeService.getByHireDate(hireDate, paginationRequest);
+        return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(employeeModelPagedResponse, this.iMapperEmployeeApplication::toDto);
+    }
+}

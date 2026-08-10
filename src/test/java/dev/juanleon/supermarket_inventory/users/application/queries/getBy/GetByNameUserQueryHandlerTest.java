@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.application.queries.getBy;
 
-import dev.juanleon.supermarket_inventory.users.application.dto.ResponseUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseUserDto;
 import dev.juanleon.supermarket_inventory.users.application.handler.get.IGetUserHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

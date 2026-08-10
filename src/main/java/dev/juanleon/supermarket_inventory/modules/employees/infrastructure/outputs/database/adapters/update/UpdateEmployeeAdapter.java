@@ -1,0 +1,62 @@
+package dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.adapters.update;
+
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.EmployeeModel;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.persistence.update.IUpdateEmployeePersistence;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.repositories.IEmployeeRepository;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NotFoundEmployeeException;
+import dev.juanleon.supermarket_inventory.share.files.events.FileDeletedEvent;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID;
+
+@Repository
+@RequiredArgsConstructor
+public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
+
+    private final IEmployeeRepository iEmployeeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    @Override
+    public String updateById(EmployeeModel employeeModel) {
+        return this.iEmployeeRepository.findById(employeeModel.getId())
+                .map(entity -> {
+                    entity.setNationalId(employeeModel.getNationalId());
+                    entity.setPhone(employeeModel.getPhone());
+                    entity.setAddress(employeeModel.getAddress());
+                    entity.setPosition(employeeModel.getPosition());
+                    entity.setSalary(employeeModel.getSalary());
+                    entity.setHireDate(employeeModel.getHireDate());
+
+                    entity.getUserEntity().setName(employeeModel.getUserModel().getName());
+                    entity.getUserEntity().setLastName(employeeModel.getUserModel().getLastName());
+                    entity.getUserEntity().setEmail(employeeModel.getUserModel().getEmail());
+                    entity.getUserEntity().setPassword(employeeModel.getUserModel().getPassword());
+                    entity.getUserEntity().setRol(employeeModel.getUserModel().getRol());
+                    entity.getUserEntity().setIsActive(employeeModel.getUserModel().getIsActive());
+                    entity.getUserEntity().setUpdatedAt(LocalDateTime.now());
+                    this.iEmployeeRepository.save(entity);
+                    return EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
+                }).orElseThrow(() -> new NotFoundEmployeeException(employeeModel.getId()));
+    }
+
+    @Override
+    public String updateByIdImage(String urlImg, UUID id) {
+        return this.iEmployeeRepository.findById(id)
+                .map(entity -> {
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
+                            entity.getUrlImg(),
+                            PATH_UPLOAD_IMAGES_PRODUCTS
+                    ));
+                    entity.setUrlImg(urlImg);
+                    entity.getUserEntity().setUpdatedAt(LocalDateTime.now());
+                    this.iEmployeeRepository.save(entity);
+                    return EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID.format(entity.getId());
+                }).orElseThrow(() -> new NotFoundEmployeeException(id));
+    }
+}

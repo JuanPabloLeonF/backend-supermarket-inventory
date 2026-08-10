@@ -1,0 +1,32 @@
+package dev.juanleon.supermarket_inventory.modules.sales.infrastructure.outputs.configuration;
+
+import dev.juanleon.supermarket_inventory.modules.sales.domain.persistence.get.IGetSalesPersistence;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.persistence.post.IPostSalesPersistence;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.ports.IEmployeeProviderSales;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.ports.IProductProviderSales;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.services.get.IGetSalesServices;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.services.post.IPostSalesServices;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.useCases.get.GetSalesUseCases;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.useCases.post.PostSalesUseCases;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class BeanSalesConfiguration {
+
+    @Bean
+    public IGetSalesServices iGetSalesServices(
+            IGetSalesPersistence iGetSalesPersistence
+    ) {
+        return new GetSalesUseCases(iGetSalesPersistence);
+    }
+
+    @Bean
+    public IPostSalesServices iPostSalesServices(
+            IPostSalesPersistence iPostSalesPersistence,
+            IEmployeeProviderSales iEmployeeProviderSales,
+            IProductProviderSales iProductProviderSales
+    ) {
+        return new PostSalesUseCases(iPostSalesPersistence, iEmployeeProviderSales, iProductProviderSales);
+    }
+}

@@ -1,8 +1,8 @@
 package dev.juanleon.supermarket_inventory.users.application.commands.post;
 
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseRequestDto;
-import dev.juanleon.supermarket_inventory.common.utils.enums.Roles;
-import dev.juanleon.supermarket_inventory.users.application.dto.RequestUserDto;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
+import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.requets.RequestUserDto;
 import dev.juanleon.supermarket_inventory.users.application.handler.post.IPostUserHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

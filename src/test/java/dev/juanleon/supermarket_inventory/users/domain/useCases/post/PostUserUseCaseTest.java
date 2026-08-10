@@ -1,7 +1,7 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.post;
 
-import dev.juanleon.supermarket_inventory.common.utils.dto.ResponseModel;
-import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.post.IPostUserPersistence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

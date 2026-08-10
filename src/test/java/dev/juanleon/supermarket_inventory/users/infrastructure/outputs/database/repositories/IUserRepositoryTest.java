@@ -1,6 +1,6 @@
 package dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.repositories;
 
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.database.entities.UserEntity;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.entities.UserEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

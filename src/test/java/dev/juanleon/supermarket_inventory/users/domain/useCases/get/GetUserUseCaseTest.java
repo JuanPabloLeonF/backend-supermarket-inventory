@@ -1,8 +1,8 @@
 package dev.juanleon.supermarket_inventory.users.domain.useCases.get;
 
-import dev.juanleon.supermarket_inventory.users.domain.models.UserModel;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.users.domain.persistence.get.IGetUserPersistence;
-import dev.juanleon.supermarket_inventory.users.infrastructure.outputs.exceptions.NotFoundUserException;
+import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NotFoundUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

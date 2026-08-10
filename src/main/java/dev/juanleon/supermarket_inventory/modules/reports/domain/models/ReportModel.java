@@ -1,0 +1,87 @@
+package dev.juanleon.supermarket_inventory.modules.reports.domain.models;
+
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.EmployeeModel;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class ReportModel {
+
+    private UUID id;
+    private EmployeeModel employee;
+    private String reportType;
+    private String period;
+    private String filePath;
+    private LocalDateTime generatedAt;
+
+    public ReportModel(){}
+
+    public ReportModel(UUID id, EmployeeModel employee, String reportType, String period, String filePath, LocalDateTime generatedAt) {
+        this.id = id;
+        this.employee = employee;
+        this.reportType = reportType;
+        this.period = period;
+        this.filePath = filePath;
+        this.generatedAt = generatedAt;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public EmployeeModel getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(EmployeeModel employee) {
+        this.employee = employee;
+    }
+
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public LocalDateTime getGeneratedAt() {
+        return generatedAt;
+    }
+
+    public void setGeneratedAt(LocalDateTime generatedAt) {
+        this.generatedAt = generatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportModel{" +
+                "id=" + id +
+                ", employee=" + employee +
+                ", reportType='" + reportType + '\'' +
+                ", period='" + period + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", generatedAt=" + generatedAt +
+                '}';
+    }
+}

@@ -1,0 +1,19 @@
+package dev.juanleon.supermarket_inventory.modules.sales.domain.services.get;
+
+import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public interface IGetSalesServices {
+    PagedResponse<SalesModel> getAll(PaginationRequest paginationRequest);
+    PagedResponse<SalesModel> getAllByEmployeeId(UUID employeeId, PaginationRequest paginationRequest);
+    PagedResponse<SalesModel> getAllByDateSale(LocalDateTime dateSale, PaginationRequest paginationRequest);
+    PagedResponse<SalesModel> getAllByMethodPayment(String methodPayment, PaginationRequest paginationRequest);
+    PagedResponse<SalesModel> getAllByDiscount(BigDecimal discount, PaginationRequest paginationRequest);
+    SalesModel getById(UUID id);
+    SalesModel getByNumberSale(UUID numberSale);
+}

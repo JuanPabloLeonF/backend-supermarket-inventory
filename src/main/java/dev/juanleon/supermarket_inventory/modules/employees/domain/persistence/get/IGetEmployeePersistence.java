@@ -1,0 +1,17 @@
+package dev.juanleon.supermarket_inventory.modules.employees.domain.persistence.get;
+
+import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
+import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.modules.employees.domain.models.EmployeeModel;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+public interface IGetEmployeePersistence {
+    PagedResponse<EmployeeModel> getAll(PaginationRequest paginationRequest);
+    EmployeeModel getById(UUID id);
+    PagedResponse<EmployeeModel> getByNameAndLastName(String name, String lastName, PaginationRequest paginationRequest);
+    PagedResponse<EmployeeModel> getByPosition(String position, PaginationRequest paginationRequest);
+    PagedResponse<EmployeeModel> getByHireDate(LocalDate hireDate, PaginationRequest paginationRequest);
+    String getByIdUrlImage(UUID id);
+}
