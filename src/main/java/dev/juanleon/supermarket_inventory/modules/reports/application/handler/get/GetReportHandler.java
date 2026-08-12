@@ -3,7 +3,7 @@ package dev.juanleon.supermarket_inventory.modules.reports.application.handler.g
 import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
 import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperPaginationApp;
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.ResponseReport;
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.response.ResponseReport;
 import dev.juanleon.supermarket_inventory.modules.reports.application.mappers.IMapperReportApplication;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.services.get.IGetReportService;

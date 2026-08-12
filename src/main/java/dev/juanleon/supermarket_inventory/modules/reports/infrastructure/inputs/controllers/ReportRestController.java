@@ -5,8 +5,8 @@ import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.modules.reports.application.commands.delete.DeleteByIdReportCommand;
 import dev.juanleon.supermarket_inventory.modules.reports.application.commands.post.CreateSalesReportCommand;
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.RequestCreateSales;
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.ResponseReport;
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.request.RequestReportSales;
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.response.ResponseReport;
 import dev.juanleon.supermarket_inventory.modules.reports.application.queries.getAll.GetAllReportQuery;
 import dev.juanleon.supermarket_inventory.modules.reports.application.queries.getBy.GetByIdReportQuery;
 import dev.juanleon.supermarket_inventory.modules.reports.application.queries.getBy.GetByPeriodReportQuery;
@@ -69,11 +69,8 @@ public class ReportRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseRequestDto> createSale(@RequestBody RequestCreateSales request) {
-        CreateSalesReportCommand command = new CreateSalesReportCommand(
-                request.getRequestReportDto(),
-                request.getRequestReportSalesData()
-        );
+    public ResponseEntity<ResponseRequestDto> createSale(@RequestBody RequestReportSales request) {
+        CreateSalesReportCommand command = new CreateSalesReportCommand(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(command));

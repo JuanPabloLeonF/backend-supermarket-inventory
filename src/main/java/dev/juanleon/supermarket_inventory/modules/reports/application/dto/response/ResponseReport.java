@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.modules.reports.application.dto;
+package dev.juanleon.supermarket_inventory.modules.reports.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseEmployeeDto;

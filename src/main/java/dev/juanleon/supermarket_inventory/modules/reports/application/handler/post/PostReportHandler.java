@@ -1,10 +1,9 @@
 package dev.juanleon.supermarket_inventory.modules.reports.application.handler.post;
 
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.request.RequestReportSales;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
 import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperResponseApp;
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.RequestReportDto;
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.RequestReportSalesData;
 import dev.juanleon.supermarket_inventory.modules.reports.application.mappers.IMapperReportApplication;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.SaleReportModel;
@@ -23,14 +22,10 @@ public class PostReportHandler implements IPostReportHandler {
 
     @Override
     @Transactional
-    public ResponseRequestDto createSale(RequestReportDto requestReportDto, RequestReportSalesData requestReportSalesData) {
-        ReportModel model = this.iMapperReportApplication.toModel(requestReportDto);
-        SaleReportModel modelData = this.iMapperReportApplication.toModel(requestReportSalesData);
-        ResponseModel responseModel = this.iPostReportService.createSales(
-                model,
-                modelData,
-                requestReportDto.getEmployeeId()
-        );
+    public ResponseRequestDto createSale(RequestReportSales requestReportSales) {
+        ReportModel reportModel = this.iMapperReportApplication.requestReportToModel(requestReportSales);
+        SaleReportModel saleReportModel = this.iMapperReportApplication.salesReportToModel(requestReportSales);
+        ResponseModel responseModel = this.iPostReportService.createSales(reportModel, saleReportModel);
         return this.iMapperResponseApp.toResponse(responseModel);
     }
 }

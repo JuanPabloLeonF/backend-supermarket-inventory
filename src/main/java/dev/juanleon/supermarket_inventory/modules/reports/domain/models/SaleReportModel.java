@@ -1,34 +1,24 @@
 package dev.juanleon.supermarket_inventory.modules.reports.domain.models;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
+
+import java.util.UUID;
 
 public class SaleReportModel {
 
     private String customerName;
-    private String customerId;
-    private String employeeName;
-    private LocalDateTime createdAt;
-    private String paymentType;
-    private List<SaleItemDto> items;
-    private BigDecimal subtotal;
-    private BigDecimal taxAmount;
-    private BigDecimal total;
+    private String identificationCustomer;
+    private SalesModel salesModel;
+    private UUID employeeId;
 
     public SaleReportModel() {
     }
 
-    public SaleReportModel(String customerName, String customerId, String employeeName, String paymentType, List<SaleItemDto> items, BigDecimal subtotal, BigDecimal taxAmount, BigDecimal total) {
+    public SaleReportModel(String customerName, String identificationCustomer, SalesModel salesModel, UUID employeeId) {
         this.customerName = customerName;
-        this.customerId = customerId;
-        this.employeeName = employeeName;
-        this.createdAt = LocalDateTime.now().withNano(0);
-        this.paymentType = paymentType;
-        this.items = items;
-        this.subtotal = subtotal;
-        this.taxAmount = taxAmount;
-        this.total = total;
+        this.identificationCustomer = identificationCustomer;
+        this.salesModel = salesModel;
+        this.employeeId = employeeId;
     }
 
     public String getCustomerName() {
@@ -39,82 +29,37 @@ public class SaleReportModel {
         this.customerName = customerName;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getIdentificationCustomer() {
+        return identificationCustomer;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setIdentificationCustomer(String identificationCustomer) {
+        this.identificationCustomer = identificationCustomer;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    public SalesModel getSalesModel() {
+        return salesModel;
     }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public void setSalesModel(SalesModel salesModel) {
+        this.salesModel = salesModel;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public UUID getEmployeeId() {
+        return employeeId;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public List<SaleItemDto> getItems() {
-        return items;
-    }
-
-    public void setItems(List<SaleItemDto> items) {
-        this.items = items;
-    }
-
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
-    }
-
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public void setEmployeeId(UUID employeeId) {
+        this.employeeId = employeeId;
     }
 
     @Override
     public String toString() {
         return "SaleReportModel{" +
                 "customerName='" + customerName + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", employeeName='" + employeeName + '\'' +
-                ", createdAt=" + createdAt +
-                ", paymentType='" + paymentType + '\'' +
-                ", items=" + items +
-                ", subtotal=" + subtotal +
-                ", taxAmount=" + taxAmount +
-                ", total=" + total +
+                ", identificationCustomer='" + identificationCustomer + '\'' +
+                ", salesModel=" + salesModel +
+                ", employeeId=" + employeeId +
                 '}';
     }
 }

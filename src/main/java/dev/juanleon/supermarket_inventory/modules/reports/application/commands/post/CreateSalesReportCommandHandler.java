@@ -14,10 +14,7 @@ public class CreateSalesReportCommandHandler implements IRequestHandler<CreateSa
 
     @Override
     public ResponseRequestDto handle(CreateSalesReportCommand request) {
-        return this.iPostReportHandler.createSale(
-                request.requestReportDto(),
-                request.requestReportSalesData()
-        );
+        return this.iPostReportHandler.createSale(request.requestReportSales());
     }
 
     @Override
