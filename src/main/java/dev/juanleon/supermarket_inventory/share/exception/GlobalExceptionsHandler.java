@@ -8,6 +8,7 @@ import dev.juanleon.supermarket_inventory.modules.products.infrastructure.output
 import dev.juanleon.supermarket_inventory.modules.products.infrastructure.outputs.exceptions.ProductsContainsDuplicateException;
 import dev.juanleon.supermarket_inventory.modules.products.infrastructure.outputs.exceptions.ProductsFollowingAreInactivesException;
 import dev.juanleon.supermarket_inventory.modules.products.infrastructure.outputs.exceptions.ProductsFollowingNotExistException;
+import dev.juanleon.supermarket_inventory.modules.providers.infrastructure.outputs.exceptions.NotFoundProviderException;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.NotFoundReportException;
 import dev.juanleon.supermarket_inventory.modules.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
@@ -85,7 +86,8 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             NotFoundProductException.class,
             ProductsContainsDuplicateException.class,
             ProductsFollowingAreInactivesException.class,
-            ProductsFollowingNotExistException.class
+            ProductsFollowingNotExistException.class,
+            NotFoundProviderException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);
