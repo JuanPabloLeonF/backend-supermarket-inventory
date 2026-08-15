@@ -13,6 +13,9 @@ public enum MessagesApp {
     EMAIL_ALREADY_EXISTS_USER("Email already exists with email: %s"),
 
     PROVIDER_NOT_FOUND_BY_DATA("Provider not found with data: %s"),
+    PROVIDER_CREATED_SUCCESSFULLY("Provider created successfully with id: %s"),
+    PROVIDER_DELETED_SUCCESSFULLY_BY_ID("Provider deleted successfully by id: %s"),
+    PROVIDER_UPDATE_SUCCESSFULLY_BY_ID("Provider updated successfully with id: %s"),
 
     EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID("Employee updated successfully with id: %s"),
     EMPLOYEE_CREATED_SUCCESSFULLY("Employee created successfully with id: %s"),

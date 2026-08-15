@@ -1,4 +1,108 @@
-# Supermarket Inventory — API Backend
+# 📦 Supermarket Inventory — API Backend
+
+¡Bienvenido! 🎉
+Resumen visual y conciso del backend Java para Supermarket Inventory. Diseño limpio, modular y orientado a pruebas.
+
+---
+
+<!-- Visual: Arquitectura -->
+<p align="center">
+  <img src="src/main/resources/templates/architecture.svg" alt="Arquitectura" width="820" />
+</p>
+
+---
+
+## ✨ Quick overview
+
+- Tech: Java 25, Spring Boot 4, Gradle.
+- Pattern: Hexagonal + Mediator + CQRS (ligero).
+- DB: H2 (dev) / PostgreSQL (prod).
+- Mapping: MapStruct. Image/PDF helpers: scrimage, openhtmltopdf.
+
+---
+
+## 🗂️ Módulos principales
+
+| Módulo | Responsabilidad |
+|---|---|
+| 🧑‍🤝‍🧑 employees | Gestión empleados y usuarios (registro, imagen, consultas). |
+| 📦 products | CRUD de productos, búsquedas, manejo de imágenes. |
+| 🧾 sales | Registrar y listar ventas; detalles por ítem. |
+| 📊 reports | Generación de reportes (HTML → PDF). |
+| 🤝 providers | Alta y consulta de proveedores. |
+| 🗂️ categories | CRUD de categorías. |
+| 🧾 cash_register | Apertura/cierre de caja y balance. |
+
+---
+
+## 🔗 Endpoints (resumen visual)
+
+<p align="center">
+  <img src="src/main/resources/templates/endpoints.svg" alt="Endpoints" width="820" />
+</p>
+
+Rutas base: `/employees`, `/products`, `/sales`, `/reports`, `/providers`, `/categories`, `/cash-register`.
+
+(Ver la sección completa de endpoints en el repo para detalles por ruta y filtros.)
+
+---
+
+## 📦 DTOs / modelos (compacto)
+
+- Product Request/Response: código, nombre, descripción, unidad, precios, stock, imagen.
+- Sales Request/Response: employeeId, detalles, totales, IVA, método de pago.
+- Employee Response: incluye user minimal (sin password en producción), position, salary, hireDate.
+- Report Request: employeeId, period, salesId, customer data.
+
+---
+
+## 🛠️ Notas importantes y correcciones aplicadas
+
+- ✅ MapStruct: IMapperReportApplication usa IMapperEmployeeApplication para mapear objetos anidados (evita warnings).
+- ✅ Mediator: cast genérico marcado con @SuppressWarnings("unchecked") para silenciar warning localizado.
+
+Pendiente (recomendado):
+- 🔧 Hacer main público: `public static void main(String[] args)` en SupermarketInventoryApplication.
+- 🔧 Corregir typo de import en GlobalExceptionsHandler: usar `com.fasterxml.jackson.databind.exc.InvalidFormatException`.
+- 🔒 No exponer `password` en Response DTOs; integrar Spring Security y Hashear contraseñas (BCrypt) antes de producción.
+
+---
+
+## 🚀 Quick start
+
+Requisitos: JDK compatible con Java 25 y Gradle wrapper.
+
+Run tests:
+```bash
+./gradlew test
+```
+
+Run app (dev):
+```bash
+./gradlew bootRun
+```
+
+La app arranca en el puerto configurado (dev por defecto: 2000).
+
+---
+
+## 📚 Extras — documentación y gráficos
+
+- Plantilla de reporte: `src/main/resources/templates/report_sales.html`.
+- SVGs (arquitectura y endpoints) están insertados arriba para una visión rápida.
+- Si quieres, genero diagramas adicionales (SVG/PNG) exportables o un OpenAPI (swagger) sencillo.
+
+---
+
+## 🤝 Contribuir / siguientes pasos
+
+- Añadir OpenAPI (springdoc) y ejemplos Postman.
+- Integrar CI (GitHub Actions) que ejecute `./gradlew test` en PRs.
+- Implementar seguridad y revisar DTOs para eliminar datos sensibles.
+
+---
+
+Si quieres que aplique automáticamente las correcciones pendientes o ejecute la suite de tests ahora, dime cuál acción ejecutar. 🚀
 
 Backend en **Java** para un sistema de inventario de supermercado. En el estado actual implementa el **módulo de usuarios** con operaciones de **consulta (lectura)** y **alta de usuario (creación)**, siguiendo una arquitectura en capas alineada con **Clean Architecture** y un patrón de **mediador** inspirado en **CQRS** para el desacoplamiento entre la capa web y la lógica de aplicación.
 

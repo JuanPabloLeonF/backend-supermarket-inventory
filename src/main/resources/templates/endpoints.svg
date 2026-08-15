@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="240" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font: bold 18px sans-serif; fill: #0f172a }
+    .service { fill:#fff7ed; stroke:#f59e0b; stroke-width:2 }
+    .text { font: 13px sans-serif; fill: #0f172a }
+  </style>
+
+  <text x="20" y="28" class="title">🔗 API Endpoints Overview</text>
+
+  <rect x="20" y="44" width="220" height="160" rx="8" class="service" />
+  <text x="40" y="72" class="text">/employees</text>
+  <text x="40" y="92" class="text">GET, POST (multipart), PUT, DELETE</text>
+  <text x="40" y="112" class="text">Filters: name, position, hireDate</text>
+
+  <rect x="260" y="44" width="220" height="160" rx="8" class="service" />
+  <text x="280" y="72" class="text">/products</text>
+  <text x="280" y="92" class="text">GET, POST (multipart), PUT, PATCH, DELETE</text>
+  <text x="280" y="112" class="text">Filters: code, category, stock, price, dates</text>
+
+  <rect x="500" y="44" width="220" height="160" rx="8" class="service" />
+  <text x="520" y="72" class="text">/sales, /reports, /providers</text>
+  <text x="520" y="92" class="text">CRUD and Reporting endpoints</text>
+  <text x="520" y="112" class="text">PDF reports, templates, and exports</text>
+</svg>

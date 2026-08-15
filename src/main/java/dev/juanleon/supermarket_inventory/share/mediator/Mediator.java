@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class Mediator {
 
-    Map<? extends Class<?>, IRequestHandler<?, ?>> requestHandlerMap;
+    private final Map<Class<?>, IRequestHandler<?, ?>> requestHandlerMap;
 
     public Mediator(List<IRequestHandler<?, ?>> iRequestHandlers) {
         this.requestHandlerMap = iRequestHandlers.stream()
@@ -19,6 +19,7 @@ public class Mediator {
     }
 
     public <R, T extends IRequest<R>> R dispatch(T request) {
+        @SuppressWarnings("unchecked")
         IRequestHandler<T, R> handler = (IRequestHandler<T, R>) this.requestHandlerMap.get(request.getClass());
         if (handler == null) {
             throw new NotFoundTypeRequestHandlerMediator("No handler found for request type: " + request.getClass().getName());

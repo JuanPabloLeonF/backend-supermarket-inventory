@@ -4,13 +4,16 @@ import dev.juanleon.supermarket_inventory.modules.reports.application.dto.reques
 import dev.juanleon.supermarket_inventory.modules.reports.application.dto.response.ResponseReport;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.SaleReportModel;
+import dev.juanleon.supermarket_inventory.modules.employees.application.mappers.IMapperEmployeeApplication;
 import org.mapstruct.*;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = { IMapperEmployeeApplication.class }
 )
 public interface IMapperReportApplication {
+
     ResponseReport toResponse(ReportModel reportModel);
 
     @Mappings(value = {

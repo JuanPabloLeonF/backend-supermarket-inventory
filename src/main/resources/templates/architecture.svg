@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font: bold 20px sans-serif; fill: #1f2937 }
+    .box { fill: #e6f0ff; stroke: #2563eb; stroke-width:2 }
+    .box-dark { fill:#f0f9ff; stroke:#0ea5e9; stroke-width:2 }
+    .text { font: 14px sans-serif; fill: #111827 }
+    .arrow { stroke:#374151; stroke-width:2; marker-end:url(#arrowhead) }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
+    </marker>
+  </defs>
+
+  <text x="20" y="28" class="title">📦 Supermarket Inventory — Arquitectura</text>
+
+  <rect x="20" y="60" width="160" height="80" rx="8" class="box" />
+  <text x="40" y="100" class="text">Controller</text>
+  <text x="40" y="118" class="text">(REST)</text>
+
+  <rect x="220" y="60" width="160" height="80" rx="8" class="box" />
+  <text x="250" y="100" class="text">Mediator</text>
+  <text x="250" y="118" class="text">dispatch()</text>
+
+  <rect x="420" y="30" width="220" height="120" rx="8" class="box-dark" />
+  <text x="450" y="60" class="text">Application</text>
+  <text x="450" y="80" class="text">Commands / Queries</text>
+  <text x="450" y="98" class="text">Handlers / Mappers</text>
+
+  <rect x="680" y="60" width="160" height="80" rx="8" class="box" />
+  <text x="700" y="100" class="text">Adapters</text>
+  <text x="700" y="118" class="text">(JPA / Providers)</text>
+
+  <rect x="420" y="170" width="420" height="80" rx="8" class="box" />
+  <text x="450" y="200" class="text">Repository → Database</text>
+  <text x="450" y="218" class="text">(H2 / PostgreSQL)</text>
+
+  <line x1="180" y1="100" x2="220" y2="100" class="arrow" />
+  <line x1="380" y1="100" x2="420" y2="100" class="arrow" />
+  <line x1="640" y1="100" x2="680" y2="100" class="arrow" />
+  <line x1="530" y1="150" x2="530" y2="170" class="arrow" />
+</svg>
