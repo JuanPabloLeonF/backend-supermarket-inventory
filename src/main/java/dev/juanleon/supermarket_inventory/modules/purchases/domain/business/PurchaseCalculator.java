@@ -18,56 +18,68 @@ public final class PurchaseCalculator {
     private PurchaseCalculator(){}
 
     public static PostDataBusinessPurchase calculateAllPurchases(PurchaseModel purchase) {
+
         BigDecimal totalDiscountApply = BigDecimal.ZERO;
         BigDecimal subTotalPurchases = BigDecimal.ZERO;
+        BigDecimal ivaTotalApply = BigDecimal.ZERO;
+        BigDecimal totalPurchases = BigDecimal.ZERO;
         Map<UUID, Integer> newStockMap = new HashMap<>();
 
         for (PurchaseDetailsModel detail : purchase.getPurchaseDetailModelList()) {
 
-            Integer newStock = decrementProductStock(
-                    detail.getQuantity(),
-                    detail.getProductModel().getStock()
-            );
+            PurchaseValidator.validateIva(detail.getIva());
+            PurchaseValidator.validateQuantity(detail.getQuantity());
+            PurchaseValidator.validatePrice(detail.getProductModel().getPricePurchase());
+
+            Integer newStock = incrementProductStock(detail.getQuantity(), detail.getProductModel().getStock());
+
+            BigDecimal detailSubTotal = calculateSubTotal(detail.getQuantity(), detail.getProductModel().getPricePurchase());
+
+            BigDecimal subTotalWithDiscount = calculatedDiscount(detail.getDiscount(), detailSubTotal);
+
+            BigDecimal ivaAmount = calculateIvaAmount(subTotalWithDiscount, detail.getIva());
+
+            BigDecimal detailTotal = calculateTotal(subTotalWithDiscount, ivaAmount);
 
             newStockMap.put(detail.getProductModel().getId(), newStock);
-
-            BigDecimal detailTotal = calculateTotal(
-                    detail.getQuantity(),
-                    detail.getProductModel().getPricePurchase(),
-                    detail.getDiscount()
-            );
-
+            detail.setSubTotal(detailSubTotal);
             detail.setTotal(detailTotal);
 
-            subTotalPurchases = subTotalPurchases.add(detailTotal);
+            ivaTotalApply = ivaTotalApply.add(ivaAmount);
+            subTotalPurchases = subTotalPurchases.add(detail.getSubTotal());
             totalDiscountApply = totalDiscountApply.add(detail.getDiscount());
+            totalPurchases = totalPurchases.add(detail.getTotal());
         }
-
-        BigDecimal ivaAmount = subTotalPurchases.multiply(purchase.getIva()).setScale(SCALE, ROUNDING_MODE);
-        BigDecimal totalPurchases = subTotalPurchases.add(ivaAmount).setScale(SCALE, ROUNDING_MODE);
 
         purchase.setDiscount(totalDiscountApply.setScale(SCALE, ROUNDING_MODE));
         purchase.setSubTotal(subTotalPurchases.setScale(SCALE, ROUNDING_MODE));
-        purchase.setTotal(totalPurchases);
+        purchase.setIva(ivaTotalApply.setScale(SCALE, ROUNDING_MODE));
+        purchase.setTotal(totalPurchases.setScale(SCALE, ROUNDING_MODE));
 
         return new PostDataBusinessPurchase(purchase, newStockMap);
     }
 
-    public static BigDecimal calculateTotal(Integer quantity, BigDecimal priceUnit, BigDecimal discount) {
-        return BigDecimal.valueOf(quantity)
-                .multiply(priceUnit)
-                .subtract(discount)
-                .setScale(SCALE, ROUNDING_MODE);
+    public static BigDecimal calculatedDiscount(BigDecimal discount, BigDecimal subTotal) {
+        BigDecimal subTotalWithDiscount = subTotal.subtract(discount);
+        if (subTotalWithDiscount.compareTo(BigDecimal.ZERO) < 0) {
+            subTotalWithDiscount = BigDecimal.ZERO;
+        }
+        return subTotalWithDiscount;
     }
 
-    private static Integer decrementProductStock(Integer quantity, Integer currentStock) {
+    public static BigDecimal calculateIvaAmount(BigDecimal subTotalWithDiscount, BigDecimal ivaAmount) {
+        return subTotalWithDiscount.multiply(ivaAmount).setScale(SCALE, ROUNDING_MODE);
+    }
 
-        int newStock = currentStock - quantity;
+    public static BigDecimal calculateTotal(BigDecimal subTotalWithDiscount, BigDecimal ivaAmount) {
+        return subTotalWithDiscount.add(ivaAmount).setScale(SCALE, ROUNDING_MODE);
+    }
 
-        if (newStock < 0) {
-            throw new IllegalArgumentException("Insufficient stock for product: " + currentStock);
-        }
+    public static BigDecimal calculateSubTotal(Integer quantity, BigDecimal priceUnit) {
+        return BigDecimal.valueOf(quantity).multiply(priceUnit).setScale(SCALE, ROUNDING_MODE);
+    }
 
-        return newStock;
+    private static Integer incrementProductStock(Integer quantity, Integer currentStock) {
+        return currentStock + quantity;
     }
 }

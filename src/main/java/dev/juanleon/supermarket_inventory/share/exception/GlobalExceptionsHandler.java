@@ -9,6 +9,10 @@ import dev.juanleon.supermarket_inventory.modules.products.infrastructure.output
 import dev.juanleon.supermarket_inventory.modules.products.infrastructure.outputs.exceptions.ProductsFollowingAreInactivesException;
 import dev.juanleon.supermarket_inventory.modules.products.infrastructure.outputs.exceptions.ProductsFollowingNotExistException;
 import dev.juanleon.supermarket_inventory.modules.providers.infrastructure.outputs.exceptions.NotFoundProviderException;
+import dev.juanleon.supermarket_inventory.modules.purchases.domain.exceptions.IvaDecimalException;
+import dev.juanleon.supermarket_inventory.modules.purchases.domain.exceptions.PriceErrorException;
+import dev.juanleon.supermarket_inventory.modules.purchases.domain.exceptions.QuantityErrorException;
+import dev.juanleon.supermarket_inventory.modules.purchases.infrastructure.outputs.exceptions.NotFoundPurchaseException;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.NotFoundReportException;
 import dev.juanleon.supermarket_inventory.modules.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
@@ -87,7 +91,8 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             ProductsContainsDuplicateException.class,
             ProductsFollowingAreInactivesException.class,
             ProductsFollowingNotExistException.class,
-            NotFoundProviderException.class
+            NotFoundProviderException.class,
+            NotFoundPurchaseException.class
     })
     public ResponseEntity<ProblemDetail> handlerNotFoundException(Exception exception) {
         return this.buildResponse(HttpStatus.NOT_FOUND, exception);
@@ -98,7 +103,10 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             EmailAlreadyExistsException.class,
             ErrorFileTypeNotAllowedException.class,
             IllegalArgumentException.class,
-            DataIntegrityViolationException.class
+            DataIntegrityViolationException.class,
+            IvaDecimalException.class,
+            QuantityErrorException.class,
+            PriceErrorException.class
     })
     public ResponseEntity<ProblemDetail> handlerBadRequestException(Exception exception) {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception);

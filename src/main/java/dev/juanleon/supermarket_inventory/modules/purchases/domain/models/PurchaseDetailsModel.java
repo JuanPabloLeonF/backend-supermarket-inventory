@@ -13,13 +13,14 @@ public class PurchaseDetailsModel {
     private Integer quantity;
     private BigDecimal priceUnit;
     private BigDecimal subTotal;
+    private BigDecimal iva;
     private BigDecimal discount;
     private BigDecimal total;
 
     public PurchaseDetailsModel() {
     }
 
-    public PurchaseDetailsModel(UUID id, PurchaseModel purchaseModel, ProductModel productModel, Integer quantity, BigDecimal priceUnit, BigDecimal subTotal, BigDecimal discount, BigDecimal total) {
+    public PurchaseDetailsModel(UUID id, PurchaseModel purchaseModel, ProductModel productModel, Integer quantity, BigDecimal priceUnit, BigDecimal subTotal, BigDecimal discount, BigDecimal iva, BigDecimal total) {
         this.id = id;
         this.purchaseModel = purchaseModel;
         this.productModel = productModel;
@@ -27,7 +28,16 @@ public class PurchaseDetailsModel {
         this.priceUnit = priceUnit;
         this.subTotal = subTotal;
         this.discount = discount;
+        this.iva = iva;
         this.total = total;
+    }
+
+    public BigDecimal getIva() {
+        return iva;
+    }
+
+    public void setIva(BigDecimal iva) {
+        this.iva = iva;
     }
 
     public PurchaseModel getPurchaseModel() {
@@ -103,6 +113,7 @@ public class PurchaseDetailsModel {
                 ", quantity=" + quantity +
                 ", priceUnit=" + priceUnit +
                 ", subTotal=" + subTotal +
+                ", iva=" + iva +
                 ", discount=" + discount +
                 ", total=" + total +
                 '}';

@@ -41,6 +41,8 @@ public enum MessagesApp {
     REPORT_CREATED_SUCCESSFULLY("Report created successfully with id: %s"),
     REPORT_DELETED_SUCCESSFULLY_BY_ID("Report deleted successfully by id: %s"),
 
+    PURCHASE_NOT_FOUND_BY_DATA("Purchase not found with data: %s"),
+
     FILE_ERROR_TRYING_DELETE("Error when trying to delete a file: %s"),
     FILE_ERROR_TRYING_SAVE("Error when trying to save a file: %s"),
     File_DELETED_SUCCESSFULLY_BY_URL("File deleted successfully with url: %s"),
@@ -53,8 +55,14 @@ public enum MessagesApp {
     CASH_REGISTER_CREATED_SUCCESSFULLY("CashRegister created successfully with id: %s"),
     CASH_REGISTER_DELETED_SUCCESSFULLY_BY_ID("CashRegister deleted successfully by id: %s"),
 
+    IVA_NOT_VALID("IVA must be a decimal between 0 and 1: %s"),
+    QUANTITY_NOT_VALID("Quantity cannot be null or negative or zero: %s"),
+    PRICE_NOT_VALID("Price cannot be null or negative: %s"),
+
     SALES_NOT_FOUND_BY_DATA("Sales not found with data: %s"),
     SALES_CREATED_SUCCESSFULLY("Sales created successfully with id: %s"),
+
+    PURCHASE_CREATED_SUCCESSFULLY("Purchase created successfully with id: %s"),
 
     SALES_DETAILS_NOT_FOUND_BY_DATA("Sales Details not found with data: %s"),
 

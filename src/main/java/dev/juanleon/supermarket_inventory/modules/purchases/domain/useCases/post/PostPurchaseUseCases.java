@@ -35,6 +35,7 @@ public class PostPurchaseUseCases implements IPostPurchaseService {
 
     @Override
     public ResponseModel create(PurchaseModel purchaseModel) {
+
         EmployeeModel employeeFound = this.iEmployeeProviderPurchase.getEmployeeById(purchaseModel.getEmployeeModel().getId());
         purchaseModel.setEmployeeModel(employeeFound);
 
