@@ -1,10 +1,14 @@
 package dev.juanleon.supermarket_inventory.modules.reports.application.mappers;
 
-import dev.juanleon.supermarket_inventory.modules.reports.application.dto.request.RequestReportSales;
+import dev.juanleon.supermarket_inventory.modules.providers.domain.models.ProviderModel;
+import dev.juanleon.supermarket_inventory.modules.purchases.domain.models.PurchaseModel;
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.request.RequestReportDataPurchases;
+import dev.juanleon.supermarket_inventory.modules.reports.application.dto.request.RequestReportDataSales;
 import dev.juanleon.supermarket_inventory.modules.reports.application.dto.response.ResponseReport;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.ReportModel;
-import dev.juanleon.supermarket_inventory.modules.reports.domain.models.SaleReportModel;
+import dev.juanleon.supermarket_inventory.modules.reports.domain.models.DataReportModel;
 import dev.juanleon.supermarket_inventory.modules.employees.application.mappers.IMapperEmployeeApplication;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
 import org.mapstruct.*;
 
 @Mapper(
@@ -21,13 +25,49 @@ public interface IMapperReportApplication {
             @Mapping(target = "filePath", ignore = true),
             @Mapping(target = "generatedAt", ignore = true),
             @Mapping(target = "employee", ignore = true),
+            @Mapping(target = "employee.id", source = "employeeId"),
             @Mapping(target = "reportType", source = "reportType"),
             @Mapping(target = "period", source = "period"),
     })
-    ReportModel requestReportToModel(RequestReportSales requestReportSales);
+    ReportModel requestReportSalesToModel(RequestReportDataSales requestReportDataSales);
 
     @Mappings(value = {
-            @Mapping(target = "salesModel.id", source = "salesId")
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "filePath", ignore = true),
+            @Mapping(target = "generatedAt", ignore = true),
+            @Mapping(target = "employee", ignore = true),
+            @Mapping(target = "employee.id", source = "employeeId"),
+            @Mapping(target = "reportType", source = "reportType"),
+            @Mapping(target = "period", source = "period"),
     })
-    SaleReportModel salesReportToModel(RequestReportSales requestReportSales);
+    ReportModel requestReportPurchaseToModel(RequestReportDataPurchases requestReportDataPurchases);
+
+    default DataReportModel<SalesModel> salesReportToModel(RequestReportDataSales requestReportDataSales) {
+
+        SalesModel salesModel = SalesModel.builder()
+                .id(requestReportDataSales.getIdModel())
+                .build();
+
+        return new DataReportModel<SalesModel>(
+                requestReportDataSales.getCustomerName(),
+                requestReportDataSales.getIdentificationCustomer(),
+                salesModel
+        );
+    }
+
+    default DataReportModel<PurchaseModel> purchaseReportToModel(RequestReportDataPurchases requestReportDataPurchases) {
+
+        ProviderModel providerModel = new ProviderModel();
+        providerModel.setId(requestReportDataPurchases.getIdProvider());
+
+        PurchaseModel purchaseModel = new PurchaseModel();
+        purchaseModel.setId(requestReportDataPurchases.getIdModel());
+        purchaseModel.setProviderModel(providerModel);
+
+        return new DataReportModel<PurchaseModel>(
+                "",
+                "",
+                purchaseModel
+        );
+    }
 }

@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RequestReportSales {
+public class RequestReportDataPurchases {
 
     @NotNull(message = "employee is required")
     private UUID employeeId;
@@ -30,17 +30,9 @@ public class RequestReportSales {
     )
     private String period;
 
-    @NotNull(message = "salesId is required")
-    private UUID salesId;
+    @NotNull(message = "idModel is required")
+    private UUID idModel;
 
-    @NotBlank(message = "customerName is required")
-    @Size(min = 4, max = 100, message = "customerName must be between 4 and 100 characters")
-    private String customerName;
-
-    @NotNull(message = "identificationCustomer is required")
-    @Pattern(
-            regexp = "^[0-9]{8,10}$",
-            message = "identificationCustomer must contain between 8 and 10 digits"
-    )
-    private String identificationCustomer;
+    @NotNull(message = "idProvider is required")
+    private UUID idProvider;
 }

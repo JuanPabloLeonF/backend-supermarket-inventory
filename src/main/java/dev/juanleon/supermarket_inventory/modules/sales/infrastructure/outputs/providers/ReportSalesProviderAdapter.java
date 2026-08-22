@@ -22,11 +22,12 @@ public class ReportSalesProviderAdapter implements ISaleProviderReport {
     public SalesModel getSaleById(UUID saleId, UUID employeeId) {
         return this.iSalesRepository.findById(saleId)
                 .map((entity) -> {
+
                     if (!employeeId.equals(entity.getEmployee().getId())) {
                         throw new NotFoundEmployeeException(employeeId);
                     }
+
                     return this.iMapperSalesInfrastructure.toModel(entity);
-                })
-                .orElseThrow(() -> new NotFoundSalesException(saleId));
+                }).orElseThrow(() -> new NotFoundSalesException(saleId));
     }
 }

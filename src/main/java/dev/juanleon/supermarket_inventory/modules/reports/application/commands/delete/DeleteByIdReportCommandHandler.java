@@ -1,21 +1,27 @@
 package dev.juanleon.supermarket_inventory.modules.reports.application.commands.delete;
 
+import dev.juanleon.supermarket_inventory.modules.reports.domain.services.delete.IDeleteReportService;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
+import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
-import dev.juanleon.supermarket_inventory.modules.reports.application.handler.delete.IDeleteReportHandler;
 
+import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperResponseApp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class DeleteByIdReportCommandHandler implements IRequestHandler<DeleteByIdReportCommand, ResponseRequestDto> {
 
-    private final IDeleteReportHandler iDeleteReportHandler;
+    private final IDeleteReportService iDeleteReportService;
+    private final IMapperResponseApp iMapperResponseApp;
 
     @Override
+    @Transactional
     public ResponseRequestDto handle(DeleteByIdReportCommand request) {
-        return this.iDeleteReportHandler.deleteById(request.id());
+        ResponseModel responseModel = this.iDeleteReportService.deleteById(request.id());
+        return this.iMapperResponseApp.toResponse(responseModel);
     }
 
     @Override

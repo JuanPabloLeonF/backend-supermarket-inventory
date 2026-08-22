@@ -11,10 +11,7 @@ import dev.juanleon.supermarket_inventory.modules.sales.domain.ports.IProductPro
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -60,5 +57,20 @@ public class SalesProductProviderAdapter implements IProductProviderSales {
         return productEntityList.stream()
                 .map(this.iMapperProductInfrastructure::toModel)
                 .toList();
+    }
+
+    @Override
+    public void updateStockProductsByIds(Map<UUID, Integer> productStockMap, List<ProductModel> productModelList) {
+
+        List<ProductEntity> productEntityList = productModelList.stream()
+                .map(this.iMapperProductInfrastructure::toEntity)
+                .toList();
+
+        productEntityList.forEach(product -> {
+            Integer stockNew = productStockMap.get(product.getId());
+            product.setStock(stockNew);
+        });
+
+        this.iProductRepository.saveAll(productEntityList);
     }
 }

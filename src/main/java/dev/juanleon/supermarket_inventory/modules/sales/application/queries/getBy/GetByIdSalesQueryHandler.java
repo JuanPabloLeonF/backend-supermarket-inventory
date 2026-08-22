@@ -1,20 +1,24 @@
 package dev.juanleon.supermarket_inventory.modules.sales.application.queries.getBy;
 
+import dev.juanleon.supermarket_inventory.modules.sales.application.mappers.IMapperSalesApplication;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.services.get.IGetSalesServices;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.modules.sales.application.dto.ResponseSalesDto;
-import dev.juanleon.supermarket_inventory.modules.sales.application.handler.get.IGetSalesHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetByIdSalesQueryHandler implements IRequestHandler<GetByIdSalesQuery, ResponseSalesDto> {
 
-    private final IGetSalesHandler iGetSalesHandler;
+    private final IGetSalesServices iGetSalesServices;
+    private final IMapperSalesApplication iMapperSalesApplication;
 
     @Override
     public ResponseSalesDto handle(GetByIdSalesQuery request) {
-        return iGetSalesHandler.getById(request.id());
+        return this.iMapperSalesApplication.toResponse(
+                this.iGetSalesServices.getById(request.id())
+        );
     }
 
     @Override

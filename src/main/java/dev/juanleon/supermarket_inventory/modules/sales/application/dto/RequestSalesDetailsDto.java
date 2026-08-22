@@ -26,4 +26,9 @@ public class RequestSalesDetailsDto {
     @PositiveOrZero(message = "discount must be zero or positive")
     @Digits(integer = 12, fraction = 2, message = "discount has invalid format (max 12 integers and 2 decimals)")
     private BigDecimal discount;
+
+    @NotNull(message = "iva is required")
+    @PositiveOrZero(message = "iva must be zero or positive")
+    @Digits(integer = 12, fraction = 2, message = "iva has invalid format (max 12 integers and 2 decimals)")
+    private BigDecimal iva;
 }

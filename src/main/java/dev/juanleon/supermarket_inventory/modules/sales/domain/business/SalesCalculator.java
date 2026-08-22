@@ -1,10 +1,14 @@
 package dev.juanleon.supermarket_inventory.modules.sales.domain.business;
 
+import dev.juanleon.supermarket_inventory.modules.sales.domain.models.PostDataBusinessSales;
 import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesDetailsModel;
 import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public final class SalesCalculator {
@@ -14,37 +18,72 @@ public final class SalesCalculator {
 
     private SalesCalculator(){}
 
-    public static SalesModel calculateAllSales(SalesModel sales) {
+    public static PostDataBusinessSales calculateAllSales(SalesModel sales) {
         BigDecimal totalDiscountApply = BigDecimal.ZERO;
-        BigDecimal subTotalSales = BigDecimal.ZERO;
+        BigDecimal subTotalPurchases = BigDecimal.ZERO;
+        BigDecimal ivaTotalApply = BigDecimal.ZERO;
+        BigDecimal totalPurchases = BigDecimal.ZERO;
+        Map<UUID, Integer> newStockMap = new HashMap<>();
 
         for (SalesDetailsModel detail : sales.getSalesDetailsModelList()) {
-            BigDecimal detailTotal = calculateTotal(
-                    detail.getQuantity(),
-                    detail.getProductModel().getPriceSale(),
-                    detail.getDiscount()
-            );
 
+            SalesValidator.validateIva(detail.getIva());
+            SalesValidator.validateQuantity(detail.getQuantity());
+            SalesValidator.validatePrice(detail.getProductModel().getPricePurchase());
+
+            Integer newStock = decrementProductStock(detail.getQuantity(), detail.getProductModel().getStock());
+
+            BigDecimal detailSubTotal = calculateSubTotal(detail.getQuantity(), detail.getProductModel().getPricePurchase());
+
+            BigDecimal subTotalWithDiscount = calculatedDiscount(detail.getDiscount(), detailSubTotal);
+
+            BigDecimal ivaAmount = calculateIvaAmount(subTotalWithDiscount, detail.getIva());
+
+            BigDecimal detailTotal = calculateTotal(subTotalWithDiscount, ivaAmount);
+
+            newStockMap.put(detail.getProductModel().getId(), newStock);
+            detail.setSubTotal(detailSubTotal);
             detail.setTotal(detailTotal);
 
-            subTotalSales = subTotalSales.add(detailTotal);
+            ivaTotalApply = ivaTotalApply.add(ivaAmount);
+            subTotalPurchases = subTotalPurchases.add(detail.getSubTotal());
             totalDiscountApply = totalDiscountApply.add(detail.getDiscount());
+            totalPurchases = totalPurchases.add(detail.getTotal());
         }
 
-        BigDecimal ivaAmount = subTotalSales.multiply(sales.getIva()).setScale(SCALE, ROUNDING_MODE);
-        BigDecimal totalSales = subTotalSales.add(ivaAmount).setScale(SCALE, ROUNDING_MODE);
-
         sales.setDiscount(totalDiscountApply.setScale(SCALE, ROUNDING_MODE));
-        sales.setSubTotal(subTotalSales.setScale(SCALE, ROUNDING_MODE));
-        sales.setTotal(totalSales);
+        sales.setSubTotal(subTotalPurchases.setScale(SCALE, ROUNDING_MODE));
+        sales.setIva(ivaTotalApply.setScale(SCALE, ROUNDING_MODE));
+        sales.setTotal(totalPurchases.setScale(SCALE, ROUNDING_MODE));
 
-        return sales;
+        return new PostDataBusinessSales(sales, newStockMap);
     }
 
-    public static BigDecimal calculateTotal(Integer quantity, BigDecimal priceUnit, BigDecimal discount) {
-        return BigDecimal.valueOf(quantity)
-                .multiply(priceUnit)
-                .subtract(discount)
-                .setScale(SCALE, ROUNDING_MODE);
+    public static BigDecimal calculatedDiscount(BigDecimal discount, BigDecimal subTotal) {
+        BigDecimal subTotalWithDiscount = subTotal.subtract(discount);
+        if (subTotalWithDiscount.compareTo(BigDecimal.ZERO) < 0) {
+            subTotalWithDiscount = BigDecimal.ZERO;
+        }
+        return subTotalWithDiscount;
+    }
+
+    public static BigDecimal calculateIvaAmount(BigDecimal subTotalWithDiscount, BigDecimal ivaAmount) {
+        return subTotalWithDiscount.multiply(ivaAmount).setScale(SCALE, ROUNDING_MODE);
+    }
+
+    public static BigDecimal calculateTotal(BigDecimal subTotalWithDiscount, BigDecimal ivaAmount) {
+        return subTotalWithDiscount.add(ivaAmount).setScale(SCALE, ROUNDING_MODE);
+    }
+
+    public static BigDecimal calculateSubTotal(Integer quantity, BigDecimal priceUnit) {
+        return BigDecimal.valueOf(quantity).multiply(priceUnit).setScale(SCALE, ROUNDING_MODE);
+    }
+
+    private static Integer decrementProductStock(Integer quantity, Integer currentStock) {
+        int newStock = currentStock - quantity;
+
+        SalesValidator.validateCurrentStock(newStock);
+
+        return newStock;
     }
 }

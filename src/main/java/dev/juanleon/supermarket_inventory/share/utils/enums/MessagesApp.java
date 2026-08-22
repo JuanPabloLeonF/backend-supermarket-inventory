@@ -58,6 +58,7 @@ public enum MessagesApp {
     IVA_NOT_VALID("IVA must be a decimal between 0 and 1: %s"),
     QUANTITY_NOT_VALID("Quantity cannot be null or negative or zero: %s"),
     PRICE_NOT_VALID("Price cannot be null or negative: %s"),
+    STOCK_NOT_VALID("Stock cannot be null or negative or zero: %s"),
 
     SALES_NOT_FOUND_BY_DATA("Sales not found with data: %s"),
     SALES_CREATED_SUCCESSFULLY("Sales created successfully with id: %s"),

@@ -15,6 +15,10 @@ import dev.juanleon.supermarket_inventory.modules.purchases.domain.exceptions.Qu
 import dev.juanleon.supermarket_inventory.modules.purchases.infrastructure.outputs.exceptions.NotFoundPurchaseException;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.ErrorTryingCreateReport;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.exceptions.NotFoundReportException;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.exceptions.IvaDecimalSalesException;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.exceptions.PriceErrorSalesException;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.exceptions.QuantityErrorSalesException;
+import dev.juanleon.supermarket_inventory.modules.sales.domain.exceptions.currentStockErrorSalesException;
 import dev.juanleon.supermarket_inventory.modules.sales.infrastructure.outputs.exceptions.NotFoundSalesException;
 import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.EmailAlreadyExistsException;
 import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.exceptions.NoCreateUserOnDatabaseException;
@@ -106,7 +110,11 @@ public class GlobalExceptionsHandler extends BuildResponseExceptions {
             DataIntegrityViolationException.class,
             IvaDecimalException.class,
             QuantityErrorException.class,
-            PriceErrorException.class
+            PriceErrorException.class,
+            currentStockErrorSalesException.class,
+            IvaDecimalSalesException.class,
+            QuantityErrorSalesException.class,
+            PriceErrorSalesException.class,
     })
     public ResponseEntity<ProblemDetail> handlerBadRequestException(Exception exception) {
         return this.buildResponse(HttpStatus.BAD_REQUEST, exception);

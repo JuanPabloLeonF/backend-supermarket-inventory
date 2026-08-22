@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.modules.reports.domain.persistence.del
 import dev.juanleon.supermarket_inventory.modules.reports.domain.persistence.get.IGetReportPersistence;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.persistence.post.IPostReportPersistence;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.ports.IFilesProviderReport;
+import dev.juanleon.supermarket_inventory.modules.reports.domain.ports.IPurchaseProviderReport;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.ports.ISaleProviderReport;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.services.delete.IDeleteReportService;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.services.get.IGetReportService;
@@ -26,11 +27,13 @@ public class BeanReportConfiguration {
     public IPostReportService iPostReportService(
             IPostReportPersistence iPostReportPersistence,
             ISaleProviderReport iSaleProviderReport,
+            IPurchaseProviderReport iPurchaseProviderReport,
             IFilesProviderReport iFilesProviderReport
     ) {
         return new PostReportUseCase(
                 iPostReportPersistence,
                 iSaleProviderReport,
+                iPurchaseProviderReport,
                 iFilesProviderReport
         );
     }

@@ -1,20 +1,22 @@
 package dev.juanleon.supermarket_inventory.modules.reports.application.queries.getBy;
 
+import dev.juanleon.supermarket_inventory.modules.reports.application.mappers.IMapperReportApplication;
+import dev.juanleon.supermarket_inventory.modules.reports.domain.services.get.IGetReportService;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.modules.reports.application.dto.response.ResponseReport;
-import dev.juanleon.supermarket_inventory.modules.reports.application.handler.get.IGetReportHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetByIdReportQueryHandler implements IRequestHandler<GetByIdReportQuery, ResponseReport> {
 
-    private final IGetReportHandler iGetReportHandler;
+    private final IGetReportService iGetReportService;
+    private final IMapperReportApplication iMapperReportApplication;
 
     @Override
     public ResponseReport handle(GetByIdReportQuery request) {
-        return this.iGetReportHandler.getById(request.id());
+        return this.iMapperReportApplication.toResponse(this.iGetReportService.getById(request.id()));
     }
 
     @Override

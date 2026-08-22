@@ -19,5 +19,7 @@ public class ResponseSalesDetailsDto {
     private Integer quantity;
     private BigDecimal priceUnit;
     private BigDecimal discount;
+    private BigDecimal subTotal;
+    private BigDecimal iva;
     private BigDecimal total;
 }

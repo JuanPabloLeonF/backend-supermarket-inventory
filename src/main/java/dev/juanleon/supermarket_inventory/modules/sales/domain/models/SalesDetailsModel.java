@@ -13,70 +13,23 @@ public class SalesDetailsModel {
     private Integer quantity;
     private BigDecimal priceUnit;
     private BigDecimal discount;
+    private BigDecimal subTotal;
+    private BigDecimal iva;
     private BigDecimal total;
 
-    private SalesDetailsModel(SalesDetailsModelBuilder builder) {
-        this.id = builder.id;
-        this.salesModel = builder.salesModel;
-        this.productModel = builder.productModel;
-        this.quantity = builder.quantity;
-        this.priceUnit = builder.priceUnit;
-        this.discount = builder.discount;
-        this.total = builder.total;
+    public SalesDetailsModel() {
     }
 
-    public static SalesDetailsModelBuilder builder() {
-        return new SalesDetailsModelBuilder();
-    }
-
-    public static class SalesDetailsModelBuilder {
-
-        private UUID id;
-        private SalesModel salesModel;
-        private ProductModel productModel;
-        private Integer quantity;
-        private BigDecimal priceUnit;
-        private BigDecimal discount;
-        private BigDecimal total;
-
-        public SalesDetailsModelBuilder id(UUID id) {
-            this.id = id;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder salesModel(SalesModel salesModel) {
-            this.salesModel = salesModel;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder productModel(ProductModel productModel) {
-            this.productModel = productModel;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder quantity(Integer quantity) {
-            this.quantity = quantity;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder priceUnit(BigDecimal priceUnit) {
-            this.priceUnit = priceUnit;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder discount(BigDecimal discount) {
-            this.discount = discount;
-            return this;
-        }
-
-        public SalesDetailsModelBuilder total(BigDecimal total) {
-            this.total = total;
-            return this;
-        }
-
-        public SalesDetailsModel build() {
-            return new SalesDetailsModel(this);
-        }
+    public SalesDetailsModel(UUID id, SalesModel salesModel, ProductModel productModel, Integer quantity, BigDecimal priceUnit, BigDecimal discount, BigDecimal subTotal, BigDecimal iva, BigDecimal total) {
+        this.id = id;
+        this.salesModel = salesModel;
+        this.productModel = productModel;
+        this.quantity = quantity;
+        this.priceUnit = priceUnit;
+        this.discount = discount;
+        this.subTotal = subTotal;
+        this.iva = iva;
+        this.total = total;
     }
 
     public UUID getId() {
@@ -127,6 +80,22 @@ public class SalesDetailsModel {
         this.discount = discount;
     }
 
+    public BigDecimal getIva() {
+        return iva;
+    }
+
+    public void setIva(BigDecimal iva) {
+        this.iva = iva;
+    }
+
+    public BigDecimal getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(BigDecimal subTotal) {
+        this.subTotal = subTotal;
+    }
+
     public BigDecimal getTotal() {
         return total;
     }
@@ -144,6 +113,8 @@ public class SalesDetailsModel {
                 ", quantity=" + quantity +
                 ", priceUnit=" + priceUnit +
                 ", discount=" + discount +
+                ", subTotal=" + subTotal +
+                ", iva=" + iva +
                 ", total=" + total +
                 '}';
     }

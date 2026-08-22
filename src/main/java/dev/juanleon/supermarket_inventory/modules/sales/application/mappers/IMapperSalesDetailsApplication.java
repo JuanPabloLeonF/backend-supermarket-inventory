@@ -25,7 +25,8 @@ public interface IMapperSalesDetailsApplication {
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "productModel.id", source = "idProduct"),
             @Mapping(target = "quantity", source = "quantity"),
-            @Mapping(target = "discount", source = "discount")
+            @Mapping(target = "discount", source = "discount"),
+            @Mapping(target = "iva", source = "iva"),
     })
     SalesDetailsModel toModel(RequestSalesDetailsDto requestSalesDetailsDto);
 

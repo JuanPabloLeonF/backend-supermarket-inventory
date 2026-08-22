@@ -35,6 +35,12 @@ public class SalesDetailsEntity {
     private BigDecimal priceUnit;
 
     @Column(nullable = false)
+    private BigDecimal iva;
+
+    @Column(name = "sub_total", nullable = false)
+    private BigDecimal subTotal;
+
+    @Column(nullable = false)
     private BigDecimal discount;
 
     @Column(nullable = false)

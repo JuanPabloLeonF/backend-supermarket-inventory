@@ -15,6 +15,8 @@ public class ProviderModel {
     private Boolean activate;
     private LocalDate createdAt;
 
+    public ProviderModel(){}
+
     public ProviderModel(UUID id, String fullName, String identification, String email, String cellPhone, String direction, String city, Boolean activate, LocalDate createdAt) {
         this.id = id;
         this.fullName = fullName;

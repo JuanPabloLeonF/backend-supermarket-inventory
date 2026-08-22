@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_PURCHASES;
 import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_SALES;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.REPORT_DELETED_SUCCESSFULLY_BY_ID;
 
@@ -22,11 +23,21 @@ public class DeleteReportAdapter implements IDeleteReportPersistence {
 
     @Override
     public String deleteById(UUID id) {
+
          return this.iReportRepository.findById(id)
                 .map(entity -> {
+
+                    String path;
+
+                    if (entity.getReportType().equals("SALES")) {
+                        path = PATH_UPLOAD_FILES_PDF_SALES;
+                    } else {
+                        path = PATH_UPLOAD_FILES_PDF_PURCHASES;
+                    }
+
                     this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
                             entity.getFilePath(),
-                            PATH_UPLOAD_FILES_PDF_SALES
+                            path
                     ));
                     this.iReportRepository.deleteById(entity.getId());
                     return REPORT_DELETED_SUCCESSFULLY_BY_ID.format(entity.getId());
