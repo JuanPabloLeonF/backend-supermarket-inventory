@@ -7,7 +7,7 @@ import dev.juanleon.supermarket_inventory.modules.employees.domain.persistence.p
 import dev.juanleon.supermarket_inventory.modules.employees.domain.services.post.IPostEmployeeService;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_EMPLOYEES;
+import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_EMPLOYEES;
 
 public class PostEmployeeUseCase implements IPostEmployeeService {
 

@@ -26,7 +26,6 @@ public interface IMapperReportApplication {
             @Mapping(target = "generatedAt", ignore = true),
             @Mapping(target = "employee", ignore = true),
             @Mapping(target = "employee.id", source = "employeeId"),
-            @Mapping(target = "reportType", source = "reportType"),
             @Mapping(target = "period", source = "period"),
     })
     ReportModel requestReportSalesToModel(RequestReportDataSales requestReportDataSales);
@@ -37,7 +36,6 @@ public interface IMapperReportApplication {
             @Mapping(target = "generatedAt", ignore = true),
             @Mapping(target = "employee", ignore = true),
             @Mapping(target = "employee.id", source = "employeeId"),
-            @Mapping(target = "reportType", source = "reportType"),
             @Mapping(target = "period", source = "period"),
     })
     ReportModel requestReportPurchaseToModel(RequestReportDataPurchases requestReportDataPurchases);

@@ -12,7 +12,7 @@ import dev.juanleon.supermarket_inventory.modules.products.domain.services.post.
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 
 public class PostProductUseCase implements IPostProductService {
 

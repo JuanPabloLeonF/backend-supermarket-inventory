@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.PRODUCT_DELETED_SUCCESSFULLY_BY_ID;
 
 @Repository

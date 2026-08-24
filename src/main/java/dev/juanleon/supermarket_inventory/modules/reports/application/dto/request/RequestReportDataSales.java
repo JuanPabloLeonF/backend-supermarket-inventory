@@ -21,9 +21,6 @@ public class RequestReportDataSales {
     private UUID employeeId;
 
     @NotBlank(message = "period is required")
-    private String reportType;
-
-    @NotBlank(message = "period is required")
     @Pattern(
             regexp = "^(?i)(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\\s\\d{4}$",
             message = "El formato debe ser 'mes año' (ej: diciembre 2024)"

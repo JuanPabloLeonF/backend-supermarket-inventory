@@ -1,5 +1,6 @@
 package dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.database.adapters.delete;
 
+import dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp;
 import dev.juanleon.supermarket_inventory.share.files.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.persistence.delete.IDeleteReportPersistence;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.database.repositories.IReportRepository;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_PURCHASES;
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_FILES_PDF_SALES;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.REPORT_DELETED_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -29,16 +28,17 @@ public class DeleteReportAdapter implements IDeleteReportPersistence {
 
                     String path;
 
-                    if (entity.getReportType().equals("SALES")) {
-                        path = PATH_UPLOAD_FILES_PDF_SALES;
+                    if (entity.getReportType().equals(ConstantsApp.TYPE_SALES)) {
+                        path = ConstantsApp.PATH_UPLOAD_FILES_PDF_SALES;
                     } else {
-                        path = PATH_UPLOAD_FILES_PDF_PURCHASES;
+                        path = ConstantsApp.PATH_UPLOAD_FILES_PDF_PURCHASES;
                     }
 
                     this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
                             entity.getFilePath(),
                             path
                     ));
+
                     this.iReportRepository.deleteById(entity.getId());
                     return REPORT_DELETED_SUCCESSFULLY_BY_ID.format(entity.getId());
                 }).orElseThrow(() -> new NotFoundReportException(id));

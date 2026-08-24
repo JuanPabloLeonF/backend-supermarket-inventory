@@ -11,7 +11,7 @@ import dev.juanleon.supermarket_inventory.modules.products.domain.services.updat
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_PRODUCTS;
+import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 
 public class UpdateProductUseCase implements IUpdateProductService {
 

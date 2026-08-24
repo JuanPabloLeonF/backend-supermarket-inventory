@@ -9,7 +9,7 @@ import dev.juanleon.supermarket_inventory.modules.employees.domain.services.upda
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.AppConfigurationProperties.PATH_UPLOAD_IMAGES_EMPLOYEES;
+import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_EMPLOYEES;
 
 public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
 

@@ -3,7 +3,6 @@ package dev.juanleon.supermarket_inventory.modules.reports.application.dto.reque
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +18,6 @@ public class RequestReportDataPurchases {
 
     @NotNull(message = "employee is required")
     private UUID employeeId;
-
-    @NotBlank(message = "period is required")
-    private String reportType;
 
     @NotBlank(message = "period is required")
     @Pattern(

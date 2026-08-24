@@ -1,9 +1,9 @@
 package dev.juanleon.supermarket_inventory.share.files.services;
 
+import dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp;
 import dev.juanleon.supermarket_inventory.share.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.share.files.events.FileCreatedEvent;
 import dev.juanleon.supermarket_inventory.share.files.storage.FileStorage;
-import dev.juanleon.supermarket_inventory.share.files.utils.FileConstants;
 import dev.juanleon.supermarket_inventory.share.files.utils.FilesUtil;
 import dev.juanleon.supermarket_inventory.share.files.validators.FilesValidations;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class ImageStoreService {
 
         FilesValidations.validateContentType(
                 inputFileDto.getContentType(),
-                FileConstants.ALLOWED_IMAGE_EXTENSIONS
+                ConstantsApp.ALLOWED_IMAGE_EXTENSIONS
         );
 
         Path path = FilesUtil.stringToPath(uploadUrl);
@@ -33,7 +33,7 @@ public class ImageStoreService {
 
         String fileName = FilesUtil.generateUniqueFileName(
                 inputFileDto.getOriginalName(),
-                FileConstants.WEBP
+                ConstantsApp.WEBP
         );
 
         InputStream inputStream = FilesUtil.convertFileImgToWebp(inputFileDto.getInputStream());

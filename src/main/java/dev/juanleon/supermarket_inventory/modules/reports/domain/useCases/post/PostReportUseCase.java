@@ -4,6 +4,7 @@ import dev.juanleon.supermarket_inventory.modules.purchases.domain.models.Purcha
 import dev.juanleon.supermarket_inventory.modules.reports.domain.ports.IPurchaseProviderReport;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.ports.ISaleProviderReport;
 import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
+import dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.ReportModel;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.models.DataReportModel;
@@ -39,6 +40,7 @@ public class PostReportUseCase implements IPostReportService {
         String urlFile = this.iFilesProviderReport.createPdfSales(dataReportModel);
 
         reportModel.setFilePath(urlFile);
+        reportModel.setReportType(ConstantsApp.TYPE_SALES);
         return this.iPostReportPersistence.create(reportModel);
     }
 
@@ -58,6 +60,7 @@ public class PostReportUseCase implements IPostReportService {
 
         String urlFile = this.iFilesProviderReport.createPdfPurchase(dataReportModel);
         reportModel.setFilePath(urlFile);
+        reportModel.setReportType(ConstantsApp.TYPE_PURCHASES);
         return this.iPostReportPersistence.create(reportModel);
     }
 }
