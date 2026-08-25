@@ -1,5 +1,8 @@
 package dev.juanleon.supermarket_inventory.modules.employees.infrastructure.inputs.controllers;
 
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.requets.RequestLoginDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseLoginDto;
+import dev.juanleon.supermarket_inventory.security.authentication.JwtService;
 import dev.juanleon.supermarket_inventory.share.mediator.Mediator;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseRequestDto;
@@ -20,6 +23,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -91,6 +96,28 @@ public class EmployeeRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.mediator.dispatch(query));
+    }
+
+    private final JwtService jwtService;
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseLoginDto> login(@Valid @RequestBody RequestLoginDto request) {
+
+        UserDetails user = User.builder()
+                .username(request.getEmail())
+                .password(request.getPassword())
+                .roles("ADMIN")
+                .build();
+
+        String token = this.jwtService.generatedToken(user);
+
+        ResponseLoginDto response = ResponseLoginDto.builder()
+                .token(token)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @PostMapping("/register")
