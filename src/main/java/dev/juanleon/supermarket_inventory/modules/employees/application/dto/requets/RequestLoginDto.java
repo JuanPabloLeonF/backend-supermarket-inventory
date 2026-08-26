@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.modules.employees.application.dto.requets;
 
-import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

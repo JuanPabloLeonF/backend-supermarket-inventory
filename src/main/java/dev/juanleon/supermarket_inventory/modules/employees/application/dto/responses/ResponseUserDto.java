@@ -1,6 +1,7 @@
 package dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class ResponseUserDto {
     private String lastName;
     private String email;
     private String password;
-    private String rol;
+    private Roles rol;
     private Boolean isActive;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;

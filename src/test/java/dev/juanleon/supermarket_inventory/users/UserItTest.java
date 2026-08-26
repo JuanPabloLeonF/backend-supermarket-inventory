@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_NOT_FOUND_BY_ID;
+import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_NOT_FOUND_BY_DATA;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.USER_UPDATE_SUCCESSFULLY_BY_ID;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -179,7 +179,7 @@ public class UserItTest {
     @Test
     void shouldReturnNotFoundWhenUpdateUserDoesNotExist() {
         UUID idNoExistis = UUID.randomUUID();
-        String message = USER_NOT_FOUND_BY_ID.format(idNoExistis);
+        String message = USER_NOT_FOUND_BY_DATA.format(idNoExistis);
 
         RequestUpdateUserDto requestUpdateUserDto = RequestUpdateUserDto.builder()
                 .id(idNoExistis)

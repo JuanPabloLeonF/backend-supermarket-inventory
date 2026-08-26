@@ -10,7 +10,8 @@ import java.util.List;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface IMapperUserApplication {
 
@@ -19,7 +20,7 @@ public interface IMapperUserApplication {
 
     @Mappings(value = {
             @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true)
     })
     UserModel toModel(RequestUserUpdateDto requestUserUpdateDto);
 

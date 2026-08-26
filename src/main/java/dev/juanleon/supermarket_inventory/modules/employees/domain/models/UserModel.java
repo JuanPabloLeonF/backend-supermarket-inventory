@@ -1,5 +1,7 @@
 package dev.juanleon.supermarket_inventory.modules.employees.domain.models;
 
+import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,7 +12,7 @@ public class UserModel {
     private String lastName;
     private String email;
     private String password;
-    private String rol;
+    private Roles rol;
     private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -37,7 +39,7 @@ public class UserModel {
         public String lastName;
         public String email;
         public String password;
-        public String rol;
+        public Roles rol;
         public Boolean isActive;
         public LocalDateTime createdAt;
         public LocalDateTime updatedAt;
@@ -67,7 +69,7 @@ public class UserModel {
             return this;
         }
 
-        public UserModelBuilder rol(String rol) {
+        public UserModelBuilder rol(Roles rol) {
             this.rol = rol;
             return this;
         }
@@ -132,11 +134,11 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getRol() {
+    public Roles getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Roles rol) {
         this.rol = rol;
     }
 

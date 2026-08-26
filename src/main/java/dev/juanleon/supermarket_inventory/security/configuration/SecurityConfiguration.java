@@ -1,61 +1,76 @@
 package dev.juanleon.supermarket_inventory.security.configuration;
 
-import dev.juanleon.supermarket_inventory.security.authentication.JwtFilter;
+import dev.juanleon.supermarket_inventory.security.authentication.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final JwtFilter jwtFilter;
+    private final JwtAuthenticationConverter jwtAuthenticationConverter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/products/**",
-                                "/employees/login",
-                                "/employees/register"
-                        ).permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/reports/**").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
+    public DaoAuthenticationProvider authenticationProvider(SecurityUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build();
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        return new InMemoryUserDetailsManager(user, admin);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/employees/login",
+                                "/employees/register"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/providers/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
+
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt ->
+                                jwt.jwtAuthenticationConverter(
+                                        jwtAuthenticationConverter
+                                )
+                        )
+                )
+
+                .build();
     }
 }
