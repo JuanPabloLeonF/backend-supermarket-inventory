@@ -48,12 +48,47 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/employees/login",
-                                "/employees/register"
-                        ).permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/providers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/providers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/providers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/providers/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/purchases/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/purchases/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/purchases/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/purchases/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/categories/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/reports/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/reports/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST,"/employees/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/employees/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/employees/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/cash-register/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/cash-register/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/cash-register/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/sales/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/sales/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/sales/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
 
