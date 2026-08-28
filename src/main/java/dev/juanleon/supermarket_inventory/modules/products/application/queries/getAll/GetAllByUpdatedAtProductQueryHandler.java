@@ -1,18 +1,23 @@
 package dev.juanleon.supermarket_inventory.modules.products.application.queries.getAll;
 
+import dev.juanleon.supermarket_inventory.modules.products.application.dto.ResponseProductDto;
+import dev.juanleon.supermarket_inventory.modules.products.application.mappers.IMapperProductsApplication;
+import dev.juanleon.supermarket_inventory.modules.products.domain.models.ProductModel;
+import dev.juanleon.supermarket_inventory.modules.products.domain.services.get.IGetProductsServices;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
-import dev.juanleon.supermarket_inventory.modules.products.application.dto.ResponseProductDto;
-import dev.juanleon.supermarket_inventory.modules.products.application.handler.get.IGetProductsHandler;
+import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperPaginationApp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetAllByUpdatedAtProductQueryHandler implements IRequestHandler<GetAllByUpdatedAtProductQuery, PagedResponse<ResponseProductDto>> {
 
-    private final IGetProductsHandler iGetProductsHandler;
+    private final IGetProductsServices iGetProductsServices;
+    private final IMapperProductsApplication iMapperProductsApplication;
+    private final IMapperPaginationApp iMapperPaginationApp;
 
     @Override
     public PagedResponse<ResponseProductDto> handle(GetAllByUpdatedAtProductQuery request) {
@@ -20,7 +25,13 @@ public class GetAllByUpdatedAtProductQueryHandler implements IRequestHandler<Get
                 .page(request.page())
                 .size(request.size())
                 .build();
-        return this.iGetProductsHandler.getByUpdatedAt(data, request.updatedAt());
+
+        PagedResponse<ProductModel> productModelPagedResponse = this.iGetProductsServices.getByUpdatedAt(data, request.updatedAt());
+
+        return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(
+                productModelPagedResponse,
+                this.iMapperProductsApplication::toDto
+        );
     }
 
     @Override

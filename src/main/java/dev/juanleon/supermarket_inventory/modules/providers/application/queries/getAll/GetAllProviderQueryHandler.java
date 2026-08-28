@@ -1,18 +1,23 @@
 package dev.juanleon.supermarket_inventory.modules.providers.application.queries.getAll;
 
 import dev.juanleon.supermarket_inventory.modules.providers.application.dto.ResponseProviderDto;
-import dev.juanleon.supermarket_inventory.modules.providers.application.handler.get.IGetProviderHandler;
+import dev.juanleon.supermarket_inventory.modules.providers.application.mappers.IMapperProviderApplication;
+import dev.juanleon.supermarket_inventory.modules.providers.domain.models.ProviderModel;
+import dev.juanleon.supermarket_inventory.modules.providers.domain.services.get.IGetProviderService;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PagedResponse;
 import dev.juanleon.supermarket_inventory.share.utils.dto.PaginationRequest;
+import dev.juanleon.supermarket_inventory.share.utils.mappers.IMapperPaginationApp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetAllProviderQueryHandler implements IRequestHandler<GetAllProviderQuery, PagedResponse<ResponseProviderDto>> {
 
-    private final IGetProviderHandler iGetProviderHandler;
+    private final IGetProviderService iGetProviderService;
+    private final IMapperProviderApplication iMapperProviderApplication;
+    private final IMapperPaginationApp iMapperPaginationApp;
 
     @Override
     public PagedResponse<ResponseProviderDto> handle(GetAllProviderQuery request) {
@@ -20,7 +25,13 @@ public class GetAllProviderQueryHandler implements IRequestHandler<GetAllProvide
                 .page(request.page())
                 .size(request.size())
                 .build();
-        return this.iGetProviderHandler.getAll(data);
+
+        PagedResponse<ProviderModel> modelPagedResponse = this.iGetProviderService.getAll(data);
+
+        return this.iMapperPaginationApp.pageResponseToPageResponseTypeResponse(
+                modelPagedResponse,
+                this.iMapperProviderApplication::toDto
+        );
     }
 
     @Override

@@ -1,20 +1,24 @@
 package dev.juanleon.supermarket_inventory.modules.cash_register.application.queries.getBy;
 
 import dev.juanleon.supermarket_inventory.modules.cash_register.application.dto.CashRegisterResponse;
-import dev.juanleon.supermarket_inventory.modules.cash_register.application.handler.get.IGetCashRegisterHandler;
+import dev.juanleon.supermarket_inventory.modules.cash_register.application.mappers.IMapperCashRegisterApplication;
+import dev.juanleon.supermarket_inventory.modules.cash_register.domain.models.CashRegisterModel;
+import dev.juanleon.supermarket_inventory.modules.cash_register.domain.services.get.IGetCashRegisterService;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetByIdCashRegisterQueryHandler implements IRequestHandler<GetByIdCashRegisterQuery, CashRegisterResponse> {
 
-    private final IGetCashRegisterHandler iGetCashRegisterHandler;
+    private final IGetCashRegisterService iGetCashRegisterService;
+    private final IMapperCashRegisterApplication iMapperCashRegisterApplication;
 
     @Override
     public CashRegisterResponse handle(GetByIdCashRegisterQuery request) {
-        return this.iGetCashRegisterHandler.getById(request.id());
+        CashRegisterModel model = this.iGetCashRegisterService.getById(request.id());
+        return this.iMapperCashRegisterApplication.toResponse(model);
     }
 
     @Override
