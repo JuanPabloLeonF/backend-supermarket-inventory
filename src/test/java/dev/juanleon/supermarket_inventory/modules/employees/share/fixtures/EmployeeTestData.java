@@ -19,11 +19,12 @@ import java.util.UUID;
 
 public final class EmployeeTestData {
 
-    public static final UUID employeeId1 = UUID.randomUUID();
-    public static final UUID employeeId2 = UUID.randomUUID();
+    private EmployeeTestData() {}
 
-    public static final UUID userId1 = UUID.randomUUID();
-    public static final UUID userId2 = UUID.randomUUID();
+    public static final UUID employeeId1 = UUID.fromString("11111111-1111-1111-1111-111111111111");
+    public static final UUID employeeId2 = UUID.fromString("22222222-2222-2222-2222-222222222222");
+    public static final UUID userId1 = UUID.fromString("33333333-3333-3333-3333-333333333333");
+    public static final UUID userId2 = UUID.fromString("44444444-4444-4444-4444-444444444444");
 
     public static final UserEntity userEntity1 = UserEntity.builder()
             .id(userId1)
@@ -122,106 +123,51 @@ public final class EmployeeTestData {
             .build();
 
     public static final List<EmployeeEntity> employeeEntityList = List.of(employeeEntity1, employeeEntity2);
-
     public static final List<EmployeeModel> employeeModelList = List.of(employeeModel1, employeeModel2);
 
-    public static final List<EmployeeEntity> employeeEntityListForNameAndLastName = List.of(employeeEntity1);
-
-    public static final List<EmployeeModel> employeeModelListForNameAndLastName = List.of(employeeModel1);
-
-    public static final Page<EmployeeModel> employeeModelPageForNameAndLastName = new PageImpl<>(employeeModelListForNameAndLastName);
-
-    public static final Page<EmployeeEntity> employeeEntityPageForNameAndLastName = new PageImpl<>(employeeEntityListForNameAndLastName);
-
-    public static final Page<EmployeeEntity> employeeEntityPage = new PageImpl<>(employeeEntityList);
-
-    public static final Page<EmployeeModel> employeeModelPage = new PageImpl<>(employeeModelList);
-
-    public static final Page<EmployeeEntity> pageEmployeeEntityEmpty = new PageImpl<>(List.of());
-
-    public static final Page<EmployeeModel> pageEmployeeModelEmpty = new PageImpl<>(List.of());
-
-    public static final PaginationRequest paginationRequest = PaginationRequest.builder()
-            .page(0)
-            .size(5)
-            .build();
-
+    public static final PaginationRequest paginationRequest = PaginationRequest.builder().page(0).size(5).build();
     public static final Pageable pageable = Pageable.ofSize(5).withPage(0);
 
-    public static final PagedResponse<EmployeeModel> employeeModelPageResponseForNameAndLastName = new PagedResponse<EmployeeModel>(
-            employeeModelPageForNameAndLastName.getContent(),
-            employeeModelPageForNameAndLastName.getNumber(),
-            employeeModelPageForNameAndLastName.getSize(),
-            employeeModelPageForNameAndLastName.getTotalElements(),
-            employeeModelPageForNameAndLastName.getTotalPages(),
-            employeeModelPageForNameAndLastName.isLast()
-    );
+    public static final Page<EmployeeEntity> employeeEntityPage = new PageImpl<>(employeeEntityList);
+    public static final Page<EmployeeEntity> pageEmployeeEntityEmpty = new PageImpl<>(List.of());
 
-    public static final PagedResponse<EmployeeModel> employeeModelPageResponseEmpty = new PagedResponse<EmployeeModel>(
-            pageEmployeeModelEmpty.getContent(),
-            pageEmployeeModelEmpty.getNumber(),
-            pageEmployeeModelEmpty.getSize(),
-            pageEmployeeModelEmpty.getTotalElements(),
-            pageEmployeeModelEmpty.getTotalPages(),
-            pageEmployeeModelEmpty.isLast()
-    );
-
-    public static final PagedResponse<EmployeeModel> employeeModelPageResponse = new PagedResponse<EmployeeModel>(
-            employeeModelPage.getContent(),
-            employeeModelPage.getNumber(),
-            employeeModelPage.getSize(),
-            employeeModelPage.getTotalElements(),
-            employeeModelPage.getTotalPages(),
-            employeeModelPage.isLast()
-    );
-
-    public static EmployeeEntity createNewEmployeeEntityForSave1() {
-
-        UserEntity userEntityForSave1 = UserEntity.builder()
-                .name("juan")
-                .lastName("leon")
-                .email("juan123@gmail.com")
-                .password("1234567")
-                .rol(Roles.ADMIN)
-                .isActive(true)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
-
-        return EmployeeEntity.builder()
-                .userEntity(userEntityForSave1)
-                .nationalId("12345678")
-                .phone("+57 3228843600")
-                .address("calle 12B #17-29")
-                .urlImg("upload/src/img/juan.webp")
-                .position("ADMIN")
-                .salary(BigDecimal.valueOf(2300))
-                .hireDate(LocalDate.of(2025, 1, 15))
-                .build();
+    public static PagedResponse<EmployeeModel> createPagedResponse(List<EmployeeModel> content) {
+        Page<EmployeeModel> page = new PageImpl<>(content);
+        return new PagedResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast()
+        );
     }
 
-    public static EmployeeEntity createNewEmployeeEntityForSave2() {
+    public static Page<EmployeeEntity> createEntityPage(List<EmployeeEntity> entities) {
+        return new PageImpl<>(entities);
+    }
 
-        UserEntity userEntityForSave2 = UserEntity.builder()
-                .name("pipe")
-                .lastName("leon")
-                .email("pipe123@gmail.com")
-                .password("123456789")
-                .rol(Roles.USER)
-                .isActive(true)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+    public static EmployeeEntity createNewEmployeeEntityNotId(EmployeeEntity data) {
+        UserEntity user = UserEntity.builder()
+                .name(data.getUserEntity().getName())
+                .lastName(data.getUserEntity().getLastName())
+                .email(data.getUserEntity().getEmail())
+                .password(data.getUserEntity().getPassword())
+                .rol(data.getUserEntity().getRol())
+                .isActive(data.getUserEntity().getIsActive())
+                .createdAt(data.getUserEntity().getCreatedAt())
+                .updatedAt(data.getUserEntity().getUpdatedAt())
                 .build();
 
         return EmployeeEntity.builder()
-                .userEntity(userEntityForSave2)
-                .nationalId("87654321")
-                .phone("+57 3222222200")
-                .address("calle 15 #20-10")
-                .urlImg("upload/src/img/pipe.webp")
-                .position("EMPLOYEE")
-                .salary(BigDecimal.valueOf(1800))
-                .hireDate(LocalDate.of(2025, 3, 20))
+                .userEntity(user)
+                .nationalId(data.getNationalId())
+                .phone(data.getPhone())
+                .address(data.getAddress())
+                .urlImg(data.getUrlImg())
+                .position(data.getPosition())
+                .salary(data.getSalary())
+                .hireDate(data.getHireDate())
                 .build();
     }
 }

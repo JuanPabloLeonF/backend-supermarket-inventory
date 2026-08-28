@@ -4,9 +4,9 @@ import dev.juanleon.supermarket_inventory.modules.employees.application.dto.resp
 import dev.juanleon.supermarket_inventory.modules.employees.domain.services.get.IGetUserService;
 import dev.juanleon.supermarket_inventory.share.mediator.IRequestHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GetByEmailAndPasswordUserQueryHandler implements IRequestHandler<GetByEmailAndPasswordUserQuery, ResponseTokenDto> {
 

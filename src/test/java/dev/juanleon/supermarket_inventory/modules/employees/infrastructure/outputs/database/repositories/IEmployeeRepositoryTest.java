@@ -34,8 +34,8 @@ class IEmployeeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        employeeEntitySave1 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityForSave1());
-        employeeEntitySave2 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityForSave2());
+        employeeEntitySave1 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityNotId(EmployeeTestData.employeeEntity1));
+        employeeEntitySave2 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityNotId(EmployeeTestData.employeeEntity2));
         userEntitySave1 = employeeEntitySave1.getUserEntity();
         userEntitySave2 = employeeEntitySave2.getUserEntity();
     }

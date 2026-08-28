@@ -14,6 +14,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,7 @@ class GetEmployeeAdapterTest {
         when(this.iMapperPaginationApp.pagetoPagedResponse(
                 eq(EmployeeTestData.employeeEntityPage),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
-        )).thenReturn(EmployeeTestData.employeeModelPageResponse);
+        )).thenReturn(EmployeeTestData.createPagedResponse(EmployeeTestData.employeeModelList));
 
         PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getAll(EmployeeTestData.paginationRequest);
 
@@ -78,7 +79,7 @@ class GetEmployeeAdapterTest {
         when(this.iMapperPaginationApp.pagetoPagedResponse(
                 eq(EmployeeTestData.pageEmployeeEntityEmpty),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
-        )).thenReturn(EmployeeTestData.employeeModelPageResponseEmpty);
+        )).thenReturn(EmployeeTestData.createPagedResponse(List.of()));
 
         PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getAll(EmployeeTestData.paginationRequest);
 
@@ -98,7 +99,7 @@ class GetEmployeeAdapterTest {
     @Test
     void shouldReturnEmployeeModelWhenIsCalledMethodGetById() {
 
-        when(this.iEmployeeRepository.findById(EmployeeTestData.employeeId1)).thenReturn(Optional.ofNullable(EmployeeTestData.employeeEntity1));
+        when(this.iEmployeeRepository.findById(EmployeeTestData.employeeId1)).thenReturn(Optional.of(EmployeeTestData.employeeEntity1));
 
         when(this.iMapperEmployeeInfrastructure.toModel(EmployeeTestData.employeeEntity1)).thenReturn(EmployeeTestData.employeeModel1);
 
@@ -124,7 +125,6 @@ class GetEmployeeAdapterTest {
 
         String expectedMessage = EMPLOYEE_NOT_FOUND_BY_ID.format(idNoExist);
         assertEquals(expectedMessage, exception.getMessage());
-        assertEquals(NotFoundEmployeeException.class, exception.getClass());
 
         verify(this.iEmployeeRepository).findById(idNoExist);
     }
@@ -132,18 +132,21 @@ class GetEmployeeAdapterTest {
     @Test
     void shouldReturnPagedResponseOfEmployeeModelWhenIsCalledMethodGetByNameAndLastName() {
 
+        List<EmployeeModel> employeeModelList = List.of(EmployeeTestData.employeeModel1);
+        Page<EmployeeEntity> entityPage = EmployeeTestData.createEntityPage(List.of(EmployeeTestData.employeeEntity1));
+
         when(this.iMapperPaginationApp.toPageable(EmployeeTestData.paginationRequest)).thenReturn(EmployeeTestData.pageable);
 
         when(this.iEmployeeRepository.findByUserEntity_NameAndUserEntity_LastName(
                 EmployeeTestData.employeeModel1.getUserModel().getName(),
                 EmployeeTestData.employeeModel1.getUserModel().getLastName(),
                 EmployeeTestData.pageable
-        )).thenReturn(EmployeeTestData.employeeEntityPageForNameAndLastName);
+        )).thenReturn(entityPage);
 
         when(this.iMapperPaginationApp.pagetoPagedResponse(
-                eq(EmployeeTestData.employeeEntityPageForNameAndLastName),
+                eq(entityPage),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
-        )).thenReturn(EmployeeTestData.employeeModelPageResponseForNameAndLastName);
+        )).thenReturn(EmployeeTestData.createPagedResponse(employeeModelList));
 
         PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getByNameAndLastName(
                 EmployeeTestData.employeeModel1.getUserModel().getName(),
@@ -153,7 +156,7 @@ class GetEmployeeAdapterTest {
 
         assertNotNull(response);
         assertEquals(1, response.totalElements());
-        assertEquals(EmployeeTestData.employeeModelListForNameAndLastName, response.content());
+        assertEquals(employeeModelList, response.content());
 
         verify(this.iMapperPaginationApp).toPageable(EmployeeTestData.paginationRequest);
 
@@ -164,7 +167,7 @@ class GetEmployeeAdapterTest {
         );
 
         verify(this.iMapperPaginationApp).pagetoPagedResponse(
-                eq(EmployeeTestData.employeeEntityPageForNameAndLastName),
+                eq(entityPage),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
         );
     }
@@ -183,7 +186,7 @@ class GetEmployeeAdapterTest {
         when(this.iMapperPaginationApp.pagetoPagedResponse(
                 eq(EmployeeTestData.pageEmployeeEntityEmpty),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
-        )).thenReturn(EmployeeTestData.employeeModelPageResponseEmpty);
+        )).thenReturn(EmployeeTestData.createPagedResponse(List.of()));
 
         PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getByNameAndLastName(
                 EmployeeTestData.employeeModel1.getUserModel().getName(),
@@ -207,5 +210,159 @@ class GetEmployeeAdapterTest {
                 eq(EmployeeTestData.pageEmployeeEntityEmpty),
                 ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
         );
+    }
+
+    @Test
+    void shouldReturnPagedResponseOfEmployeeModelWhenIsCalledMethodGetByPosition() {
+
+        List<EmployeeModel> employeeModelList = List.of(EmployeeTestData.employeeModel1);
+
+        Page<EmployeeEntity> entityPage = EmployeeTestData.createEntityPage(List.of(EmployeeTestData.employeeEntity1));
+        PagedResponse<EmployeeModel> pagedResponse = EmployeeTestData.createPagedResponse(employeeModelList);
+
+        when(this.iMapperPaginationApp.toPageable(EmployeeTestData.paginationRequest)).thenReturn(EmployeeTestData.pageable);
+
+        when(this.iEmployeeRepository.findByPosition(
+                EmployeeTestData.employeeModel1.getPosition(),
+                EmployeeTestData.pageable
+        )).thenReturn(entityPage);
+
+        when(this.iMapperPaginationApp.pagetoPagedResponse(
+                eq(entityPage),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        )).thenReturn(pagedResponse);
+
+        PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getByPosition(
+                EmployeeTestData.employeeModel1.getPosition(),
+                EmployeeTestData.paginationRequest
+        );
+
+        assertNotNull(response);
+        assertEquals(1, response.totalElements());
+        assertEquals(employeeModelList, response.content());
+
+        verify(this.iMapperPaginationApp).toPageable(EmployeeTestData.paginationRequest);
+
+        verify(this.iEmployeeRepository).findByPosition(
+                EmployeeTestData.employeeModel1.getPosition(),
+                EmployeeTestData.pageable
+        );
+
+        verify(this.iMapperPaginationApp).pagetoPagedResponse(
+                eq(entityPage),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        );
+    }
+
+    @Test
+    void shouldReturnPagedResponseEmptyWhenIsCalledMethodGetByPositionWithParamIncorrect() {
+
+        String position = "not exist";
+
+        when(this.iMapperPaginationApp.toPageable(EmployeeTestData.paginationRequest)).thenReturn(EmployeeTestData.pageable);
+
+        when(this.iEmployeeRepository.findByPosition(
+                position,
+                EmployeeTestData.pageable
+        )).thenReturn(EmployeeTestData.pageEmployeeEntityEmpty);
+
+        when(this.iMapperPaginationApp.pagetoPagedResponse(
+                eq(EmployeeTestData.pageEmployeeEntityEmpty),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        )).thenReturn(EmployeeTestData.createPagedResponse(List.of()));
+
+        PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getByPosition(
+                position,
+                EmployeeTestData.paginationRequest
+        );
+
+        assertNotNull(response);
+        assertEquals(0, response.totalElements());
+        assertEquals(List.of(), response.content());
+
+        verify(this.iMapperPaginationApp).toPageable(EmployeeTestData.paginationRequest);
+
+        verify(this.iEmployeeRepository).findByPosition(
+                position,
+                EmployeeTestData.pageable
+        );
+
+        verify(this.iMapperPaginationApp).pagetoPagedResponse(
+                eq(EmployeeTestData.pageEmployeeEntityEmpty),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        );
+    }
+
+    @Test
+    void shouldReturnPagedResponseOfEmployeeModelWhenIsCalledMethodGetByHireDate() {
+
+        Page<EmployeeEntity> entityPage = EmployeeTestData.createEntityPage(List.of(EmployeeTestData.employeeEntity2));
+
+        when(this.iMapperPaginationApp.toPageable(EmployeeTestData.paginationRequest)).thenReturn(EmployeeTestData.pageable);
+
+        when(this.iEmployeeRepository.findByHireDateGreaterThanEqual(
+                EmployeeTestData.employeeModel2.getHireDate(),
+                EmployeeTestData.pageable
+        )).thenReturn(entityPage);
+
+        when(this.iMapperPaginationApp.pagetoPagedResponse(
+                eq(entityPage),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        )).thenReturn(EmployeeTestData.createPagedResponse(EmployeeTestData.employeeModelList));
+
+        PagedResponse<EmployeeModel> response = this.getEmployeeAdapter.getByHireDate(
+                EmployeeTestData.employeeModel2.getHireDate(),
+                EmployeeTestData.paginationRequest
+        );
+
+        assertNotNull(response);
+        assertEquals(2, response.totalElements());
+        assertEquals(EmployeeTestData.employeeModelList, response.content());
+
+        verify(this.iMapperPaginationApp).toPageable(EmployeeTestData.paginationRequest);
+
+        verify(this.iEmployeeRepository).findByHireDateGreaterThanEqual(
+                EmployeeTestData.employeeModel2.getHireDate(),
+                EmployeeTestData.pageable
+        );
+
+        verify(this.iMapperPaginationApp).pagetoPagedResponse(
+                eq(entityPage),
+                ArgumentMatchers.<Function<EmployeeEntity, EmployeeModel>>any()
+        );
+    }
+
+    @Test
+    void shouldReturnStringWhenIsCalledMethodGetByIdUrlImage() {
+
+        UUID employeeId = EmployeeTestData.employeeId2;
+
+        when(this.iEmployeeRepository.findById(employeeId)).thenReturn(Optional.of(EmployeeTestData.employeeEntity2));
+
+        String response = this.getEmployeeAdapter.getByIdUrlImage(employeeId);
+
+        assertNotNull(response);
+        assertEquals(EmployeeTestData.employeeEntity2.getUrlImg(), response);
+
+        verify(this.iEmployeeRepository).findById(employeeId);
+
+    }
+
+    @Test
+    void shouldReturnNotFoundEmployeeExceptionWhenIsCalledMethodGetByIdUrlImageWithParamIncorrect() {
+
+        UUID employeeId = UUID.randomUUID();
+
+        when(this.iEmployeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        NotFoundEmployeeException exception = assertThrows(NotFoundEmployeeException.class, () -> {
+            this.getEmployeeAdapter.getByIdUrlImage(employeeId);
+        });
+
+        String expectedMessage = EMPLOYEE_NOT_FOUND_BY_ID.format(employeeId);
+        assertEquals(expectedMessage, exception.getMessage());
+
+        verify(this.iEmployeeRepository).findById(employeeId);
+
     }
 }
