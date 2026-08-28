@@ -65,3 +65,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 	jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
+
+//tasks.named('bootRun') {
+//	dependsOn tasks.named('test')
+//	jvmArgs("-XX:+EnableDynamicAgentLoading")
+//}

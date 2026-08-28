@@ -2,7 +2,7 @@ package dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outp
 
 import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.entities.EmployeeEntity;
 import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.entities.UserEntity;
-import dev.juanleon.supermarket_inventory.share.utils.enums.Roles;
+import dev.juanleon.supermarket_inventory.modules.employees.share.fixtures.EmployeeTestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +12,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,58 +27,17 @@ class IEmployeeRepositoryTest {
     @Autowired
     private IEmployeeRepository iEmployeeRepository;
 
-    private final UserEntity userSave1  = UserEntity.builder()
-            .name("juan")
-            .lastName("leon")
-            .password("contrasena123")
-            .rol(Roles.ADMIN)
-            .isActive(true)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .email("juan@gmail.com")
-            .build();
-
-    private final UserEntity userSave2  = UserEntity.builder()
-            .name("miguel")
-            .lastName("rodriguez")
-            .password("1234567")
-            .rol(Roles.USER)
-            .isActive(true)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .email("miguel@gmail.com")
-            .build();
-
-    private final EmployeeEntity employee1 = EmployeeEntity.builder()
-            .userEntity(userSave1)
-            .nationalId("12345678")
-            .phone("+57 3228843600")
-            .address("calle 12B #17-29 aniversario 2")
-            .urlImg("upload/src/img/nombreimagen.webp")
-            .position("ADMIN")
-            .salary(BigDecimal.valueOf(2300))
-            .hireDate(LocalDate.now())
-            .build();
-
-    private final EmployeeEntity employee2 = EmployeeEntity.builder()
-            .userEntity(userSave2)
-            .nationalId("87654321")
-            .phone("+57 3222222200")
-            .address("calle 12B #17-29 aniversario 1")
-            .urlImg("upload/src/img/nombreimagen2.webp")
-            .position("EMPLOYEE")
-            .salary(BigDecimal.valueOf(2300))
-            .hireDate(LocalDate.now())
-            .build();
-
-    private EmployeeEntity employeeEntity1;
-    private EmployeeEntity employeeEntity2;
-
+    private EmployeeEntity employeeEntitySave1;
+    private EmployeeEntity employeeEntitySave2;
+    private UserEntity userEntitySave1;
+    private UserEntity userEntitySave2;
 
     @BeforeEach
     void setUp() {
-        this.employeeEntity1 = this.testEntityManager.persistAndFlush(employee1);
-        this.employeeEntity2 = this.testEntityManager.persistAndFlush(employee2);
+        employeeEntitySave1 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityForSave1());
+        employeeEntitySave2 = this.testEntityManager.persistAndFlush(EmployeeTestData.createNewEmployeeEntityForSave2());
+        userEntitySave1 = employeeEntitySave1.getUserEntity();
+        userEntitySave2 = employeeEntitySave2.getUserEntity();
     }
 
     @AfterEach
@@ -97,22 +54,24 @@ class IEmployeeRepositoryTest {
         Page<EmployeeEntity> result = this.iEmployeeRepository.findAll(pageable);
 
         result.getContent().forEach(entity -> {
-            if (entity.getUserEntity().equals(userSave1)) {
-                assertEquals(entity.getUserEntity(), userSave1);
+            if (entity.getUserEntity().equals(userEntitySave1)) {
+                assertEquals(userEntitySave1, entity.getUserEntity());
             }
         });
 
-        assertTrue(result.getContent().contains(employeeEntity2));
+        assertTrue(result.getContent().contains(employeeEntitySave2));
         assertEquals(2, result.getTotalElements());
     }
 
     @Test
     void shouldReturnEmployeeEntityWhenIsCalledMethodFindById() {
 
-        Optional<EmployeeEntity> optionalEmployeeEntity = this.iEmployeeRepository.findById(employeeEntity1.getId());
+        Optional<EmployeeEntity> optionalEmployeeEntity = this.iEmployeeRepository.findById(
+                employeeEntitySave1.getId()
+        );
 
         assertTrue(optionalEmployeeEntity.isPresent());
-        assertEquals(employeeEntity1, optionalEmployeeEntity.get());
+        assertEquals(employeeEntitySave1, optionalEmployeeEntity.get());
     }
 
     @Test
@@ -127,18 +86,18 @@ class IEmployeeRepositoryTest {
         Pageable pageable = Pageable.ofSize(5);
 
         Page<EmployeeEntity> result = this.iEmployeeRepository.findByUserEntity_NameAndUserEntity_LastName(
-                employee2.getUserEntity().getName(),
-                employee2.getUserEntity().getLastName(),
+                employeeEntitySave2.getUserEntity().getName(),
+                employeeEntitySave2.getUserEntity().getLastName(),
                 pageable
         );
 
         result.getContent().forEach(entity -> {
-            if (entity.getUserEntity().equals(userSave2)) {
-                assertEquals(entity.getUserEntity(), userSave2);
+            if (entity.getUserEntity().equals(userEntitySave2)) {
+                assertEquals(userEntitySave2, entity.getUserEntity());
             }
         });
 
-        assertTrue(result.getContent().contains(employeeEntity2));
+        assertTrue(result.getContent().contains(employeeEntitySave2));
         assertEquals(1, result.getTotalElements());
     }
 
@@ -163,17 +122,17 @@ class IEmployeeRepositoryTest {
         Pageable pageable = Pageable.ofSize(5);
 
         Page<EmployeeEntity> result = this.iEmployeeRepository.findByPosition(
-                employee1.getPosition(),
+                employeeEntitySave1.getPosition(),
                 pageable
         );
 
         result.getContent().forEach(entity -> {
-            if (entity.getUserEntity().equals(userSave1)) {
-                assertEquals(entity.getUserEntity(), userSave1);
+            if (entity.getUserEntity().equals(userEntitySave1)) {
+                assertEquals(userEntitySave1, entity.getUserEntity());
             }
         });
 
-        assertTrue(result.getContent().contains(employeeEntity1));
+        assertTrue(result.getContent().contains(employeeEntitySave1));
         assertEquals(1, result.getTotalElements());
     }
 
@@ -197,17 +156,17 @@ class IEmployeeRepositoryTest {
         Pageable pageable = Pageable.ofSize(5);
 
         Page<EmployeeEntity> result = this.iEmployeeRepository.findByHireDateGreaterThanEqual(
-                employee1.getHireDate(),
+                employeeEntitySave1.getHireDate(),
                 pageable
         );
 
         result.getContent().forEach(entity -> {
-            if (entity.getUserEntity().equals(userSave2)) {
-                assertEquals(entity.getUserEntity(), userSave2);
+            if (entity.getUserEntity().equals(userEntitySave1)) {
+                assertEquals(userEntitySave1, entity.getUserEntity());
             }
         });
 
-        assertTrue(result.getContent().contains(employeeEntity1));
+        assertTrue(result.getContent().contains(employeeEntitySave2));
         assertEquals(2, result.getTotalElements());
     }
 

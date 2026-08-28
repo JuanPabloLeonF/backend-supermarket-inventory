@@ -125,9 +125,21 @@ public final class EmployeeTestData {
 
     public static final List<EmployeeModel> employeeModelList = List.of(employeeModel1, employeeModel2);
 
+    public static final List<EmployeeEntity> employeeEntityListForNameAndLastName = List.of(employeeEntity1);
+
+    public static final List<EmployeeModel> employeeModelListForNameAndLastName = List.of(employeeModel1);
+
+    public static final Page<EmployeeModel> employeeModelPageForNameAndLastName = new PageImpl<>(employeeModelListForNameAndLastName);
+
+    public static final Page<EmployeeEntity> employeeEntityPageForNameAndLastName = new PageImpl<>(employeeEntityListForNameAndLastName);
+
     public static final Page<EmployeeEntity> employeeEntityPage = new PageImpl<>(employeeEntityList);
 
     public static final Page<EmployeeModel> employeeModelPage = new PageImpl<>(employeeModelList);
+
+    public static final Page<EmployeeEntity> pageEmployeeEntityEmpty = new PageImpl<>(List.of());
+
+    public static final Page<EmployeeModel> pageEmployeeModelEmpty = new PageImpl<>(List.of());
 
     public static final PaginationRequest paginationRequest = PaginationRequest.builder()
             .page(0)
@@ -135,6 +147,24 @@ public final class EmployeeTestData {
             .build();
 
     public static final Pageable pageable = Pageable.ofSize(5).withPage(0);
+
+    public static final PagedResponse<EmployeeModel> employeeModelPageResponseForNameAndLastName = new PagedResponse<EmployeeModel>(
+            employeeModelPageForNameAndLastName.getContent(),
+            employeeModelPageForNameAndLastName.getNumber(),
+            employeeModelPageForNameAndLastName.getSize(),
+            employeeModelPageForNameAndLastName.getTotalElements(),
+            employeeModelPageForNameAndLastName.getTotalPages(),
+            employeeModelPageForNameAndLastName.isLast()
+    );
+
+    public static final PagedResponse<EmployeeModel> employeeModelPageResponseEmpty = new PagedResponse<EmployeeModel>(
+            pageEmployeeModelEmpty.getContent(),
+            pageEmployeeModelEmpty.getNumber(),
+            pageEmployeeModelEmpty.getSize(),
+            pageEmployeeModelEmpty.getTotalElements(),
+            pageEmployeeModelEmpty.getTotalPages(),
+            pageEmployeeModelEmpty.isLast()
+    );
 
     public static final PagedResponse<EmployeeModel> employeeModelPageResponse = new PagedResponse<EmployeeModel>(
             employeeModelPage.getContent(),
@@ -144,4 +174,54 @@ public final class EmployeeTestData {
             employeeModelPage.getTotalPages(),
             employeeModelPage.isLast()
     );
+
+    public static EmployeeEntity createNewEmployeeEntityForSave1() {
+
+        UserEntity userEntityForSave1 = UserEntity.builder()
+                .name("juan")
+                .lastName("leon")
+                .email("juan123@gmail.com")
+                .password("1234567")
+                .rol(Roles.ADMIN)
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        return EmployeeEntity.builder()
+                .userEntity(userEntityForSave1)
+                .nationalId("12345678")
+                .phone("+57 3228843600")
+                .address("calle 12B #17-29")
+                .urlImg("upload/src/img/juan.webp")
+                .position("ADMIN")
+                .salary(BigDecimal.valueOf(2300))
+                .hireDate(LocalDate.of(2025, 1, 15))
+                .build();
+    }
+
+    public static EmployeeEntity createNewEmployeeEntityForSave2() {
+
+        UserEntity userEntityForSave2 = UserEntity.builder()
+                .name("pipe")
+                .lastName("leon")
+                .email("pipe123@gmail.com")
+                .password("123456789")
+                .rol(Roles.USER)
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        return EmployeeEntity.builder()
+                .userEntity(userEntityForSave2)
+                .nationalId("87654321")
+                .phone("+57 3222222200")
+                .address("calle 15 #20-10")
+                .urlImg("upload/src/img/pipe.webp")
+                .position("EMPLOYEE")
+                .salary(BigDecimal.valueOf(1800))
+                .hireDate(LocalDate.of(2025, 3, 20))
+                .build();
+    }
 }
