@@ -75,6 +75,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST,"/employees/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/employees/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/employees/{id}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/employees/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/employees/**").hasRole("ADMIN")
@@ -88,6 +89,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/sales/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/sales/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/sales/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET,"/actuator/*").permitAll()
 
                         .anyRequest().authenticated()
                 )

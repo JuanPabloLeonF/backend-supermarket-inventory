@@ -15,14 +15,17 @@ public class Mediator {
 
     public Mediator(List<IRequestHandler<?, ?>> iRequestHandlers) {
         this.requestHandlerMap = iRequestHandlers.stream()
-                .collect(Collectors.toMap(IRequestHandler::getRequestType, Function.identity()));
+                .collect(Collectors.toMap(
+                        IRequestHandler::getRequestType,
+                        Function.identity()
+                ));
     }
 
     public <R, T extends IRequest<R>> R dispatch(T request) {
         @SuppressWarnings("unchecked")
         IRequestHandler<T, R> handler = (IRequestHandler<T, R>) this.requestHandlerMap.get(request.getClass());
         if (handler == null) {
-            throw new NotFoundTypeRequestHandlerMediator("No handler found for request type: " + request.getClass().getName());
+            throw new NotFoundTypeRequestHandlerMediator(request.getClass().getName());
         }
         return handler.handle(request);
     }

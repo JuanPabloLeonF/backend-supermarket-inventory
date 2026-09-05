@@ -71,6 +71,8 @@ public enum MessagesApp {
 
     INVALID_ENUM_VALUE("Invalid value '%s' for field '%s'. Allowed values: %s"),
 
+    NOT_FOUND_TYPE_REQUEST_HANDLER_MEDIATOR("No handler found for request type: %s"),
+
     BAD_REQUEST_VALIDATED_PAGINATION_NUMBER("Page number must be greater than or equal to 0"),
     BAD_REQUEST_VALIDATED_PAGINATION_SIZE("Page size must be greater than 0");
 

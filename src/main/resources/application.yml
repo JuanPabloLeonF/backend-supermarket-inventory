@@ -38,6 +38,9 @@ logging:
 
 # ACTUATOR
 management:
+  info:
+    env:
+      enable: true
   endpoints:
     web:
       exposure:

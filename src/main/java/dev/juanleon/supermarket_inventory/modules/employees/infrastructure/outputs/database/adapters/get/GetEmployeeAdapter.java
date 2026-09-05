@@ -32,6 +32,7 @@ public class GetEmployeeAdapter implements IGetEmployeePersistence {
         return this.iMapperPaginationApp.pagetoPagedResponse(entityPage, this.iMapperEmployeeInfrastructure::toModel);
     }
 
+
     @Override
     public EmployeeModel getById(UUID id) {
         return this.iEmployeeRepository.findById(id)

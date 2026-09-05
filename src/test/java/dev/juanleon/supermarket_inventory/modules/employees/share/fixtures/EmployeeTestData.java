@@ -1,5 +1,8 @@
 package dev.juanleon.supermarket_inventory.modules.employees.share.fixtures;
 
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseEmployeeDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.dto.responses.ResponseUserDto;
+import dev.juanleon.supermarket_inventory.modules.employees.application.queries.getAll.GetAllEmployeeQuery;
 import dev.juanleon.supermarket_inventory.modules.employees.domain.models.EmployeeModel;
 import dev.juanleon.supermarket_inventory.modules.employees.domain.models.UserModel;
 import dev.juanleon.supermarket_inventory.modules.employees.infrastructure.outputs.database.entities.EmployeeEntity;
@@ -26,6 +29,8 @@ public final class EmployeeTestData {
     public static final UUID userId1 = UUID.fromString("33333333-3333-3333-3333-333333333333");
     public static final UUID userId2 = UUID.fromString("44444444-4444-4444-4444-444444444444");
 
+
+
     public static final UserEntity userEntity1 = UserEntity.builder()
             .id(userId1)
             .name("juan")
@@ -39,6 +44,30 @@ public final class EmployeeTestData {
             .build();
 
     public static final UserEntity userEntity2 = UserEntity.builder()
+            .id(userId2)
+            .name("pipe")
+            .lastName("leon")
+            .email("pipe123@gmail.com")
+            .password("123456789")
+            .rol(Roles.USER)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
+
+    public static final ResponseUserDto responseUserDto1 = ResponseUserDto.builder()
+            .id(userId1)
+            .name("juan")
+            .lastName("leon")
+            .email("juan123@gmail.com")
+            .password("1234567")
+            .rol(Roles.ADMIN)
+            .isActive(true)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
+
+    public static final ResponseUserDto responseUserDto2 = ResponseUserDto.builder()
             .id(userId2)
             .name("pipe")
             .lastName("leon")
@@ -122,14 +151,53 @@ public final class EmployeeTestData {
             .hireDate(LocalDate.of(2025, 3, 20))
             .build();
 
+    public static final ResponseEmployeeDto responseEmployeeDto1 = ResponseEmployeeDto.builder()
+            .id(employeeId1)
+            .responseUserDto(responseUserDto1)
+            .nationalId("12345678")
+            .phone("+57 3228843600")
+            .address("calle 12B #17-29")
+            .urlImg("upload/src/img/juan.webp")
+            .position("ADMIN")
+            .salary(BigDecimal.valueOf(2300))
+            .hireDate(LocalDateTime.of(2025, 1, 15, 0, 0))
+            .build();
+
+    public static final ResponseEmployeeDto responseEmployeeDto2 = ResponseEmployeeDto.builder()
+            .id(employeeId2)
+            .responseUserDto(responseUserDto2)
+            .nationalId("87654321")
+            .phone("+57 3222222200")
+            .address("calle 15 #20-10")
+            .urlImg("upload/src/img/pipe.webp")
+            .position("EMPLOYEE")
+            .salary(BigDecimal.valueOf(1800))
+            .hireDate(LocalDateTime.of(2025, 3, 20, 0, 0))
+            .build();
+
+    public static final GetAllEmployeeQuery requestGetAllEmployeeQuery = new GetAllEmployeeQuery(0, 5);
+
     public static final List<EmployeeEntity> employeeEntityList = List.of(employeeEntity1, employeeEntity2);
     public static final List<EmployeeModel> employeeModelList = List.of(employeeModel1, employeeModel2);
+    public static final List<ResponseEmployeeDto> employeeDtolList = List.of(responseEmployeeDto1, responseEmployeeDto2);
 
     public static final PaginationRequest paginationRequest = PaginationRequest.builder().page(0).size(5).build();
     public static final Pageable pageable = Pageable.ofSize(5).withPage(0);
 
     public static final Page<EmployeeEntity> employeeEntityPage = new PageImpl<>(employeeEntityList);
     public static final Page<EmployeeEntity> pageEmployeeEntityEmpty = new PageImpl<>(List.of());
+
+    public static PagedResponse<ResponseEmployeeDto> createPagedResponseToDto(List<ResponseEmployeeDto> content) {
+        Page<ResponseEmployeeDto> page = new PageImpl<>(content);
+        return new PagedResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast()
+        );
+    }
 
     public static PagedResponse<EmployeeModel> createPagedResponse(List<EmployeeModel> content) {
         Page<EmployeeModel> page = new PageImpl<>(content);
