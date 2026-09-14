@@ -40,6 +40,7 @@ dependencies {
 	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
 	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.cloudinary:cloudinary-http44:1.39.0'
 
 	compileOnly 'org.projectlombok:lombok'
 

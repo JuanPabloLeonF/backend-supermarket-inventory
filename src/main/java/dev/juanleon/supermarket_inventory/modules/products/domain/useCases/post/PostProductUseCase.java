@@ -1,12 +1,12 @@
 package dev.juanleon.supermarket_inventory.modules.products.domain.useCases.post;
 
 import dev.juanleon.supermarket_inventory.modules.categories.domain.models.CategoriesModel;
+import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProductPrueba;
 import dev.juanleon.supermarket_inventory.share.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.modules.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.modules.products.domain.persistence.post.IPostProductPersistence;
 import dev.juanleon.supermarket_inventory.modules.products.domain.ports.ICategoriesProviderProduct;
-import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProduct;
 import dev.juanleon.supermarket_inventory.modules.products.domain.services.post.IPostProductService;
 
 import java.time.LocalDate;
@@ -18,9 +18,9 @@ public class PostProductUseCase implements IPostProductService {
 
     private final IPostProductPersistence iPostProductPersistence;
     private final ICategoriesProviderProduct iCategoriesProviderProduct;
-    private final IFilesProviderProduct iFilesProviderProduct;
+    private final IFilesProviderProductPrueba iFilesProviderProduct;
 
-    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, ICategoriesProviderProduct iCategoriesProviderProduct, IFilesProviderProduct iFilesProviderProduct) {
+    public PostProductUseCase(IPostProductPersistence iPostProductPersistence, ICategoriesProviderProduct iCategoriesProviderProduct, IFilesProviderProductPrueba iFilesProviderProduct) {
         this.iPostProductPersistence = iPostProductPersistence;
         this.iCategoriesProviderProduct = iCategoriesProviderProduct;
         this.iFilesProviderProduct = iFilesProviderProduct;
@@ -32,7 +32,7 @@ public class PostProductUseCase implements IPostProductService {
         CategoriesModel categoriesModel = this.iCategoriesProviderProduct.getCategoryById(idCategories);
         productModel.setCategoriesModel(categoriesModel);
 
-        String urlImg = this.iFilesProviderProduct.createImage(inputFileDto, PATH_UPLOAD_IMAGES_PRODUCTS);
+        String urlImg = this.iFilesProviderProduct.uploadImage(inputFileDto, PATH_UPLOAD_IMAGES_PRODUCTS);
 
         productModel.setUrlImg(urlImg);
         productModel.setActive(true);

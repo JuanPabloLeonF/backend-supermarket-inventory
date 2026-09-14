@@ -7,6 +7,7 @@ import dev.juanleon.supermarket_inventory.modules.products.domain.persistence.po
 import dev.juanleon.supermarket_inventory.modules.products.domain.persistence.update.IUpdateProductPersistence;
 import dev.juanleon.supermarket_inventory.modules.products.domain.ports.ICategoriesProviderProduct;
 import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProduct;
+import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProductPrueba;
 import dev.juanleon.supermarket_inventory.modules.products.domain.services.delete.IDeleteProductService;
 import dev.juanleon.supermarket_inventory.modules.products.domain.services.get.IGetProductsServices;
 import dev.juanleon.supermarket_inventory.modules.products.domain.services.post.IPostProductService;
@@ -30,7 +31,7 @@ public class BeanProductsConfiguration {
     public IPostProductService iPostProductService(
             IPostProductPersistence iPostProductPersistence,
             ICategoriesProviderProduct iCategoriesProviderProduct,
-            IFilesProviderProduct iFilesProviderProduct
+            IFilesProviderProductPrueba iFilesProviderProduct
     ) {
         return new PostProductUseCase(
                 iPostProductPersistence,

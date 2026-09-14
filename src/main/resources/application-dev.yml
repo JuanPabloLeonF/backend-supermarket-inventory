@@ -24,3 +24,7 @@ app:
   path-upload-images-employees: ${UPLOAD_PATH_EMPLOYEE}
   path-upload-files-pdf-reports-sales: ${UPLOAD_PATH_FILES_PDF_REPORTS_SALES}
   path-upload-images-products: ${UPLOAD_PATH_PRODUCTS}
+  cloudinary:
+    cloud-name: ${CLOUD_NAME}
+    api-key: ${CLOUD_API_KEY}
+    api-secret: ${CLOUD_API_SECRET}
