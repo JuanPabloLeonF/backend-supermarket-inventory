@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.EMPLOYEE_UPDATE_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -49,10 +48,7 @@ public class UpdateEmployeeAdapter implements IUpdateEmployeePersistence {
     public String updateByIdImage(String urlImg, UUID id) {
         return this.iEmployeeRepository.findById(id)
                 .map(entity -> {
-                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
-                            entity.getUrlImg(),
-                            PATH_UPLOAD_IMAGES_PRODUCTS
-                    ));
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(entity.getUrlImg()));
                     entity.setUrlImg(urlImg);
                     entity.getUserEntity().setUpdatedAt(LocalDateTime.now());
                     this.iEmployeeRepository.save(entity);

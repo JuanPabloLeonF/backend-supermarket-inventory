@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.share.configuration;
+package dev.juanleon.supermarket_inventory.share.files.storage.adapters.cloudinary;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

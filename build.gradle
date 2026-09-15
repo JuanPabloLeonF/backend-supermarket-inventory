@@ -35,8 +35,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.mapstruct:mapstruct:1.6.3'
-    implementation 'com.sksamuel.scrimage:scrimage-core:4.3.10'
-	implementation 'com.sksamuel.scrimage:scrimage-webp:4.3.10'
 	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
 	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -68,8 +66,9 @@ tasks.named('test') {
 	useJUnitPlatform()
 	jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
-
+/*
 tasks.named('bootRun') {
 	dependsOn tasks.named('test')
 	jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
+ */

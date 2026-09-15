@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.share.files.storage;
+package dev.juanleon.supermarket_inventory.share.files.storage.adapters.local;
 
 import dev.juanleon.supermarket_inventory.share.files.exceptions.ErrorCreatedDirectoriesException;
 import dev.juanleon.supermarket_inventory.share.files.exceptions.ErrorTryingDeleteFileException;

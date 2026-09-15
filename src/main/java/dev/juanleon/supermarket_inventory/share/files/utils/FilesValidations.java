@@ -1,4 +1,4 @@
-package dev.juanleon.supermarket_inventory.share.files.validators;
+package dev.juanleon.supermarket_inventory.share.files.utils;
 
 import dev.juanleon.supermarket_inventory.share.files.exceptions.ErrorFileTypeNotAllowedException;
 

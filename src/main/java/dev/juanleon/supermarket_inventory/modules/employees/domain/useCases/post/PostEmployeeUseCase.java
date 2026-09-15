@@ -7,7 +7,6 @@ import dev.juanleon.supermarket_inventory.modules.employees.domain.persistence.p
 import dev.juanleon.supermarket_inventory.modules.employees.domain.services.post.IPostEmployeeService;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_EMPLOYEES;
 
 public class PostEmployeeUseCase implements IPostEmployeeService {
 
@@ -21,7 +20,7 @@ public class PostEmployeeUseCase implements IPostEmployeeService {
 
     @Override
     public ResponseModel registerEmployeeAndUser(EmployeeModel employeeModel, InputFileDto inputFileDto) {
-        String urlImg = this.iFilesProviderEmployee.createImage(inputFileDto, PATH_UPLOAD_IMAGES_EMPLOYEES);
+        String urlImg = this.iFilesProviderEmployee.uploadImage(inputFileDto);
         employeeModel.setUrlImg(urlImg);
         String message = this.iPostEmployeePersistence.create(employeeModel);
         return new ResponseModel(message);

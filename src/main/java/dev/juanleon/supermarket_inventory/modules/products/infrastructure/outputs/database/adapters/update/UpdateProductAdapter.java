@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.PRODUCT_UPDATE_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -61,10 +60,7 @@ public class UpdateProductAdapter implements IUpdateProductPersistence {
     public String updateUrlImg(UUID productId, String urlImg) {
         return this.iProductRepository.findById(productId)
                 .map(product -> {
-                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
-                            product.getUrlImg(),
-                            PATH_UPLOAD_IMAGES_PRODUCTS
-                    ));
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(product.getUrlImg()));
                     product.setUrlImg(urlImg);
                     product.setUpdatedAt(LocalDate.now());
                     this.iProductRepository.save(product);

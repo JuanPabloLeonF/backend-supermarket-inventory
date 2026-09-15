@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReportFilesProvider implements IFilesProviderReport {
 
-    private final PdfGeneratorService pdfGeneratorService;
+    private final PdfGeneratorService service;
 
     @Override
     public String createPdfSales(DataReportModel<SalesModel> dataReportModel) {
-        return pdfGeneratorService.createPdfSales(
+        return this.service.createPdfSales(
                 dataReportModel,
                 ConstantsApp.TEMPLATE_REPORT_SALES,
                 ConstantsApp.PATH_UPLOAD_FILES_PDF_SALES
@@ -27,7 +27,7 @@ public class ReportFilesProvider implements IFilesProviderReport {
 
     @Override
     public String createPdfPurchase(DataReportModel<PurchaseModel> dataReportModel) {
-        return pdfGeneratorService.createPdfPurchase(
+        return this.service.createPdfPurchase(
                 dataReportModel,
                 ConstantsApp.TEMPLATE_REPORT_PURCHASE,
                 ConstantsApp.PATH_UPLOAD_FILES_PDF_PURCHASES

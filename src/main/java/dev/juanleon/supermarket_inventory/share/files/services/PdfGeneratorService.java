@@ -5,58 +5,62 @@ import dev.juanleon.supermarket_inventory.modules.reports.domain.models.DataRepo
 import dev.juanleon.supermarket_inventory.modules.sales.domain.models.SalesModel;
 import dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp;
 import dev.juanleon.supermarket_inventory.share.files.events.FileCreatedEvent;
-import dev.juanleon.supermarket_inventory.share.files.storage.FileStorage;
+import dev.juanleon.supermarket_inventory.share.files.storage.ports.IFilesStore;
 import dev.juanleon.supermarket_inventory.share.files.utils.FilesUtil;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.InputStream;
-import java.nio.file.Path;
 
 
 @Service
-@RequiredArgsConstructor
 public class PdfGeneratorService {
 
-    private final FileStorage fileStorage;
+    @Qualifier("cloudinaryAdapter")
+    private final IFilesStore store;
     private final TemplateEngine templateEngine;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public String createPdfSales(DataReportModel<SalesModel> dataReportModel, String templateName, String uploadUrl) {
+    public PdfGeneratorService(IFilesStore store, TemplateEngine templateEngine, ApplicationEventPublisher applicationEventPublisher) {
+        this.store = store;
+        this.templateEngine = templateEngine;
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
+
+    public String createPdfSales(DataReportModel<SalesModel> dataReportModel, String templateName, String folderName) {
+
         Context context = new Context();
         context.setVariable(ConstantsApp.SALES_REPORT_MODEL, dataReportModel);
         String htmlGenerated = templateEngine.process(templateName, context);
 
-        InputStream pdfStream = FilesUtil.convertHtmlToPdf(htmlGenerated);
+        try (InputStream pdfStream = FilesUtil.convertHtmlToPdf(htmlGenerated)) {
 
-        String urlPdf = FilesUtil.generateUniqueFileName(templateName, ConstantsApp.PDF);
-        Path uploadPath = FilesUtil.stringToPath(uploadUrl);
-        this.fileStorage.createDirectoriesIfNotExists(uploadPath);
-        this.fileStorage.storeFile(pdfStream, uploadPath.resolve(urlPdf));
+            String urlPdf = this.store.uploadPdf(pdfStream, folderName);
+            this.applicationEventPublisher.publishEvent(new FileCreatedEvent(urlPdf));
+            return urlPdf;
 
-        this.applicationEventPublisher.publishEvent(new FileCreatedEvent(urlPdf, uploadUrl));
-
-        return urlPdf;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String createPdfPurchase(DataReportModel<PurchaseModel> dataReportModel, String templateName, String uploadUrl) {
+    public String createPdfPurchase(DataReportModel<PurchaseModel> dataReportModel, String templateName, String folderName) {
         Context context = new Context();
         context.setVariable(ConstantsApp.PURCHASE_REPORT_MODEL, dataReportModel);
         String htmlGenerated = templateEngine.process(templateName, context);
 
-        InputStream pdfStream = FilesUtil.convertHtmlToPdf(htmlGenerated);
+        try (InputStream pdfStream = FilesUtil.convertHtmlToPdf(htmlGenerated)) {
 
-        String urlPdf = FilesUtil.generateUniqueFileName(templateName, ConstantsApp.PDF);
-        Path uploadPath = FilesUtil.stringToPath(uploadUrl);
-        this.fileStorage.createDirectoriesIfNotExists(uploadPath);
-        this.fileStorage.storeFile(pdfStream, uploadPath.resolve(urlPdf));
+            String urlPdf = this.store.uploadPdf(pdfStream, folderName);
+            this.applicationEventPublisher.publishEvent(new FileCreatedEvent(urlPdf));
+            return urlPdf;
 
-        this.applicationEventPublisher.publishEvent(new FileCreatedEvent(urlPdf, uploadUrl));
-
-        return urlPdf;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

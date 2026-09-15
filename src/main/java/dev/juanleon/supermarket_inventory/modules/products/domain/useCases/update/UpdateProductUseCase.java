@@ -2,16 +2,15 @@ package dev.juanleon.supermarket_inventory.modules.products.domain.useCases.upda
 
 import dev.juanleon.supermarket_inventory.modules.categories.domain.models.CategoriesModel;
 import dev.juanleon.supermarket_inventory.modules.categories.domain.services.get.IGetCategoriesServices;
+import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProduct;
 import dev.juanleon.supermarket_inventory.share.utils.dto.InputFileDto;
 import dev.juanleon.supermarket_inventory.share.utils.dto.ResponseModel;
 import dev.juanleon.supermarket_inventory.modules.products.domain.models.ProductModel;
 import dev.juanleon.supermarket_inventory.modules.products.domain.persistence.update.IUpdateProductPersistence;
-import dev.juanleon.supermarket_inventory.modules.products.domain.ports.IFilesProviderProduct;
 import dev.juanleon.supermarket_inventory.modules.products.domain.services.update.IUpdateProductService;
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_PRODUCTS;
 
 public class UpdateProductUseCase implements IUpdateProductService {
 
@@ -41,7 +40,7 @@ public class UpdateProductUseCase implements IUpdateProductService {
 
     @Override
     public ResponseModel updateUrlImg(UUID productId, InputFileDto inputFileDto) {
-        String urlImgUpdate = this.iFilesProviderProduct.createImage(inputFileDto, PATH_UPLOAD_IMAGES_PRODUCTS);
+        String urlImgUpdate = this.iFilesProviderProduct.uploadImage(inputFileDto);
         String response = this.iUpdateProductPersistence.updateUrlImg(productId, urlImgUpdate);
         return new ResponseModel(response);
     }

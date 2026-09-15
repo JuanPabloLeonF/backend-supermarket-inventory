@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_EMPLOYEES;
 import static dev.juanleon.supermarket_inventory.share.utils.enums.MessagesApp.EMPLOYEE_DELETED_SUCCESSFULLY_BY_ID;
 
 @Repository
@@ -24,10 +23,7 @@ public class DeleteEmployeeAdapter implements IDeleteEmployeePersistence {
     public String deleteEmployeeAndUser(UUID idEmployee) {
         return this.iEmployeeRepository.findById(idEmployee)
                 .map(entity -> {
-                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
-                            entity.getUrlImg(),
-                            PATH_UPLOAD_IMAGES_EMPLOYEES
-                    ));
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(entity.getUrlImg()));
                     this.iEmployeeRepository.deleteById(entity.getId());
                     return EMPLOYEE_DELETED_SUCCESSFULLY_BY_ID.format(entity.getId());
                 }).orElseThrow(() -> new NotFoundEmployeeException(idEmployee));

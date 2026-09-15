@@ -9,7 +9,6 @@ import dev.juanleon.supermarket_inventory.modules.employees.domain.services.upda
 
 import java.util.UUID;
 
-import static dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp.PATH_UPLOAD_IMAGES_EMPLOYEES;
 
 public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
 
@@ -29,7 +28,7 @@ public class UpdateEmployeeUseCase implements IUpdateEmployeeService {
 
     @Override
     public ResponseModel updateByIdImage(UUID id, InputFileDto inputFileDto) {
-        String urlImgUpdated = this.iFilesProviderEmployee.createImage(inputFileDto, PATH_UPLOAD_IMAGES_EMPLOYEES);
+        String urlImgUpdated = this.iFilesProviderEmployee.uploadImage(inputFileDto);
         String response = this.iUpdateEmployeePersistence.updateByIdImage(urlImgUpdated, id);
         return new ResponseModel(response);
     }

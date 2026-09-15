@@ -1,6 +1,5 @@
 package dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.database.adapters.delete;
 
-import dev.juanleon.supermarket_inventory.share.configuration.ConstantsApp;
 import dev.juanleon.supermarket_inventory.share.files.events.FileDeletedEvent;
 import dev.juanleon.supermarket_inventory.modules.reports.domain.persistence.delete.IDeleteReportPersistence;
 import dev.juanleon.supermarket_inventory.modules.reports.infrastructure.outputs.database.repositories.IReportRepository;
@@ -25,20 +24,7 @@ public class DeleteReportAdapter implements IDeleteReportPersistence {
 
          return this.iReportRepository.findById(id)
                 .map(entity -> {
-
-                    String path;
-
-                    if (entity.getReportType().equals(ConstantsApp.TYPE_SALES)) {
-                        path = ConstantsApp.PATH_UPLOAD_FILES_PDF_SALES;
-                    } else {
-                        path = ConstantsApp.PATH_UPLOAD_FILES_PDF_PURCHASES;
-                    }
-
-                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(
-                            entity.getFilePath(),
-                            path
-                    ));
-
+                    this.applicationEventPublisher.publishEvent(new FileDeletedEvent(entity.getFilePath()));
                     this.iReportRepository.deleteById(entity.getId());
                     return REPORT_DELETED_SUCCESSFULLY_BY_ID.format(entity.getId());
                 }).orElseThrow(() -> new NotFoundReportException(id));
